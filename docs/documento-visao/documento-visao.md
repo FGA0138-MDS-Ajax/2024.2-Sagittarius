@@ -7,8 +7,6 @@ Sagittarius – Sistema de Gestão para a empresa Frango Assado Pele Dourada
 
 ## [VISÃO DO PRODUTO E DO PROJETO](https://1drv.ms/w/c/dc034d221001755e/ERKbbbL04F9LhrPs5txr-z0Bl07xoD9xL0_u6FwRZCJh2w?e=rvMSzA)  
 
-Versão 1.0 
-
 Tabela - Integrantes do Grupo: 
 
 
@@ -33,8 +31,9 @@ Histórico de Revisões
 
 | Data  | Versão  | Descrição  | Autor  |
 | -- | -- | -- | -- |
-| 19/11/2024     | 1.0     | Criação da primeira versão do documento, com as informações do sobre o produto e nossas estratégias para desenvolve-lo     | Equipe Sagittarius    |
-
+| 19/11/2024     | 1.0     | Criação da primeira versão do documento, com as informações sobre o produto e nossas estratégias para desenvolve-lo     | Equipe Sagittarius    |
+| 26/11/2024     | 1.1     | Adição de mais informações sobre o processo de desenvolvimento do produto | Equipe Sagittarius |
+| 02/12/2024     | 1.2     | Finalização da elaboração do documento de visão, com backlog e planejamento completo | Equipe Sagittarius |
 
 ## VISÃO DO PRODUTO E PROJETO
 
@@ -97,13 +96,13 @@ Tabela 1 – Declaração de Posição do Produto
 | Nosso produto:  | Apresenta uma solução customizada, com interface intuitiva, automaçãode processos críticos e geração de insights visuais por meio de dashboards.  |
 
 
-### 1.3 Objetivos do Produto
+## 1.3 Objetivos do Produto
 
 O projeto tem como objetivo principal desenvolver um software interno de gestão para facilitar a administração e organização da loja de frangos assados Pele Dourada. Com a integração de funcionalidades robustas, o sistema visa atender às necessidades específicas do negócio, proporcionando maior controle, eficiência e agilidade no dia a dia da operação. 
 
-#### 1.3.1 Objetivos Principais
+### 1.3.1 Objetivos Principais
 
-## 2 Gestão de Vendas e Encomendas 
+#### I. Gestão de Vendas e Encomendas 
 
 • Registrar as vendas no balcão para controlar a quantidade de produ tos vendidos. 
 
@@ -111,39 +110,39 @@ O projeto tem como objetivo principal desenvolver um software interno de gestão
 
 • Gerar relatórios diários com informações sobre as vendas realizadas e status das encomendas. 
 
-## I. Controle de Estoque Diário
+#### II. Controle de Estoque Diário
 
 • Registrar a quantidade de produtos disponíveis e atualizá-la automati-camente com base nas vendas e encomendas. 
 
 • Permitir o cadastro de novos produtos e o controle contínuo do esto que. 
 
-## II. Cadastro de Clientes 
+#### III. Cadastro de Clientes 
 
 • Facilitar o cadastro e a edição das informações dos clientes (nome, tele fone, endereço) para otimizar o gerenciamento das encomendas e o atendimento. 
 
-## III. Controle de Caixa
+#### IV. Controle de Caixa
 
 Registrar entradas e saídas de dinheiro, com a possibilidade de gerar um relatório detalhado de fluxo de caixa. 
 
 • Permitir a visualização das vendas realizadas por cartão, facilitando a análise dos métodos de pagamento. 
 
-## IV. Dashboard Geral
+#### V. Dashboard Geral
 
 • Fornecer um painel de controle visual com informações rápidas sobre o desempenho do negócio, incluindo vendas do mês, quantidade de fran gos vendidos, e status das encomendas. 
 
-## V. Autenticação: 
+#### VI. Autenticação: 
 
 Garantir a segurança do sistema com um processo de login para que apenas usuários autorizados possam acessar as funcionalidades e dados sensíveis. 
 
-## 2.1.1 Objetivos Secundários 
+## 1.3.2 Objetivos Secundários 
 
-## I. Link para Status da Encomenda
+### I. Link para Status da Encomenda
 
 • O sistema gera um link específico para cada encomenda, que pode ser compartilhado com o cliente. 
 
 • O cliente pode acessar o link e visualizar o status da encomenda, como "Pendente", "Em Produção", "Pronto para Retirada", "Em Rota de En trega", etc. 
 
-### 2.2 Tecnologias a Serem Utilizadas 
+### 1.3.2.1 Tecnologias a Serem Utilizadas 
 
 • Backend (Servidor)
 
@@ -169,9 +168,9 @@ o Gerenciamento de Projetos: GitHub Projects
 
 o Comunicação: Teams, Discord 
 
-## 3 VISÃO GERAL DO PROJETO
+## 2 VISÃO GERAL DO PROJETO
 
-### 3.1 Ciclo de vida do projeto de desenvolvimento de software
+### 2.1 Ciclo de vida do projeto de desenvolvimento de software
 
 Metodologia: A sua flexibilidade para lidar com mudanças nos requisitos, sua entrega de valor contínua ao cliente por meio de funcionalidades e otimização de tempo, decidimos adotar a metodologia ágil. Tendo em vista que, ela prio-riza as necessidades do cliente, visto que ele participa de todas as etapas do projeto, e promove o aprimoramento contínuo através de revisões regulares dos processos. 
 
@@ -183,7 +182,7 @@ Ferramentas: Será utilizado o GitHub para controle de submissões e mudan ças 
 
 Métodos: Utilizamos os métodos do SCRUM/XP como por exemplo: Pair Programming, Code Review, Sprint, Sprint Planning, Sprint Review, Sprint Retrospective e Refinamento de Backlog de Produto. Será agendado encon tros semanais para manter a equipe organizada e em sintonia com o projeto para seguir o planejamento com êxito. 
 
-3.2 Organização do Projeto 
+### 2.2 Organização do Projeto 
 
 
 | Papel  | Atribuições  | Responsável  | Participantes  |
@@ -196,7 +195,7 @@ Métodos: Utilizamos os métodos do SCRUM/XP como por exemplo: Pair Programming,
 | Desenvolvedor do Banco de Dados  | Criar o banco de dados do produto, garantir a eficiência das buscas, criar perfis de acesso, comunicação com o back-end  | Fabio  | Matheus, Vilmar,Gabriel, Fábio  |
 
 
-### 3.3 Planejamento das Fases e/ou Iterações do Projeto
+### 2.3 Planejamento das Fases e/ou Iterações do Projeto
 
 
 |  Sprint  | Produto (Entrega)  | Data Início  | Data Fim  | Entregável(eis)  | Responsá-veis  | % conclusão |
@@ -211,7 +210,7 @@ Métodos: Utilizamos os métodos do SCRUM/XP como por exemplo: Pair Programming,
 | Sprint 8  | Dashboard e histó-rico de vendas no cartão  | 16/01/2025   | 23/01/2025   | Dashboard inicial e página de histórico de vendas no cartão.  |  Todos  |  0% |
 
 
-3.4 Matriz de Comunicação
+### 2.4 Matriz de Comunicação
 
 
 | Descrição  | Área/ Envolvidos  | Periodicidade  | Produtos Gerados  |
@@ -221,7 +220,7 @@ Métodos: Utilizamos os métodos do SCRUM/XP como por exemplo: Pair Programming,
 |  - Comunicar situação do projeto  | • Equipe • Prof./Monitor  | • Semanal  | • Ata de reunião, e • Relatório de situação do projeto  |
 
 
-3.5 Gerenciamento de Riscos 
+### 2.5 Gerenciamento de Riscos 
 
 
 | Fase  | Risco  | Grau de Exposição  | Mitigação  | Plano de Contingência |
@@ -244,7 +243,7 @@ Métodos: Utilizamos os métodos do SCRUM/XP como por exemplo: Pair Programming,
 | Implementação  | Desempenho abaixo do esperado  | Alto  | Monitorar o desempenho durante os testes e otimizar o código, se necessário.  | Implementar soluções de otimização imediatas, como cache econsultas otimizadas no banco de dados.  |
 
 
-### 3.6 Critérios de Replanejamento
+### 2.6 Critérios de Replanejamento
 
 • Mudanças significativas no escopo: Caso sejam identificadas alterações no escopo, como a necessidade de implementar funcionalidades adicionais (ex.: reserva de produtos por tempo limitado ou gerenciamento de prioridades para encomendas), o sistema deverá ser replanejado para ajustar os recursos e atender às novas especificações sem comprometer os objetivos iniciais. 
 
@@ -256,7 +255,7 @@ Métodos: Utilizamos os métodos do SCRUM/XP como por exemplo: Pair Programming,
 
 • Desentendimento entre os membros da equipe: Em caso de conflitos dentro da equipe, medidas serão tomadas para revisar as alocações de tarefas e facilitar a comunicação entre os membros, evitando impactos no desenvolvi-mento. Se necessário, será utilizada a Comunicação Não Violenta (CNV) para mediar e resolver divergências, promovendo um ambiente colaborativo e sau-dável para alcançar os objetivos do projeto. 
 
-## 4 PROCESSO DE DESENVOLVIMENTO DE SOFTWARE
+## 3 PROCESSO DE DESENVOLVIMENTO DE SOFTWARE
 
 Para o desenvolvimento do sistema de gestão da empresa Frango Assado Pele Dourada, a equipe adotou metodologias ágeis, combinando elementos do SCRUM e XP (Extreme Programming). Essa abordagem foi escolhida para garantir maior flexibilidade, colaboração contínua com o cliente e entregas incrementais de valor ao longo do projeto. 
 
@@ -291,9 +290,9 @@ Práticas do XP utilizadas:
 | Cliente no Local  | Não será implementado devido à indisponibilidade do cliente para participar presencialmente durante o desenvolvimento.  |
 
 
-## 5 DECLARAÇÃO DE ESCOPO DO PROJETO 
+## 4 DECLARAÇÃO DE ESCOPO DO PROJETO 
 
-### 5.1 Backlog do produto 
+### 4.1 Backlog do produto 
 
 Perfil: Administrador 
 
@@ -360,7 +359,7 @@ Cenário 6: Dashboard geral
 
 Forma de elicitação de requisitos: entrevistas.
 
-### 5.2 Perfis 
+### 4.2 Perfis 
 
 Tabela : Perfis de acesso 
 
@@ -370,7 +369,7 @@ Tabela : Perfis de acesso
 | &lt;1&gt;  |  Administrador  | Responsável por gerenciar todo o sistema e realizar operações administrativas essenciais.  |  - Cadastro, edição e exclusão de produtos.- Visualização e edição de pedidos. - Acesso a relatórios completos. - Configuração do sistema.  |
 
 
-5.3 Cenários 
+### 4.3 Cenários 
 
 Tabela: Cenários funcionais 
 
@@ -380,7 +379,7 @@ Tabela: Cenários funcionais
 | Numeração do cenário   | Nome do cenário   | Sprints  |
 
 
-5.4 Tabela de Backlog do produto 
+### 4.4 Tabela de Backlog do produto 
 
 Tabela: Backlog do produto 
 
@@ -401,6 +400,6 @@ Tabela: Backlog do produto
 | 11  | Sprint 9 (opcional)  | Funcional   | Could  | O administrador é capaz dum link de status de encopara compartilhar com o cl | e gerar Como adminismenda link com o statiente compartilhar cque ele acomppedido  | trador, eu quero gerar umus da encomenda para om o cliente, permitindo anhe o andamento do  |
 
 
-## 6 REFERÊNCIAS BIBLIOGRÁFICAS
+## 5 REFERÊNCIAS BIBLIOGRÁFICAS
 
 1. H. Washizaki, eds., Guide to the Software Engineering Body of Knowledge (SWEBOK Guide), Version 4.0, IEEE Computer Society, 2024; www.swebok.org. 
