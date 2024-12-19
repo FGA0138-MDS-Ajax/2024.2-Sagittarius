@@ -1,4 +1,5 @@
 site_name: 2024.2 Sagittarius
+docs_dir: docs
 
 nav:
   - Documento de Visão: "documento-visao/documento-visao.md"
