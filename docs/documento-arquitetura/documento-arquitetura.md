@@ -80,7 +80,7 @@ A camada de banco de dados armazena todos os dados necessários para o funcionam
 Portanto, a figura abaixo demonstra o funcionamento da arquitetura monolítica, definida na seção 2.1 deste documento. É possível visualizar separadamente as camadas e como elas comunicam entre si.
 
 <div style="text-align: center;">
-    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/docs/img/1.png" alt="Representação da Arquitetura do Sistema">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/docs/img/arquitetura.png" alt="Representação da Arquitetura do Sistema">
     <p>Figura 1 – Representação da Arquitetura do Sistema</p>
 </div>
 
@@ -111,7 +111,7 @@ Os cenários funcionais ajudam o time a estabelecer marcos de desenvolvimento pa
 Na figura 2, ilustrada abaixo, são apresentados os casos de uso com os quais o ator principal,o administrador, pode interagir e como a aplicação funciona.
 
 <div style="text-align: center;">
-    <img src="../img/2.png" alt="Diagrama de casos de uso">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/docs/img/casosDeUso.png" alt="Diagrama de casos de uso">
     <p>Figura 2 - Casos de uso</p>
 </div>
 
@@ -137,24 +137,25 @@ Os componentes do sistema interagem por meio de interfaces bem definidas, garant
 
 A seguir, na Figura 3, temos ilustrado o diagrama de estados da aplicação, que é aplicado para demonstrar o comportamento geral do sistema, mostrando os estados e transições do funci onamento do projeto. Sendo assim, é possível entender o comportamento do sistema conforme ele é utilizado, com suas principais transições.
 
-
-![](https://web-api.textin.com/ocr_image/external/0aa459cd7a352530.jpg)
-
-Figura 3 – Diagrama de estados da aplicação
+<div style="text-align:center;">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/docs/img/DiagramaDeEstados.jpeg" alt="Diagrama de Estados">
+    <p>Figura 3 - Diagrama de estads da aplicação</p>
+</div>
 
 Além disso, para demais detalhes de como a aplicação funciona, inclui o diagrama de ati vidades do projeto, apresentado na Figura 4, que é aplicado para descrever as etapas realizadas conforme o usuário usa o sistema, deixando o funcionamento do mesmo mais claro. Sendo assim, no diagrama abaixo, é possível ver o que acontece em cada possibilidade conforme a utilização do site:
 
-<!-- 10000  -->
-![](https://web-api.textin.com/ocr_image/external/c70502e0a5f1b52d.jpg)
-
-Figura 4 – Diagrama de atividades da aplicação
+<div style="text-align:center;">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/docs/img/DiagramaDeAtividades.jpeg" alt="Diagrama de atividades da aplicação">
+    <p>Figura 4 - Diagrama de atividades da aplicação</p>
+</div>
 
 Nele, também temos detalhadas as possíveis telas que participam da navegação do site, como proposto protótipo de alta fidelidade, disponível no Github e também no link a seguir: Figma.
 
 
-![](https://web-api.textin.com/ocr_image/external/f8969d5f51316536.jpg)
-
-Figura 5 – Diagrama de classes
+<div style="text-align:center;">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/docs/img/DiagramaDeClasses.png" alt="Diagrama de classes">
+    <p>Figura 5 - Diagrama de classes</p>
+</div>
 
 O diagrama de classes para o gerenciamento da empresa Frango Assado Pele Dourada foi projetado para organizar e otimizar o controle de diversos aspectos envolvidos na administração da empresa. Este sistema compreende seis classes principais, cada uma com responsabilidades específicas que, em conjunto, contribuem para uma gestão eficiente e integrada.
 
@@ -169,9 +170,10 @@ Os pacotes representam áreas funcionais distintas do sistema, promovendo organi
 - Comunicação com o Banco de Dados: o banco não relacional MongoDB será utilizado para armazenar dados em formato JSON-like. A integração com Django será feita pela biblioteca Djongo, permitindo consultas eficientes, validações e persistência dos dados relacionados a vendas, estoque, clientes e finanças.
 
 
-![](https://web-api.textin.com/ocr_image/external/b61108beea4161a1.jpg)
-
-Figura 6 – Diagrama de pacotes
+<div style="text-align:center;">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/docs/img/DiagramaDePacotes.jpeg" alt="Diagrama de pacotes">
+    <p>Figura 6 - Diagrama de pacotes</p>
+</div>
 
 ### 2.8 Visão de Implantação
 
