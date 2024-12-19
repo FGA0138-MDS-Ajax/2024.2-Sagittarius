@@ -3,7 +3,7 @@
 | 1.0 | 26/11/2024 | Redação inicial do documento de visão | Todos |
 | 1.1 | 02/12/2024 | Finalização do backlog do produto e planejamento das sprints | Matheus de Alcântara, Vilmar, Gabriel Flores, Caio Sabino e João Victor Pires |
 
-Sagittarius – Sistema de Gestão para a empresa Frango Assado Pele Dourada 
+Sagittarius – Projeto Pele Dourada
 
 ## [VISÃO DO PRODUTO E DO PROJETO](https://1drv.ms/w/c/dc034d221001755e/ERKbbbL04F9LhrPs5txr-z0Bl07xoD9xL0_u6FwRZCJh2w?e=rvMSzA)  
 
