@@ -80,7 +80,7 @@ A camada de banco de dados armazena todos os dados necessários para o funcionam
 Portanto, a figura abaixo demonstra o funcionamento da arquitetura monolítica, definida na seção 2.1 deste documento. É possível visualizar separadamente as camadas e como elas comunicam entre si.
 
 <div style="text-align: center;">
-    <img src="../img/1.png" alt="Representação da Arquitetura do Sistema">
+    <img src="/2024.2-Sagittarius/img/1.png" alt="Representação da Arquitetura do Sistema">
     <p>Figura 1 – Representação da Arquitetura do Sistema</p>
 </div>
 
