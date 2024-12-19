@@ -1,6 +1,6 @@
 # 2024.2 Sagittarius - Sistema de Vendas
 
-# Sistema de Gestão para a Empresa Frango Assado Pele Dourada
+# Projeto Pele Dourada
 
 ## Sobre o Projeto
 
