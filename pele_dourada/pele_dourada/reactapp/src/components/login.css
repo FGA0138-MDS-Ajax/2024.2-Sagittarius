@@ -1,90 +1,106 @@
-
 .login-page {
-    display: flex;
-    justify-content: flex-start; 
-    align-items: flex-start; 
-    min-height: 100vh; 
-    background-image: url('../assets/frango.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    position: relative;
-  }
-  
-  
-  .login-container {
-    background-color: white;
-    padding: 30px;
-    width: 33vw; 
-    height: 100vh; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 10; 
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    position: fixed; 
-    top: 0;
-    left: 0;
-  }
-  
-  
-  h1 {
-    text-align: center;
-    margin-bottom: 20px; 
-  }
-  
+  display: flex;
+  justify-content: flex-start; 
+  align-items: flex-start; 
+  min-height: 100vh; 
+  background-image: url('../assets/frango.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: relative;
+}
 
-  form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  
+.login-container {
+  background-color: white;
+  padding: 30px;
+  width: 33vw; 
+  height: 100vh; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 10; 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: fixed; 
+  top: 0;
+  left: 0;
+}
 
-  form div {
-    margin-bottom: 15px;
-  }
-  
-  
-  form input {
-    padding: 10px;
-    width: 100%;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  
-  .logo {
-    width: 400px; 
-    margin-bottom: 20px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
- 
-  button {
-    padding: 10px;
-    background-color: #F3821B;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin: 10px;
-  }
-  
+h1 {
+  text-align: center;
+  margin-bottom: 20px; 
+  font-size: 20px;
+}
 
-  .forgot-password {
-    color: blue;
-    cursor: pointer;
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  .forgot-password:hover {
-    text-decoration:underline;
-    color: #F3821B;
-  }
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+form input {
+  padding: 10px;
+  width: 95%;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+form input::placeholder {
+  color: #999;
+}
+
+button {
+  padding: 10px;
+  background-color: #F3821B;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+  margin: 10px 0; /* Ajuste o espaçamento entre os botões */
+  font-size: 16px;
+  width: 100%; /* Faz com que os botões ocupem toda a largura disponível */
+}
+
+button:hover {
+  background-color: #f15b1b;
+}
+
+.forgot-password {
+  color: blue;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+  color: #F3821B;
+}
+
+button[type="submit"]:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button[type="button"] {
+  background-color: transparent;
+  color: #F3821B;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%; /* Faz com que os botões ocupem toda a largura disponível */
+}
+
+button[type="button"]:hover {
+  text-decoration: underline;
+  color: #F3821B;
+}
