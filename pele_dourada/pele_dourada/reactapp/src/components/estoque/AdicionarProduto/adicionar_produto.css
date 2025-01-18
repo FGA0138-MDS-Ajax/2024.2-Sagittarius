@@ -1,0 +1,124 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background-color: #F3821B;
+  }
+
+.adicionar-produto {
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .adicionar-produto h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .adicionar-produto form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .adicionar-produto form div {
+    margin-bottom: 15px;
+  }
+  
+  .adicionar-produto label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+
+  
+  .adicionar-produto input,
+  .adicionar-produto select,
+  .adicionar-produto textarea {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .adicionar-produto textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .adicionar-produto button {
+    padding: 10px;
+    background-color: #F3821B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .adicionar-produto button:hover {
+    background-color: #f15b1b;
+  }
+  
+  textarea {
+    width: 95%;   
+    height: 150px;  
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    resize: none;  
+  }
+
+.select-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px; 
+  }
+  
+  .select-container label {
+    margin-bottom: 5px; 
+    font-size: 16px;
+    font-weight: bold;
+    color: #333; 
+  }
+  
+  .adicionar-produto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .voltar-btn {
+    background-color: #F3821B;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 20px; /* Espaço entre o botão e o título */
+  }
+  
+  .voltar-btn:hover {
+    background-color: #f15b1b;
+  }
+  
+  h2 {
+    margin-bottom: 20px; /* Espaço entre o título e o formulário */
+  }
+  
+
+  select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
