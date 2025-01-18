@@ -44,13 +44,6 @@ function Login() {
       }
 
       try {
-<<<<<<< HEAD
-        const response = await axios.post('http://127.0.0.1:8000/api/updatepwd/', {
-          username,
-          password,
-          password2: confirmPassword,
-        });
-=======
         const response = await axios.post('http://127.0.0.1:8000/api/register/', { username, password });
         setSuccess('Cadastro realizado com sucesso!');
         setFormType('login'); // volta para a tela de login após o registro
@@ -65,7 +58,6 @@ function Login() {
 
       try {
         const response = await axios.post('http://127.0.0.1:8000/api/updatepwd/', { username, password });
->>>>>>> 763df1fd917127e66fc02348655f809eb6e15c5e
         setSuccess(response.data.success || 'Senha redefinida com sucesso!');
         setFormType('login'); // volta para a tela de login após a redefinição de senha
       } catch (err) {
@@ -77,6 +69,7 @@ function Login() {
   return (
     <div className="login-page">
       <div className="login-container">
+        {/* Logo */}
         <img src={logo} alt="Logo" className="logo" />
 
         <h1>
@@ -127,6 +120,7 @@ function Login() {
             </div>
           ) : null}
 
+          
           {formType === 'login' && (
             <div className="remember-me">
             <input
@@ -138,6 +132,7 @@ function Login() {
             <label htmlFor="rememberMe">Lembrar de mim</label>
           </div>
           )}
+          
 
           <button type="submit">{formType === 'login' ? 'Entrar' : formType === 'register' ? 'Cadastrar' : 'Redefinir Senha'}</button>
         </form>
