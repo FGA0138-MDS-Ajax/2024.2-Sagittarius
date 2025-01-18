@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './login.css';
 import logo from '../../assets/logo.svg'; 
 
 function Login() {
-  const [formType, setFormType] = useState('login'); //  'login', 'register', ou 'passwordRecovery'
+  const [formType, setFormType] = useState('login'); // 'login', 'register', ou 'passwordRecovery'
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false); // estado para 'lembrar de mim'
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Efeito para limpar os campos ao mudar o tipo de formulário
+  useEffect(() => {
+    setUsername('');
+    setPassword('');
+    setConfirmPassword('');
+    setError('');
+    setSuccess('');
+    setRememberMe(false);
+  }, [formType]); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,7 +60,8 @@ function Login() {
       } catch (err) {
         setError(err.response?.data?.error || 'Erro ao cadastrar.');
       }
-    } else if (formType === 'passwordRecovery') {
+    } 
+    else if (formType === 'passwordRecovery') {
       if (password !== confirmPassword) {
         setError('As senhas não coincidem.');
         return;
@@ -68,122 +79,113 @@ function Login() {
 
   return (
     <div className="login-page">
-      <div className="login-container">
-        {/* Logo */}
-        <img src={logo} alt="Logo" className="logo" />
+  <div className="login-container">
+    <img src={logo} alt="Logo" className="logo" />
+    <h1>
+      {formType === 'login' 
+        ? 'Acesse o sistema com suas credenciais.'
+        : formType === 'register' 
+        ? 'Cadastro' 
+        : 'Recuperação de Senha'
+      }
+    </h1>
 
-        <h1>
-          {formType === 'login' 
-            ? 'Acesse o sistema com suas credenciais.'
-            : formType === 'register' 
-            ? 'Cadastro' 
-            : 'Recuperação de Senha'
-          }
-        </h1>
+    {error && <p style={{ color: 'red' }}>{error}</p>}
+    {success && <p style={{ color: 'green' }}>{success}</p>}
 
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {success && <p style={{ color: 'green' }}>{success}</p>}
-
-        <form onSubmit={handleSubmit}>
-          <div>
-            <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Usuário"
-              required
-            />
-          </div>
-
-          <div>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Senha"
-              required
-            />
-          </div>
-
-          {formType === 'register' || formType === 'passwordRecovery' ? (
-            <div>
-              <input
-                type="password"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirmar Senha"
-                required
-              />
-            </div>
-          ) : null}
-
-          
-          {formType === 'login' && (
-            <div className="remember-me">
-            <input
-              type="checkbox"
-              id="rememberMe"
-              checked={rememberMe}
-              onChange={() => setRememberMe(!rememberMe)}
-            />
-            <label htmlFor="rememberMe">Lembrar de mim</label>
-          </div>
-          )}
-          
-
-          <button type="submit">{formType === 'login' ? 'Entrar' : formType === 'register' ? 'Cadastrar' : 'Redefinir Senha'}</button>
-        </form>
-
-        {/* Alternando entre login, registro e recuperação de senha */}
-        <div>
-          {formType === 'login' ? (
-            <>
-              <button
-                onClick={() => {
-                  setFormType('register');
-                  setError('');
-                  setSuccess('');
-                }}
-              >
-                Criar uma conta
-              </button>
-              <button
-                onClick={() => {
-                  setFormType('passwordRecovery');
-                  setError('');
-                  setSuccess('');
-                }}
-              >
-                Esqueceu a senha?
-              </button>
-            </>
-          ) : formType === 'register' ? (
-            <button
-              onClick={() => {
-                setFormType('login');
-                setError('');
-                setSuccess('');
-              }}
-            >
-              Já tenho uma conta
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                setFormType('login');
-                setError('');
-                setSuccess('');
-              }}
-            >
-              Voltar para Login
-            </button>
-          )}
-        </div>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <input
+          type="text"
+          id="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Usuário"
+          required
+        />
       </div>
+
+      <div>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Senha"
+          required
+        />
+      </div>
+
+      {formType === 'register' || formType === 'passwordRecovery' ? (
+        <div>
+          <input
+            type="password"
+            id="confirmPassword"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirmar Senha"
+            required
+          />
+        </div>
+      ) : null}
+
+      {formType === 'login' && (
+        <div className="remember-me">
+          <input
+            type="checkbox"
+            id="rememberMe"
+            checked={rememberMe}
+            onChange={() => setRememberMe(!rememberMe)}
+          />
+          <label htmlFor="rememberMe">Lembrar de mim</label>
+        </div>
+      )}
+
+      <button type="submit">{formType === 'login' ? 'Entrar' : formType === 'register' ? 'Cadastrar' : 'Redefinir Senha'}</button>
+    </form>
+
+    <div className="action-buttons">
+      {formType === 'login' ? (
+        <>
+          <button
+            className="register-button"
+            onClick={() => {
+              setFormType('register');
+            }}
+          >
+            Criar uma conta
+          </button>
+          <button
+            className="forgot-password-button"
+            onClick={() => {
+              setFormType('passwordRecovery');
+            }}
+          >
+            Esqueceu a senha?
+          </button>
+        </>
+      ) : formType === 'register' ? (
+        <button
+          className="back-to-login-button"
+          onClick={() => {
+            setFormType('login');
+          }}
+        >
+          Já tenho uma conta
+        </button>
+      ) : (
+        <button
+          className="back-to-login-button"
+          onClick={() => {
+            setFormType('login');
+          }}
+        >
+          Voltar para Login
+        </button>
+      )}
     </div>
+  </div>
+</div>
   );
 }
 

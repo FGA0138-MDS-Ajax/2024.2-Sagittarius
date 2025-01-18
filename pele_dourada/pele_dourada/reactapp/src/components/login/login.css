@@ -1,8 +1,8 @@
 .login-page {
   display: flex;
-  justify-content: flex-start; 
-  align-items: flex-start; 
-  min-height: 100vh; 
+  justify-content: flex-start;
+  align-items: flex-start;
+  min-height: 100vh;
   background-image: url('../../assets/frango.png');
   background-repeat: no-repeat;
   background-position: center center;
@@ -13,23 +13,22 @@
 .login-container {
   background-color: white;
   padding: 30px;
-  width: 33vw; 
-  height: 100vh; 
+  width: 33vw;
+  height: 100vh;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
-  z-index: 10; 
+  z-index: 10;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  position: fixed; 
+  position: fixed;
   top: 0;
   left: 0;
 }
 
 h1 {
-  text-align: center;
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
   font-size: 20px;
 }
 
@@ -63,14 +62,11 @@ button {
   border: none;
   cursor: pointer;
   border-radius: 20px;
-  margin: 10px 0; /* Ajuste o espaçamento entre os botões */
+  margin: 10px 0;
   font-size: 16px;
-  width: 100%; /* Faz com que os botões ocupem toda a largura disponível */
+  width: 100%;
 }
 
-button:hover {
-  background-color: #f15b1b;
-}
 
 .forgot-password {
   color: blue;
@@ -97,10 +93,39 @@ button[type="button"] {
   font-size: 14px;
   cursor: pointer;
   margin-top: 10px;
-  width: 100%; /* Faz com que os botões ocupem toda a largura disponível */
+  width: 100%;
 }
 
 button[type="button"]:hover {
   text-decoration: underline;
   color: #F3821B;
+}
+
+/* Ajustes para os botões abaixo do formulário */
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.register-button,
+.forgot-password-button,
+.back-to-login-button {
+  width: 100%; /* Isso faz os botões ficarem um do lado do outro */
+}
+
+.register-button,
+.forgot-password-button,
+.back-to-login-button {
+  font-size: 14px;
+  background-color: transparent;
+  color: #F3821B;
+  border: none;
+  cursor: pointer;
+}
+
+.register-button:hover,
+.forgot-password-button:hover,
+.back-to-login-button:hover {
+  text-decoration: underline;
 }

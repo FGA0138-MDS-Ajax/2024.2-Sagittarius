@@ -1,3 +1,4 @@
+
 .adicionar-produto {
     padding: 20px;
     max-width: 500px;
@@ -5,11 +6,13 @@
     background-color: #f4f4f4;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
   }
   
   .adicionar-produto h2 {
     text-align: center;
     margin-bottom: 20px;
+    font-size: 30px;
   }
   
   .adicionar-produto form {
@@ -62,8 +65,9 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
-    resize: none;  
+    resize:none;  
   }
+
 
 .select-container {
     display: flex;
@@ -99,11 +103,6 @@
     background-color: #f15b1b;
   }
   
-  h2 {
-    margin-bottom: 20px; /* Espaço entre o título e o formulário */
-  }
-  
-
   select {
     padding: 10px;
     font-size: 16px;
