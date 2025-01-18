@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import Login from '../../components/login/login';
 import logo from '../../assets/logo.svg'; 
 
-
 function Home() {
   useEffect(() => {
     document.title = "Frango Assado Pele Dourada";   

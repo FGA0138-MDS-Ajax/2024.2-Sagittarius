@@ -14,7 +14,7 @@ Tabela - Integrantes do Grupo:
 | :---: | -- | -- |
 | 231026509  | Matheus de Alcântara da Silva Campos  | Desenvolvedor Back-end e Banco de Dados  |
 | 231026590  | Vilmar José Fagundes dos Passos Júnior  | Desenvolvedor Back-end e Banco de Dados  |
-| 222015159  | Lucas Guimarães Borges  | Desenvolvedor Back-end  |
+| 222015159  | Lucas Guimarães Borges  | Desenvolvedor Back-end e Front-end |
 | 222006150  | Micael Kauan Freitas Chagas  | Desenvolvedor Front-end |
 | 231026358  | Gabriel Flores Coelho  | Banco de Dados  |
 | 221007635  | André Gustavo Rabelo do Nascimento  | Desenvolvedor Front-end |

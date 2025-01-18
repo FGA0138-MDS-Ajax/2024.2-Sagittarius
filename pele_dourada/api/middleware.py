@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from bson.objectid import ObjectId
 from pele_dourada.settings import SECRET_KEY
 import jwt
+from api.models import user_collection
 
 class JwtAuthentication(MiddlewareMixin):
     public_routes = ["/api/login/", "/api/register/", "/swagger/", "/redoc/", "/admin/", "/api/updatepwd/"]
@@ -22,7 +23,7 @@ class JwtAuthentication(MiddlewareMixin):
             payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
             user_id = payload['id']
 
-            user = users_collection.find_one({"_id": ObjectId(user_id)})
+            user = user_collection.find_one({"_id": ObjectId(user_id)})
             if not user:
                 return JsonResponse({"error": "Usuário não encontrado"}, status=404)
             
