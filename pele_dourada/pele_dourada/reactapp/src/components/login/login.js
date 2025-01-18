@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../components/login.css';
-import logo from '../assets/logo.svg'; 
+import './login.css';
+import logo from '../../assets/logo.svg'; 
 
 function Login() {
   const [formType, setFormType] = useState('login'); //  'login', 'register', ou 'passwordRecovery'
