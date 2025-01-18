@@ -20,6 +20,7 @@ from django.contrib import admin
 from django.urls import path, re_path
 from api.views.admin_views import LoginView, RegisterView, UpdatePasswordView
 from rest_framework.permissions import AllowAny
+from django.views.generic import TemplateView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -38,14 +39,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/login/', LoginView.as_view(), name='login'),
     path('api/register/', RegisterView.as_view(), name='register'),
-<<<<<<< HEAD
     path('', TemplateView.as_view(template_name='build/index.html')),
-=======
     path('api/updatepwd/', UpdatePasswordView.as_view(), name='update'),
 
     # Documentação da API
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
->>>>>>> 6b1eda5918ef508eb7480b6c1b2b435e95fa7a7f
 ]
