@@ -72,7 +72,7 @@ O desenvolvimento do projeto segue uma abordagem ágil combinando elementos do *
 |:-------------:|:------------------------------------:|:--------------------------:|
 | 231026509     | [Matheus de Alcântara](https://github.com/matheusdealcantara)                | Back-end / Banco de Dados  |
 | 231026590     | [Vilmar José Fagundes dos Passos Jr.](https://github.com/VilmarFagundes) | Back-end / Banco de Dados  |
-| 222015159     | [Lucas Guimarães Borges](https://github.com/lcsgborges)              | Back-end                   |
+| 222015159     | [Lucas Guimarães Borges](https://github.com/lcsgborges)              | Back-end / Front-end                  |
 | 222006150     | [Micael Kauan Freitas Chagas](https://github.com/devmicaell)         | Front-end                  |
 | 231026358     | [Gabriel Flores Coelho](https://github.com/Gabrielfcoelho)               | Banco de Dados             |
 | 221007635     | [André Gustavo Rabelo do Nascimento](https://github.com/AndreGustavoRN) | Front-end                  |

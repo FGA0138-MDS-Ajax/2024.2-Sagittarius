@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../components/login.css';
-import logo from '../assets/logo.svg'; // Assumindo que a logo esteja nesse caminho
+import logo from '../assets/logo.svg'; 
 
 function Login() {
   const [isPasswordRecovery, setIsPasswordRecovery] = useState(false);
@@ -28,7 +28,7 @@ function Login() {
       }
 
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/register/', {
+        const response = await axios.post('http://127.0.0.1:8000/api/updatepwd/', {
           username,
           password,
           password2: confirmPassword,
@@ -58,7 +58,6 @@ function Login() {
   return (
     <div className="login-page">
       <div className="login-container">
-        {/* Logo */}
         <img src={logo} alt="Logo" className="logo" />
 
         <h1>{isPasswordRecovery ? 'Recuperação de Senha' : 'Login'}</h1>

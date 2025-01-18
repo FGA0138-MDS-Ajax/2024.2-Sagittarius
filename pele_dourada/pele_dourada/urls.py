@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import path, re_path
 from api.views.admin_views import LoginView, RegisterView, UpdatePasswordView
 from rest_framework.permissions import AllowAny
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView   
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -39,7 +39,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/login/', LoginView.as_view(), name='login'),
     path('api/register/', RegisterView.as_view(), name='register'),
-    path('', TemplateView.as_view(template_name='build/index.html')),
+    # path('', TemplateView.as_view(template_name='build/index.html')),
     path('api/updatepwd/', UpdatePasswordView.as_view(), name='update'),
 
     # Documentação da API
