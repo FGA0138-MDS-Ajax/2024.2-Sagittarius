@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import '../components/login.css';
+import logo from '../assets/logo.svg'; // Assumindo que a logo esteja nesse caminho
 
 function Login() {
   const [isPasswordRecovery, setIsPasswordRecovery] = useState(false);
@@ -7,20 +9,48 @@ function Login() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  const handleLogin = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isPasswordRecovery) {
-      // Aqui você pode adicionar a lógica de validação de login
-      console.log('Usuário:', username);
-      console.log('Senha:', password);
-    } else {
-      // Validação para o caso de "Recuperação de senha"
+    setError('');
+    setSuccess('');
+
+    if (!username || !password) {
+      setError('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    if (isPasswordRecovery) {
       if (password !== confirmPassword) {
-        setError('As senhas não coincidem');
-      } else {
-        console.log('Nova senha:', password);
-        setError('');
+        setError('As senhas não coincidem.');
+        return;
+      }
+
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/register/', {
+          username,
+          password,
+          password2: confirmPassword,
+        });
+        setSuccess(response.data.success || 'Senha redefinida com sucesso!');
+        setIsPasswordRecovery(false);
+        setUsername('');
+        setPassword('');
+        setConfirmPassword('');
+      } catch (err) {
+        setError(err.response?.data?.error || 'Erro ao redefinir senha.');
+      }
+    } else {
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/login/', {
+          username,
+          password,
+        });
+        localStorage.setItem('token', response.data.token);
+        setSuccess('Login realizado com sucesso!');
+      } catch (err) {
+        setError(err.response?.data?.error || 'Erro ao fazer login.');
       }
     }
   };
@@ -28,11 +58,15 @@ function Login() {
   return (
     <div className="login-page">
       <div className="login-container">
+        {/* Logo */}
+        <img src={logo} alt="Logo" className="logo" />
+
         <h1>{isPasswordRecovery ? 'Recuperação de Senha' : 'Login'}</h1>
-        
+
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        
-        <form onSubmit={handleLogin}>
+        {success && <p style={{ color: 'green' }}>{success}</p>}
+
+        <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="username">Usuário</label>
             <input
@@ -43,9 +77,9 @@ function Login() {
               required
             />
           </div>
-          
+
           <div>
-            <label htmlFor="password">Senha</label>
+            <label htmlFor="password">{isPasswordRecovery ? 'Nova Senha' : 'Senha'}</label>
             <input
               type="password"
               id="password"
@@ -54,10 +88,10 @@ function Login() {
               required
             />
           </div>
-          
+
           {isPasswordRecovery && (
             <div>
-              <label htmlFor="confirmPassword">Confirmar Senha</label>
+              <label htmlFor="confirmPassword">Confirmar Nova Senha</label>
               <input
                 type="password"
                 id="confirmPassword"
@@ -71,15 +105,15 @@ function Login() {
           <button type="submit">{isPasswordRecovery ? 'Redefinir Senha' : 'Entrar'}</button>
         </form>
 
-        {!isPasswordRecovery ? (
-          <p onClick={() => setIsPasswordRecovery(true)} className="forgot-password">
-            Esqueci minha senha
-          </p>
-        ) : (
-          <p onClick={() => setIsPasswordRecovery(false)} className="forgot-password">
-            Voltar para Login
-          </p>
-        )}
+        <button
+          onClick={() => {
+            setIsPasswordRecovery(!isPasswordRecovery);
+            setError('');
+            setSuccess('');
+          }}
+        >
+          {isPasswordRecovery ? 'Voltar para Login' : 'Esqueci minha senha'}
+        </button>
       </div>
     </div>
   );
