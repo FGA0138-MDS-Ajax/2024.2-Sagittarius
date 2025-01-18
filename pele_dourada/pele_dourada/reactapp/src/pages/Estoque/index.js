@@ -17,8 +17,8 @@ function Estoque() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<ControleEstoque />} />
-        <Route path="/adicionar" element={<AdicionarProduto />} />
+        <Route exact path="/" element={<ControleEstoque />} />
+        <Route exact path="/adicionar" element={<AdicionarProduto />} />
       </Routes>
     </div>
   );

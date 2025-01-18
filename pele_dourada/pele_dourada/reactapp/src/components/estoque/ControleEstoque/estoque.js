@@ -20,7 +20,7 @@ function ControleEstoque() {
   return (
     <div className="controle-estoque-page">
       <h1>Controle de Estoque</h1>
-      <p>Aqui você pode gerenciar os itens do estoque.</p>
+     
 
       {/* Barra de Busca */}
       <div>
