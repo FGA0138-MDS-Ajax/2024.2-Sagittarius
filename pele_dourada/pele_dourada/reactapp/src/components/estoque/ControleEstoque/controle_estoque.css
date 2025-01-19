@@ -106,7 +106,7 @@
   right: 10px;
   background: transparent;
   border: none;
-  font-size: 24px; /* Aumente o tamanho para maior visibilidade */
+  font-size: 35px; /* Aumente o tamanho para maior visibilidade */
   font-weight: bold; /* Deixe o "X" mais evidente */
   cursor: pointer;
   color: #333; /* Cor do "X" */

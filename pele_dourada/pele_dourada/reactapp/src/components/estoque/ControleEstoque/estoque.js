@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './controle_estoque.css'; 
 import AdicionarProduto from '../AdicionarProduto/adicionar_produto';
 
-
 function ControleEstoque() {
   const [produtos, setProdutos] = useState([
     { id: 1, nome: 'Frango Assado', preco: 39.99, categoria: 'Principal', quantidade: 50 },
@@ -69,12 +68,13 @@ function ControleEstoque() {
         </table>
       </div>
 
+      {/* Modal */}
       {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-          <button className="close-modal" onClick={() => setIsModalOpen(false)}>
-            &times; 
-          </button>
+        <div className={`modal-overlay ${isModalOpen ? 'open' : ''}`} onClick={() => setIsModalOpen(false)}>
+          <div className={`modal-content ${isModalOpen ? 'open' : ''}`} onClick={(e) => e.stopPropagation()}>
+            <button className="close-modal" onClick={() => setIsModalOpen(false)}>
+              &times;
+            </button>
             <AdicionarProduto />
           </div>
         </div>

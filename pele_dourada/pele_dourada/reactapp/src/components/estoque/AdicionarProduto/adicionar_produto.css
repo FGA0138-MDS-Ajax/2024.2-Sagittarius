@@ -42,6 +42,7 @@
 .adicionar-produto-label {
   font-weight: bold;
   margin-bottom: 10px;  
+  text-transform: capitalize;
 }
 
 .adicionar-produto-input,
