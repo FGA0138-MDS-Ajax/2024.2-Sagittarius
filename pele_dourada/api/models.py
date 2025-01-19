@@ -63,15 +63,24 @@ order_collection = db.order
 user_collection = db.user
 
 # CRUD
-produto1 = Product('batata', 5, 2)
-produto2 = Product('frango', 10, 1)
-pedido = Order([produto1.to_dict(),produto2.to_dict()])
-user = User('testuser', 'testpwd')
-
 # criar documentos
-def insert_doc(collection, doc):
-    collection.insert_one(doc.to_dict())
-    return
+def insert_product(doc):
+    if(get_product(doc.name) == None):
+        stock_collection.insert_one(doc.to_dict())
+        return
+    return print('produto ja existe')
+
+def insert_order(doc):
+    if(get_product(doc.number) == None):
+        stock_collection.insert_one(doc.to_dict())
+        return
+    return print('produto ja existe')
+
+def insert_user(doc):
+    if(get_product(doc.username) == None):
+        stock_collection.insert_one(doc.to_dict())
+        return
+    return print('produto ja existe')
 
 # ler documentos
 def get_user(username):
@@ -80,8 +89,14 @@ def get_user(username):
 def get_product(name):
     return stock_collection.find_one({'name' : name})
 
+def get_all_products():
+    return list(stock_collection.find())
+
 def get_order(number):
     return order_collection.find_one({'number' : number})
+
+def get_all_orders():
+    return list(order_collection.find())
 
 # atualizar documentos
 def update_user(username, new_username=None, new_pwd=None):
