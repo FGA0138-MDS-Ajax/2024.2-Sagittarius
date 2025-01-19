@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Importando o Link para navegação
-import './adicionar_produto.css'; // Importando o arquivo CSS, se necessário
+import axios from 'axios'; // Importando axios para fazer requisições
+import { Link } from 'react-router-dom';
+import './adicionar_produto.css';
 
 function AdicionarProduto() {
   const [nome, setNome] = useState('');
@@ -10,27 +11,36 @@ function AdicionarProduto() {
   const [descricao, setDescricao] = useState('');
   const [quantidade, setQuantidade] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
     if (!nome || !preco || !categoria || !imagem || !descricao || !quantidade) {
       alert('Por favor, preencha todos os campos.');
       return;
     }
 
-    
-    const produto = {
-      nome,
-      preco,
-      categoria,
-      imagem,
-      descricao,
-      quantidade,
-    };
-    console.log(produto);
+    const formData = new FormData();
+    formData.append('nome', nome);
+    formData.append('preco', preco);
+    formData.append('categoria', categoria);
+    formData.append('imagem', imagem);
+    formData.append('descricao', descricao);
+    formData.append('quantidade', quantidade);
 
-    // Limpar os campos após envio
+    try {
+       {/*alterar depois para a rota certa do django*/}
+      const response = await axios.post('http://localhost:8000/adicionar-produto/', formData, {        
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      alert('Produto adicionado com sucesso!');
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao adicionar o produto.');
+    }
+
     setNome('');
     setPreco('');
     setCategoria('');

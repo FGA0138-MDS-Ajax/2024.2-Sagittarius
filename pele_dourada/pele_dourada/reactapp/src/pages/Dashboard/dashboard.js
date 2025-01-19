@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Sidebar from '../../components/sidebar/sidebar'; // Importação do Sidebar
+import Sidebar from '../../components/sidebar/sidebar'; 
 import ViewDashboard from '../../components/dashboard/dashboard';
 import logo from '../../assets/logo.svg'; 
 
@@ -15,7 +15,7 @@ function Dashboard() {
   return (
     <div style={{ display: 'flex' }}>
       <Sidebar />
-      <div style={{ marginLeft: '250px', flex: 1 }}> {/* Ajuste de margem para não sobrepor o conteúdo */}
+      <div style={{ marginLeft: '250px', flex: 1 }}> 
         <ViewDashboard />
       </div>
     </div>

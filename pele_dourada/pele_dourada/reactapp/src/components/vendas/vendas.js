@@ -6,8 +6,10 @@ function ControleVendasEncomendas() {
     return (
 
         <div>
-            <h1> Teste - vendas</h1>
-            <p>Funcionando</p>
+
+            <h1 > Teste - vendas</h1>
+            <p>Funcionando 28931</p>
+
         </div>
     )
 

@@ -1,6 +1,5 @@
-// Estoque/index.js
 import React, { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom'; // Importando as rotas
+import { Route, Routes } from 'react-router-dom'; 
 import logo from '../../assets/logo.svg';
 import ControleEstoque from '../../components/estoque/ControleEstoque/estoque';
 import AdicionarProduto from '../../components/estoque/AdicionarProduto/adicionar_produto';
@@ -8,7 +7,7 @@ import Sidebar from '../../components/sidebar/sidebar';
 
 function Estoque() {
   useEffect(() => {
-    document.title = "Pele Dourada - Estoque";
+    document.title = "Frango Assado Pele Dourada";
     const link = document.querySelector('link[rel="icon"]');
     if (link) {
       link.href = logo;

@@ -6,7 +6,7 @@ import ControleVendasEncomendas from '../../components/vendas/vendas';
 
 function Vendas() {
   useEffect(() => {
-    document.title = "Pele Dourada - Estoque";
+    document.title = "Frango Assado Pele Dourada";
     const link = document.querySelector('link[rel="icon"]');
     if (link) {
       link.href = logo;

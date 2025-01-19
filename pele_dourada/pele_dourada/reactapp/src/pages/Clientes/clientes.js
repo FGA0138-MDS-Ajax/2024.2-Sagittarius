@@ -1,4 +1,3 @@
-// Estoque/index.js
 import React, { useEffect } from 'react';
 import logo from '../../assets/logo.svg';
 import Sidebar from '../../components/sidebar/sidebar';

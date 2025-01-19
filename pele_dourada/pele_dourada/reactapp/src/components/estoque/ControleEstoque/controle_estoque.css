@@ -48,3 +48,31 @@
   font-size: 20px;
   margin-bottom: 15px;
 }
+
+/* Estilos para a Tabela */
+.controle-estoque-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.controle-estoque-table th,
+.controle-estoque-table td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 8px;
+}
+
+.controle-estoque-table th {
+  background-color: #f4f4f4;
+  color: #333;
+  font-weight: bold;
+}
+
+.controle-estoque-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.controle-estoque-table tr:hover {
+  background-color: #f1f1f1;
+}
