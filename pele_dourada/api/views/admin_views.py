@@ -1,13 +1,17 @@
-import datetime
+from datetime import datetime, timedelta
+
+import bcrypt
+import jwt
+from api.models import *
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import jwt
-import bcrypt
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
+
 from pele_dourada.settings import SECRET_KEY
+
 
 # Create your views here.
 class LoginView(APIView):
@@ -35,15 +39,17 @@ class LoginView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
-        user = users_collection.find_one({"username": username})
+        new_user = User(username, password)
+
+        user = get_user(new_user)
 
         if not user:
             return Response({
                 'error': 'Usuário não encontrado',
             }, status=status.HTTP_404_NOT_FOUND
             )
-
-        if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+        
+        if not bcrypt.checkpw(password.encode('utf-8'), user['password']):
             return Response({
                 'error': 'Senha inválida',
             }, status=status.HTTP_400_BAD_REQUEST
@@ -52,7 +58,7 @@ class LoginView(APIView):
         payload = {
             'id': str(user['_id']),
             'username': username,
-            'exp': datetime.datetime.now() + datetime.timedelta(days=1),
+            'exp': datetime.now() + timedelta(days=1),
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
@@ -90,7 +96,7 @@ class RegisterView(APIView):
         
         hash_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         
-        if users_collection.find_onde({"username": username}):
+        if user_collection.find_one({"username": username}):
             return Response({
                 'error': 'Nome de usuário já existe',
             }, status=status.HTTP_400_BAD_REQUEST
@@ -103,7 +109,7 @@ class RegisterView(APIView):
 
 
         try:
-            user = users_collection.insert_one(user_body)
+            user = user_collection.insert_one(user_body)
         except:
             return Response({
                 'error': 'Erro ao criar usuário',

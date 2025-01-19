@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import Login from '../components/login';
-import logo from '../assets/logo.svg'; 
+import React, {useEffect} from 'react';
+import Login from '../../components/login/login';
+import logo from '../../assets/logo.svg'; 
 
 function Home() {
   useEffect(() => {
