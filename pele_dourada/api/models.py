@@ -108,20 +108,17 @@ def update_product(name, new_name=None, new_price=None, new_qtd=None):
     stock_collection.update_one({'name' : name}, update)
     return
 
-def update_order(number, products_list):
-    for product in products_list:
-        update = {
-            '$set': {
-                'products.$[elem].name': product['name'],
-                'products.$[elem].price': product['price'],
-                'products.$[elem].qtd': product['qtd']
-            }
-        }
-        order_collection.update_one(
-            {'number': number, 'products.name': product['name']},
-            update,
-            array_filters=[{'elem.name': product['name']}]
-        )
+def update_order(number, index, new_name=None, new_price=None, new_qtd=None):
+    update = {
+        '$set': {}
+    }
+    if new_name is not None:
+        update['$set']['products.'+str(index)+'.name'] = new_name
+    if new_price is not None:
+        update['$set']['products.'+str(index)+'.price'] = new_price
+    if new_qtd is not None:
+        update['$set']['products.'+str(index)+'.qtd'] = new_qtd  
+    order_collection.update_one({'number': number}, update)    
     return
 
 #deletar documentos
