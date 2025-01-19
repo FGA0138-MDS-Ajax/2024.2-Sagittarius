@@ -1,25 +1,56 @@
 .controle-estoque-page {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 20px;
+  align-items: center;
+  padding: 0 10px 0 10px;
+}
+
+.div-title-button {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.div-header-widgets{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .controle-estoque-title {
-  font-size: 24px;
+  padding-left: 20px;
+  width: 100%;
+  font-size: 15px;
   margin-bottom: 20px;
+  border: 1px solid #CED4DA ;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 .controle-estoque-search {
   margin-bottom: 15px;
+  position: relative;
+}
+
+.controle-estoque-search::before {
+  content: '\f002'; /* Código Unicode do ícone de lupa no Font Awesome */
+  font-family: 'Font Awesome 6 Free'; /* Certifique-se de que o Font Awesome está carregado */
+  font-weight: 900;
+  position: absolute;
+  left: 10px; /* Distância do lado esquerdo do input */
+  top: 50%; /* Centraliza verticalmente */
+  transform: translateY(-50%); /* Ajusta o posicionamento para o centro */
+  font-size: 14px;
+  color: #ccc;
+  pointer-events: none; /* Evita que o ícone interfira no clique */
 }
 
 .controle-estoque-input {
-  padding: 10px;
+  padding: 10px 10px 10px 35px; /* Adiciona espaçamento para acomodar o ícone */
   width: 100%;
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 14px;
+  box-sizing: border-box; 
 }
 
 .controle-estoque-add-button {
@@ -27,6 +58,9 @@
 }
 
 .controle-estoque-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   background-color: #F3821B;
   color: white;
   border: none;
@@ -34,6 +68,11 @@
   cursor: pointer;
   border-radius: 5px;
   font-size: 14px;
+  position: relative;
+}
+
+.controle-estoque-add-button a {
+  text-decoration: none;
 }
 
 .controle-estoque-button:hover {
@@ -41,32 +80,34 @@
 }
 
 .controle-estoque-list {
+  border: 1px solid #CED4DA;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
 }
 
 .controle-estoque-subtitle {
   font-size: 20px;
-  margin-bottom: 15px;
 }
 
 /* Estilos para a Tabela */
 .controle-estoque-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.controle-estoque-table th,
-.controle-estoque-table td {
-  border: 1px solid #ddd;
-  text-align: center;
-  padding: 8px;
 }
 
 .controle-estoque-table th {
-  background-color: #f4f4f4;
-  color: #333;
-  font-weight: bold;
+  border: 1px solic #CED4DA;
+  background-color: #ececec;
+  padding: 20px;
+}
+
+
+.controle-estoque-table td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 10px;
 }
 
 .controle-estoque-table tr:nth-child(even) {
@@ -115,4 +156,12 @@
 
 .close-modal:hover {
   color: #ff0000; /* Altere a cor ao passar o mouse */
+}
+
+.quantidade-container {
+  display: inline-block;
+  width: 25%;  /* Ou ajuste a largura conforme necessário */
+  text-align: center;
+  font-size: 16px;  /* Ajuste o tamanho da fonte, se necessário */
+  color: white;  /* Texto em branco para contrastar com o fundo colorido */
 }

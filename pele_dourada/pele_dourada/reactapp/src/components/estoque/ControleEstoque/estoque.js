@@ -22,26 +22,31 @@ function ControleEstoque() {
 
   return (
     <div className="controle-estoque-page" id="controle-estoque-page">
-      <h1 className="controle-estoque-title" id="controle-estoque-title">Controle de Estoque</h1>
-      
-      <div className="controle-estoque-search" id="controle-estoque-search">
-        <input
-          className="controle-estoque-input"
-          type="text"
-          placeholder="Buscar produto"
-          value={busca}
-          onChange={handleBuscaChange}
-        />
+      <div className="controle-estoque-title" id="controle-estoque-title">
+        <h1>Controle de Estoque</h1>
       </div>
+    
+      <div className='div-header-widgets'>
+        <div className="controle-estoque-search" id="controle-estoque-search">
+          <input
+            className="controle-estoque-input"
+            type="text"
+            placeholder="Buscar produto"
+            value={busca}
+            onChange={handleBuscaChange}
+          />
+        </div>
 
-      <div className="controle-estoque-add-button" id="controle-estoque-add-button">
-        <button 
-          className="controle-estoque-button" 
-          id="controle-estoque-button" 
-          onClick={() => setIsModalOpen(true)} // Abre o modal
-        >
-          Adicionar Produto
-        </button>
+        <div className="controle-estoque-add-button" id="controle-estoque-add-button">
+          <button 
+            className="controle-estoque-button" 
+            id="controle-estoque-button" 
+            onClick={() => setIsModalOpen(true)} // Abre o modal
+          >
+            <i className="fas fa-plus"></i> 
+            Adicionar Produto
+          </button>
+        </div>
       </div>
 
       <div className="controle-estoque-list" id="controle-estoque-list">
@@ -61,7 +66,22 @@ function ControleEstoque() {
                 <td>{produto.nome}</td>
                 <td>R$ {produto.preco.toFixed(2)}</td>
                 <td>{produto.categoria}</td>
-                <td>{produto.quantidade}</td>
+                <td>
+                  <div className="quantidade-container"
+                    style={{
+                      backgroundColor: produto.quantidade <= 20 ? 'red' :
+                                        produto.quantidade > 20 && produto.quantidade <=30 ? '#FFA600' : 
+                                        '#74B816',
+                      color: produto.quantidade <= 20 ? 'white' :
+                      produto.quantidade > 20 && produto.quantidade <=30 ? 'black' : 
+                      'white',
+                      padding: '10px',  // Adiciona algum espaçamento para a div
+                      borderRadius: '30px'  // Opcional: adiciona borda arredondada
+                    }}
+                  >
+                    {produto.quantidade}
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -82,5 +102,6 @@ function ControleEstoque() {
     </div>
   );
 }
+
 
 export default ControleEstoque;
