@@ -13,13 +13,13 @@ function AdicionarProduto() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validação simples
+    
     if (!nome || !preco || !categoria || !imagem || !descricao || !quantidade) {
       alert('Por favor, preencha todos os campos.');
       return;
     }
 
-    // Aqui você pode enviar os dados para o backend ou fazer o que for necessário
+    
     const produto = {
       nome,
       preco,
@@ -44,45 +44,48 @@ function AdicionarProduto() {
   };
 
   return (
-    <div className="adicionar-produto">
-      {/* Link para voltar para o estoque */}
+    <div className="adicionar-produto-page">
       <Link to="/estoque">
         <button className="voltar-btn">Voltar para o Estoque</button>
       </Link>
 
-      {/* Título da página */}
-      <h2>Cadastro de Produto</h2>
+      <h2 className="adicionar-produto-title">Cadastro de Produto</h2>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nome do Produto</label>
+      <form onSubmit={handleSubmit} className="adicionar-produto-form">
+        <div className="adicionar-produto-field">
+          <label htmlFor="nome" className="adicionar-produto-label">Nome do Produto</label>
           <input
             type="text"
+            id="nome"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             placeholder="Digite o nome do produto"
             required
+            className="adicionar-produto-input"
           />
         </div>
 
-        <div>
-          <label>Preço do Produto</label>
+        <div className="adicionar-produto-field">
+          <label htmlFor="preco" className="adicionar-produto-label">Preço do Produto</label>
           <input
             type="number"
+            id="preco"
             value={preco}
             onChange={(e) => setPreco(e.target.value)}
             placeholder="Digite o preço do produto"
             required
+            className="adicionar-produto-input"
           />
         </div>
 
-        <div className="select-container">
-          <label htmlFor="categoria">Categoria</label>
+        <div className="adicionar-produto-select-container">
+          <label htmlFor="categoria" className="adicionar-produto-label">Categoria</label>
           <select
             id="categoria"
             value={categoria}
             onChange={(e) => setCategoria(e.target.value)}
             required
+            className="adicionar-produto-select"
           >
             <option value="">Selecione a categoria</option>
             <option value="principal">Principal</option>
@@ -90,37 +93,43 @@ function AdicionarProduto() {
           </select>
         </div>
 
-        <div>
-          <label>Imagem</label>
+        <div className="adicionar-produto-field">
+          <label htmlFor="imagem" className="adicionar-produto-label">Imagem</label>
           <input
             type="file"
+            id="imagem"
             accept="image/*"
             onChange={handleImageChange}
             required
+            className="adicionar-produto-input"
           />
         </div>
 
-        <div>
+        <div className="adicionar-produto-field">
           <textarea
+            id="descricao"
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
             placeholder="Digite uma descrição do produto"
             required
+            className="adicionar-produto-textarea"
           />
         </div>
 
-        <div>
-          <label>Quantidade</label>
+        <div className="adicionar-produto-field">
+          <label htmlFor="quantidade" className="adicionar-produto-label">Quantidade</label>
           <input
             type="number"
+            id="quantidade"
             value={quantidade}
             onChange={(e) => setQuantidade(e.target.value)}
             placeholder="Digite a quantidade disponível"
             required
+            className="adicionar-produto-input"
           />
         </div>
 
-        <button type="submit">Adicionar Produto</button>
+        <button type="submit" className="adicionar-produto-button">Adicionar Produto</button>
       </form>
     </div>
   );

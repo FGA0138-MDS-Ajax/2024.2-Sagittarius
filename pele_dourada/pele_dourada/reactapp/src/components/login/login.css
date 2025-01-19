@@ -27,39 +27,27 @@
   left: 0;
 }
 
-.remember-me {
-  display: flex;
-  flex-direction: column; /* Faz a label ficar abaixo do checkbox */
-  align-items: center; /* Centraliza ambos, checkbox e label */
-  margin-top: 10px; /* Espaço entre o checkbox e a label */
-}
-
-.remember-me label {
-  margin-top: 5px; /* Pequeno espaço entre o checkbox e a label */
-  font-size: 14px; /* Ajuste o tamanho da fonte da label */
-}
-
-.remember-me input[type="checkbox"]:checked {
-  accent-color: #F3821B; /* Altera a cor do checkbox para laranja quando marcado */
-}
-
-
-h1 {
+.login-title {
   margin-bottom: 20px;
   font-size: 20px;
 }
 
-form {
+.login-error, .login-success {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.login-form {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-form div {
+.login-form-group {
   margin-bottom: 15px;
 }
 
-form input {
+.login-input {
   padding: 10px;
   width: 95%;
   margin-top: 5px;
@@ -68,72 +56,50 @@ form input {
   font-size: 14px;
 }
 
-form input::placeholder {
+.login-input::placeholder {
   color: #999;
 }
 
-button {
+.login-button {
+  margin-top: 20px;
   padding: 10px;
   background-color: #F3821B;
   color: white;
   border: none;
   cursor: pointer;
-  border-radius: 20px;
+  border-radius: 5px;
   margin: 10px 0;
   font-size: 16px;
   width: 100%;
 }
 
-
-.forgot-password {
-  color: blue;
-  cursor: pointer;
-  text-align: center;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-.forgot-password:hover {
-  text-decoration: underline;
-  color: #F3821B;
-}
-
-button[type="submit"]:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-button[type="button"] {
-  background-color: transparent;
-  color: #F3821B;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  margin-top: 10px;
-  width: 100%;
-}
-
-button[type="button"]:hover {
-  text-decoration: underline;
-  color: #F3821B;
-}
-
-/* Ajustes para os botões abaixo do formulário */
-.action-buttons {
+.remember-me {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.remember-me label {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.remember-me-checkbox:checked {
+  accent-color: #F3821B;
+}
+
+.action-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
   width: 100%;
 }
 
 .register-button,
 .forgot-password-button,
 .back-to-login-button {
-  width: 100%; /* Isso faz os botões ficarem um do lado do outro */
-}
-
-.register-button,
-.forgot-password-button,
-.back-to-login-button {
+  width: 100%;
   font-size: 14px;
   background-color: transparent;
   color: #F3821B;
@@ -145,4 +111,16 @@ button[type="button"]:hover {
 .forgot-password-button:hover,
 .back-to-login-button:hover {
   text-decoration: underline;
+}
+
+.login-error {
+  margin-top: 10px;
+  font-size: 14px;
+  color: red; 
+}
+
+.login-success {
+  margin-top: 10px;
+  font-size: 14px;
+  color: green; 
 }

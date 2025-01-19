@@ -1,51 +1,50 @@
-.adicionar-produto-page {
+.controle-estoque-page {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   padding: 20px;
 }
 
-.voltar-btn {
-  background-color: #F3821B;
-  color: white;
-  border: none;
+.controle-estoque-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.controle-estoque-search {
+  margin-bottom: 15px;
+}
+
+.controle-estoque-input {
   padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-bottom: 20px; 
-}
-
-.voltar-btn:hover {
-  background-color: #f15b1b;
-}
-
-h2 {
-  margin-bottom: 20px; 
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
   width: 100%;
-  max-width: 400px;
-}
-
-form input, form textarea, form select {
-  padding: 10px;
-  border: 1px solid #ccc;
   border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
 }
 
-form button {
+.controle-estoque-add-button {
+  margin-bottom: 20px;
+}
+
+.controle-estoque-button {
   background-color: #F3821B;
   color: white;
-  padding: 10px;
   border: none;
-  border-radius: 5px;
+  padding: 10px 20px;
   cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
 }
 
-form button:hover {
+.controle-estoque-button:hover {
   background-color: #f15b1b;
+}
+
+.controle-estoque-list {
+  width: 100%;
+}
+
+.controle-estoque-subtitle {
+  font-size: 20px;
+  margin-bottom: 15px;
 }

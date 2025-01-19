@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Importando o Link para navegação
-import './controle_estoque.css'; // Importando o CSS específico para a página de Controle de Estoque
+import { Link } from 'react-router-dom'; 
+import './controle_estoque.css'; 
 
 function ControleEstoque() {
   const [produtos, setProdutos] = useState([
@@ -18,13 +18,13 @@ function ControleEstoque() {
   );
 
   return (
-    <div className="controle-estoque-page">
-      <h1>Controle de Estoque</h1>
+    <div className="controle-estoque-page" id="controle-estoque-page">
+      <h1 className="controle-estoque-title" id="controle-estoque-title">Controle de Estoque</h1>
      
-
       {/* Barra de Busca */}
-      <div>
+      <div className="controle-estoque-search" id="controle-estoque-search">
         <input
+          className="controle-estoque-input"
           type="text"
           placeholder="Buscar produto"
           value={busca}
@@ -32,16 +32,15 @@ function ControleEstoque() {
         />
       </div>
 
-      <div>
+      <div className="controle-estoque-add-button" id="controle-estoque-add-button">
         <Link to="/estoque/adicionar">
-          <button>Adicionar Produto</button>
+          <button className="controle-estoque-button" id="controle-estoque-button">Adicionar Produto</button>
         </Link>
       </div>
 
       {/* Lista de Produtos */}
-      <div>
-        <h2>Produtos no Estoque</h2>
-        
+      <div className="controle-estoque-list" id="controle-estoque-list">
+        <h2 className="controle-estoque-subtitle" id="controle-estoque-subtitle">Produtos no Estoque</h2>
       </div>
     </div>
   );

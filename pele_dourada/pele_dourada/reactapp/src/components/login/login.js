@@ -12,7 +12,6 @@ function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Efeito para limpar os campos ao mudar o tipo de formulário
   useEffect(() => {
     setUsername('');
     setPassword('');
@@ -79,113 +78,119 @@ function Login() {
 
   return (
     <div className="login-page">
-  <div className="login-container">
-    <img src={logo} alt="Logo" className="logo" />
-    <h1>
-      {formType === 'login' 
-        ? 'Acesse o sistema com suas credenciais.'
-        : formType === 'register' 
-        ? 'Cadastro' 
-        : 'Recuperação de Senha'
-      }
-    </h1>
+      <div className="login-container">
+        <img src={logo} alt="Logo" className="logo" />
+        <h1 className="login-title">
+          {formType === 'login' 
+            ? 'Acesse o sistema com suas credenciais.'
+            : formType === 'register' 
+            ? 'Cadastro' 
+            : 'Recuperação de Senha'
+          }
+        </h1>
 
-    {error && <p style={{ color: 'red' }}>{error}</p>}
-    {success && <p style={{ color: 'green' }}>{success}</p>}
+        {error && <p className="login-error">{error}</p>}
+        {success && <p className="login-success">{success}</p>}
 
-    <form onSubmit={handleSubmit}>
-      <div>
-        <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Usuário"
-          required
-        />
-      </div>
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="login-form-group">
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Usuário"
+              required
+              className="login-input"
+            />
+          </div>
 
-      <div>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Senha"
-          required
-        />
-      </div>
+          <div className="login-form-group">
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Senha"
+              required
+              className="login-input"
+            />
+          </div>
 
-      {formType === 'register' || formType === 'passwordRecovery' ? (
-        <div>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirmar Senha"
-            required
-          />
-        </div>
-      ) : null}
+          {formType === 'register' || formType === 'passwordRecovery' ? (
+            <div className="login-form-group">
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirmar Senha"
+                required
+                className="login-input"
+              />
+            </div>
+          ) : null}
 
-      {formType === 'login' && (
-        <div className="remember-me">
-          <input
-            type="checkbox"
-            id="rememberMe"
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
-          />
-          <label htmlFor="rememberMe">Lembrar de mim</label>
-        </div>
-      )}
+          {formType === 'login' && (
+            <div className="remember-me">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+                className="remember-me-checkbox"
+              />
+              <label htmlFor="rememberMe" className="remember-me-label">Lembrar de mim</label>
+            </div>
+          )}
 
-      <button type="submit">{formType === 'login' ? 'Entrar' : formType === 'register' ? 'Cadastrar' : 'Redefinir Senha'}</button>
-    </form>
-
-    <div className="action-buttons">
-      {formType === 'login' ? (
-        <>
-          <button
-            className="register-button"
-            onClick={() => {
-              setFormType('register');
-            }}
-          >
-            Criar uma conta
+          <button type="submit" className="login-button">
+            {formType === 'login' ? 'Entrar' : formType === 'register' ? 'Cadastrar' : 'Redefinir Senha'}
           </button>
-          <button
-            className="forgot-password-button"
-            onClick={() => {
-              setFormType('passwordRecovery');
-            }}
-          >
-            Esqueceu a senha?
-          </button>
-        </>
-      ) : formType === 'register' ? (
-        <button
-          className="back-to-login-button"
-          onClick={() => {
-            setFormType('login');
-          }}
-        >
-          Já tenho uma conta
-        </button>
-      ) : (
-        <button
-          className="back-to-login-button"
-          onClick={() => {
-            setFormType('login');
-          }}
-        >
-          Voltar para Login
-        </button>
-      )}
+        </form>
+
+        <div className="action-buttons">
+          {formType === 'login' ? (
+            <>
+              <button
+                className="register-button"
+                onClick={() => {
+                  setFormType('register');
+                }}
+              >
+                Criar uma conta
+              </button>
+              <button
+                className="forgot-password-button"
+                onClick={() => {
+                  setFormType('passwordRecovery');
+                }}
+              >
+                Esqueceu a senha?
+              </button>
+            </>
+          ) : formType === 'register' ? (
+            <button
+              className="back-to-login-button"
+              onClick={() => {
+                setFormType('login');
+              }}
+            >
+              Já tenho uma conta
+            </button>
+          ) : (
+            <button
+              className="back-to-login-button"
+              onClick={() => {
+                setFormType('login');
+              }}
+            >
+              Voltar para Login
+            </button>
+          )}
+        </div>
+      </div>
     </div>
-  </div>
-</div>
   );
 }
 
