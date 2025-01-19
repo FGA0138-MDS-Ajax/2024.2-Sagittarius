@@ -8,7 +8,7 @@ function ViewDashboard() {
         <div>
           <div className="content" style={{ marginLeft: '250px', padding: '20px' }}>
             <h1>Bem-vindo ao Dashboard</h1>
-            <p>Esta é a sua página de Dashboard com uma barra lateral funcional.</p>
+            <p>Teste</p>
           </div>
         </div>
       );
