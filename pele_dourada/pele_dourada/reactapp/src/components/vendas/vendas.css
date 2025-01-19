@@ -1,0 +1,84 @@
+.vendas-container {
+    padding: 20px;
+  }
+  
+  .vendas-title {
+    text-align: center;
+    color: #F3821B;
+    margin-bottom: 20px;
+  }
+  
+  .vendas-filter-section {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .vendas-label {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .vendas-input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .vendas-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .vendas-table, th, td {
+    border: 1px solid #ddd;
+  }
+  
+  .vendas-th, .vendas-td {
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .vendas-th {
+    background-color: #F3821B;
+    color: white;
+  }
+  
+  .vendas-tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .vendas-tr:nth-child(odd) {
+    background-color: #fff;
+  }
+  
+  .vendas-tr:hover {
+    background-color: #FFDD99;
+  }
+  
+  .vendas-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  
+  .vendas-button {
+    background-color: #F3821B;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .vendas-button:hover {
+    background-color: #e07015;
+  }
+  

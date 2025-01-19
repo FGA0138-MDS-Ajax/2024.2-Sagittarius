@@ -12,6 +12,8 @@ function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  // estudar funções depois e verificar a lógica quando integrar com a api
+
   useEffect(() => {
     setUsername('');
     setPassword('');

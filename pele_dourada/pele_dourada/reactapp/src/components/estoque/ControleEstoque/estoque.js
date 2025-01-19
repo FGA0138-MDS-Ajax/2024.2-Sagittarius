@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';  // Importando o Link
+import { Link } from 'react-router-dom';  // links
 import './controle_estoque.css'; 
 
 function ControleEstoque() {
@@ -22,7 +22,7 @@ function ControleEstoque() {
     <div className="controle-estoque-page" id="controle-estoque-page">
       <h1 className="controle-estoque-title" id="controle-estoque-title">Controle de Estoque</h1>
       
-      {/* Barra de Busca */}
+    
       <div className="controle-estoque-search" id="controle-estoque-search">
         <input
           className="controle-estoque-input"
@@ -33,7 +33,7 @@ function ControleEstoque() {
         />
       </div>
 
-      {/* Link para Adicionar Produto */}
+     
       <div className="controle-estoque-add-button" id="controle-estoque-add-button">
         <Link to="/estoque/adicionar">
           <button className="controle-estoque-button" id="controle-estoque-button">
