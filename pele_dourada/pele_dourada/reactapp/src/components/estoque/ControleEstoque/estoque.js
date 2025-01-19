@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';  // links
 import './controle_estoque.css'; 
+import AdicionarProduto from '../AdicionarProduto/adicionar_produto';
+
 
 function ControleEstoque() {
   const [produtos, setProdutos] = useState([
@@ -8,7 +9,9 @@ function ControleEstoque() {
     { id: 2, nome: 'Arroz Branco', preco: 9.99, categoria: 'Acompanhamento', quantidade: 30 },
     { id: 3, nome: 'Farofa', preco: 4.99, categoria: 'Acompanhamento', quantidade: 20 },
   ]);
+
   const [busca, setBusca] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false); // Controle do modal
 
   const handleBuscaChange = (e) => {
     setBusca(e.target.value);
@@ -20,11 +23,11 @@ function ControleEstoque() {
 
   return (
     <div className="controle-estoque-page" id="controle-estoque-page">
-      <div className="controle-estoque-title" id='controle-estoque-title'>
+      <div className="controle-estoque-title" id="controle-estoque-title">
         <h1>Controle de Estoque</h1>
       </div>
-
-      <div className="div-title-button">
+    
+      <div className='div-header-widgets'>
         <div className="controle-estoque-search" id="controle-estoque-search">
           <input
             className="controle-estoque-input"
@@ -36,12 +39,14 @@ function ControleEstoque() {
         </div>
 
         <div className="controle-estoque-add-button" id="controle-estoque-add-button">
-          <Link to="/estoque/adicionar">
-            <button className="controle-estoque-button" id="controle-estoque-button">
-              <i className="fas fa-plus"></i> 
-              Adicionar Produto
-            </button>
-          </Link>
+          <button 
+            className="controle-estoque-button" 
+            id="controle-estoque-button" 
+            onClick={() => setIsModalOpen(true)} // Abre o modal
+          >
+            <i className="fas fa-plus"></i> 
+            Adicionar Produto
+          </button>
         </div>
       </div>
 
@@ -83,8 +88,20 @@ function ControleEstoque() {
           </tbody>
         </table>
       </div>
+
+      {isModalOpen && (
+        <div className={`modal-overlay ${isModalOpen ? 'open' : ''}`} onClick={() => setIsModalOpen(false)}>
+          <div className={`modal-content ${isModalOpen ? 'open' : ''}`} onClick={(e) => e.stopPropagation()}>
+            <button className="close-modal" onClick={() => setIsModalOpen(false)}>
+              &times;
+            </button>
+            <AdicionarProduto />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
 
 export default ControleEstoque;

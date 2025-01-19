@@ -11,10 +11,16 @@
   width: 100%;
 }
 
+.div-header-widgets{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .controle-estoque-title {
   padding-left: 20px;
   width: 100%;
-  font-size: 24px;
+  font-size: 15px;
   margin-bottom: 20px;
   border: 1px solid #CED4DA ;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
@@ -83,18 +89,17 @@
 
 .controle-estoque-subtitle {
   font-size: 20px;
-  margin-bottom: 15px;
 }
 
 /* Estilos para a Tabela */
 .controle-estoque-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
 }
 
 .controle-estoque-table th {
   border: 1px solic #CED4DA;
+  background-color: #ececec;
   padding: 20px;
 }
 
@@ -102,7 +107,7 @@
 .controle-estoque-table td {
   border: 1px solid #ddd;
   text-align: center;
-  padding: 20px;
+  padding: 10px;
 }
 
 .controle-estoque-table tr:nth-child(even) {
@@ -111,6 +116,46 @@
 
 .controle-estoque-table tr:hover {
   background-color: #f1f1f1;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  width: 50%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 24px; /* Aumente o tamanho para maior visibilidade */
+  font-weight: bold; /* Deixe o "X" mais evidente */
+  cursor: pointer;
+  color: #333; /* Cor do "X" */
+  transition: color 0.3s;
+}
+
+.close-modal:hover {
+  color: #ff0000; /* Altere a cor ao passar o mouse */
 }
 
 .quantidade-container {

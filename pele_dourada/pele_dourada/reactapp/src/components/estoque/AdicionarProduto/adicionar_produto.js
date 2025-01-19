@@ -55,12 +55,12 @@ function AdicionarProduto() {
 
   return (
     <div className="adicionar-produto-page">
-      <Link to="/estoque">
-        <button className="voltar-btn">Voltar para o Estoque</button>
-      </Link>
+      <div className='adicionar-estoque-header'>
 
-      <h2 className="adicionar-produto-title">Cadastro de Produto</h2>
-
+      
+      <div className='div-title'>
+      </div>
+      </div>
       <form onSubmit={handleSubmit} className="adicionar-produto-form">
         <div className="adicionar-produto-field">
           <label htmlFor="nome" className="adicionar-produto-label">Nome do Produto</label>
@@ -127,6 +127,7 @@ function AdicionarProduto() {
         </div>
 
         <div className="adicionar-produto-field">
+
           <label htmlFor="quantidade" className="adicionar-produto-label">Quantidade</label>
           <input
             type="number"
@@ -138,8 +139,9 @@ function AdicionarProduto() {
             className="adicionar-produto-input"
           />
         </div>
-
+        <div className='div-adicionar-produto-button'>
         <button type="submit" className="adicionar-produto-button">Adicionar Produto</button>
+        </div>
       </form>
     </div>
   );
