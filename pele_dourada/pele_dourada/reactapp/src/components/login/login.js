@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom'; 
 import './login.css';
 import logo from '../../assets/logo.svg'; 
 
@@ -12,8 +13,8 @@ function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // estudar funções depois e verificar a lógica quando integrar com a api
-
+  
+  // limpar os dados se trocar de tela:
   useEffect(() => {
     setUsername('');
     setPassword('');
@@ -23,19 +24,21 @@ function Login() {
     setRememberMe(false);
   }, [formType]); 
 
+  // trabalhar com os dados usando a api:
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
-
+    
+    
     if (!username || !password) {
       setError('Por favor, preencha todos os campos.');
       return;
     }
 
     if (formType === 'login') {
-      try {
-        const response = await axios.post('http://127.0.0.1:8000/api/login/', { username, password });
+      try { 
+        const response = await axios.post('http://127.0.0.1:8000/api/login/', { username, password }); 
         localStorage.setItem('token', response.data.token);
         
         // se 'lembrar de mim' estiver marcado, armazene as credenciais
@@ -45,6 +48,7 @@ function Login() {
         }
         
         setSuccess('Login realizado com sucesso!');
+        <Link to="/dashboard"/>
       } catch (err) {
         setError(err.response?.data?.error || 'Erro ao fazer login.');
       }

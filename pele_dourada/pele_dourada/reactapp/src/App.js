@@ -5,10 +5,12 @@ import Estoque from './pages/Estoque';
 import Dashboard from './pages/Dashboard/dashboard';
 import Vendas from './pages/Vendas/vendas';
 import Clientes from './pages/Clientes/clientes';
+import FontProvider from './components/fonts/fonts';
 
 
 function App() {
   return (
+    <FontProvider>
     <Router>
       <Routes> 
         <Route exact path="/" element={<Home/>} />
@@ -18,6 +20,7 @@ function App() {
         <Route exact path='/clientes/' element={<Clientes/>} />
       </Routes>
     </Router>
+    </FontProvider>
   );
 }
 
