@@ -11,7 +11,7 @@
   width: 100%;
 }
 
-.div-header-widgets{
+.div-header-widgets {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -22,7 +22,7 @@
   width: 100%;
   font-size: 15px;
   margin-bottom: 20px;
-  border: 1px solid #CED4DA ;
+  border: 1px solid #CED4DA;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -50,7 +50,7 @@
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 14px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
 .sidebar + .controle-estoque-input {
@@ -102,11 +102,10 @@
 }
 
 .controle-estoque-table th {
-  border: 1px solic #CED4DA;
+  border: 1px solid #CED4DA;
   background-color: #ececec;
   padding: 20px;
 }
-
 
 .controle-estoque-table td {
   border: 1px solid #ddd;
@@ -164,10 +163,10 @@
 
 .quantidade-container {
   display: inline-block;
-  width: 25%;  /* Ou ajuste a largura conforme necessário */
+  width: 25%; /* Ou ajuste a largura conforme necessário */
   text-align: center;
-  font-size: 16px;  /* Ajuste o tamanho da fonte, se necessário */
-  color: white;  /* Texto em branco para contrastar com o fundo colorido */
+  font-size: 16px; /* Ajuste o tamanho da fonte, se necessário */
+  color: white; /* Texto em branco para contrastar com o fundo colorido */
 }
 
 /* SIDEBAR CONFIG*/

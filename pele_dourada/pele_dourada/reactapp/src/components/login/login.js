@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom'; 
 import './login.css';
 import logo from '../../assets/logo.svg'; 
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [formType, setFormType] = useState('login'); // 'login', 'register', ou 'passwordRecovery'
@@ -23,6 +24,8 @@ function Login() {
     setSuccess('');
     setRememberMe(false);
   }, [formType]); 
+
+  
 
   // trabalhar com os dados usando a api:
   const handleSubmit = async (e) => {
