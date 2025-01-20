@@ -63,6 +63,7 @@ order_collection = db.order
 user_collection = db.user
 
 # CRUD
+user = User('admin', 'admin')
 # criar documentos
 def insert_product(doc):
     if(get_product(doc.name) == None):
@@ -72,13 +73,13 @@ def insert_product(doc):
 
 def insert_order(doc):
     if(get_product(doc.number) == None):
-        stock_collection.insert_one(doc.to_dict())
+        order_collection.insert_one(doc.to_dict())
         return
     return print('produto ja existe')
 
 def insert_user(doc):
     if(get_product(doc.username) == None):
-        stock_collection.insert_one(doc.to_dict())
+        user_collection.insert_one(doc.to_dict())
         return
     return print('produto ja existe')
 
@@ -148,3 +149,5 @@ def delete_product(name):
 def delete_order(number):
     order_collection.delete_one({'number' : number})
     return
+
+insert_user(user)
