@@ -1,0 +1,77 @@
+.adicionar-produto-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
+.adicionar-produto-title {
+  margin: 0;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.adicionar-produto-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.adicionar-produto-field {
+  margin-bottom: 25px;
+}
+
+.adicionar-produto-label {
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+}
+
+.adicionar-produto-input {
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  display: block;
+  width: 60%;
+  margin-top: 10px;
+}
+
+.adicionar-produto-button {
+  padding: 12px;
+  background-color: #F3821B;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 60%; /* Para deixar o botão mais alinhado com os campos */
+}
+
+.adicionar-produto-button:hover {
+  background-color: #f15b1b;
+}
+
+.div-adicionar-produto-button {
+  display: flex;
+  justify-content: center; /* Centraliza o botão */
+  margin-top: 20px;
+}
+
+.adicionar-produto-input:focus {
+  border-color: #F3821B;
+  outline: none;
+}
+
+@media (max-width: 600px) {
+  .adicionar-produto-input {
+    width: 100%; /* Ajusta para 100% em telas pequenas */
+  }
+  .adicionar-produto-button {
+    width: 100%; /* Ajusta o botão para 100% em telas pequenas */
+  }
+}

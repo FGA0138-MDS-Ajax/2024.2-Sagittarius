@@ -41,7 +41,7 @@ class LoginView(APIView):
 
         new_user = User(username, password)
 
-        user = get_user(new_user)
+        user = get_user(new_user.username)
 
         if not user:
             return Response({

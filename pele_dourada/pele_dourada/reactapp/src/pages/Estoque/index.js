@@ -1,15 +1,16 @@
-import React, {useEffect} from 'react';
-import logo from '../../assets/logo.svg'; 
-import ControleEstoque from '../../components/estoque/estoque';
+import React, { useEffect } from 'react';
+import logo from '../../assets/logo.svg';
+import ControleEstoque from '../../components/estoque/ControleEstoque/estoque';
+import Sidebar from '../../components/sidebar/sidebar';
 
 function Estoque() {
-     useEffect(() => {
-        document.title = "Pele Dourada - Estoque";   
-        const link = document.querySelector('link[rel="icon"]');
-        if (link) {
-          link.href = logo; 
-        }
-      }, []);
+  useEffect(() => {
+    document.title = "Frango Assado Pele Dourada";
+    const link = document.querySelector('link[rel="icon"]');
+    if (link) {
+      link.href = logo;
+    }
+  }, []);
 
   return (
     <div>
