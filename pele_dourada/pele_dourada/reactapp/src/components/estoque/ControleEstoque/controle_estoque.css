@@ -53,6 +53,10 @@
   box-sizing: border-box; 
 }
 
+.sidebar + .controle-estoque-input {
+  margin-top: calc(100vh - (100vh - 16px)); /* Evita sobreposição com a sidebar */
+}
+
 .controle-estoque-add-button {
   margin-bottom: 20px;
 }

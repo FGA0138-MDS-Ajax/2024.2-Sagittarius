@@ -49,13 +49,13 @@ body {
     height: 35px;
     width: 35px;
     border: none;
-    color: #8d3912;
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     border-radius: 8px;
-    background: #fff;
+    background: #F3821B;
 }
 
 .sidebar.collapsed .sidebar-header .toggler {
@@ -63,10 +63,12 @@ body {
 }
 
 .sidebar-header .toggler:hover {
-    background: #f15b1b;
+    background: #faa556;
 }
 
 .sidebar-header .toggler span {
+    display: flex;
+    align-items: center;
     font-size: 1.75rem;
     transition: 0.4s ease;
 }
@@ -96,14 +98,14 @@ body {
     border-radius: 8px;
     align-items: center;
     padding: 12px 15px;
-    background: #fff;
+    background: #F3821B;
     text-decoration: none;
     transition: 0.4s ease;
 }
 
 .sidebar-nav .nav-link:hover {
     color: #271b00;
-    background: #fff;
+    background: #faa556;
 }
 
 .sidebar-nav .nav-link .nav-label{
@@ -119,8 +121,4 @@ body {
     position: absolute;
     bottom: 30px;
     width: 100%;
-}
-
-.material-symbols-rounded{
-    display: none;
 }
