@@ -18,9 +18,10 @@ function AdicionarProduto() {
 
     const productData = {
       name: nome,
-      price: preco,
-      qtd: quantidade,
+      price: Number(preco),  
+      qtd: parseInt(quantidade),  
     };
+    
 
     try {
       const response = await axios.post('http://localhost:8000/api/product/register/', productData, {
