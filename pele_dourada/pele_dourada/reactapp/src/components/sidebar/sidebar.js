@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import "./sidebar.css";
 import Logo from '../../assets/icons/logo.svg';
+import Dashboard from "../../assets/icons/dashboard-icon.svg";
+import Vendas from "../../assets/icons/vendas-icon.svg";
+import Estoque from "../../assets/icons/estoque-icon.svg";
+import Clientes from "../../assets/icons/clientes-icon.svg";
+import Profile from "../../assets/icons/personIcon.svg";
+import Logout from "../../assets/icons/logout-icon.svg";
+
 
 function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -33,25 +40,41 @@ function Sidebar() {
         <ul className="nav-list primary-nav">
           <li className="nav-item">
             <a href="#" className="nav-link">
-              <span className="nav-icon material-symbols-rounded">dashboard</span>
+              <img
+                src={Dashboard}
+                alt="Dashboard Icon"
+                className="nav-icon"
+              />
               <span className="nav-label">Dashboard</span>
             </a>
           </li>
           <li className="nav-item">
             <a href="#" className="nav-link">
-              <span className="nav-icon material-symbols-rounded">vendas</span>
+            <img
+                src={Vendas}
+                alt="Vendas Icon"
+                className="nav-icon"
+              />
               <span className="nav-label">Vendas</span>
             </a>
           </li>
           <li className="nav-item">
             <a href="#" className="nav-link">
-              <span className="nav-icon material-symbols-rounded">estoque</span>
+            <img
+                src={Estoque}
+                alt="Estoque Icon"
+                className="nav-icon"
+              />
               <span className="nav-label">Estoque</span>
             </a>
           </li>
           <li className="nav-item">
             <a href="#" className="nav-link">
-              <span className="nav-icon material-symbols-rounded">clientes</span>
+            <img
+                src={Clientes}
+                alt="Clientes Icon"
+                className="nav-icon"
+              />
               <span className="nav-label">Clientes</span>
             </a>
           </li>
@@ -61,13 +84,21 @@ function Sidebar() {
         <ul className="nav-list secondary-nav">
           <li className="nav-item">
             <a href="#" className="nav-link">
-              <span className="nav-icon material-symbols-rounded">account_circle</span>
-              <span className="nav-label">Profile</span>
+            <img
+                src={Profile}
+                alt="Profile Icon"
+                className="nav-icon"
+              />
+              <span className="nav-label">Perfil</span>
             </a>
           </li>
           <li className="nav-item">
             <a href="#" className="nav-link">
-              <span className="nav-icon material-symbols-rounded">logout</span>
+            <img
+                src={Logout}
+                alt="Logout Icon"
+                className="nav-icon"
+              />
               <span className="nav-label">Logout</span>
             </a>
           </li>
