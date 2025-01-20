@@ -1,4 +1,4 @@
-
+/* 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 * {
@@ -18,7 +18,7 @@ body {
     position: fixed;
     margin: 16px;
     border-radius: 16px;
-    background: #F3821B;
+    background: #be9c02;
     height: calc(100vh - 32px);
     transition: 0.4s ease;
 }
@@ -36,9 +36,9 @@ body {
 }
 
 .sidebar-header .header-logo  img{
-    width: 100px;
-    height: 100px;
-    display: flex;
+    width: 46px;
+    height: 46px;
+    display: block;
     object-fit: contain;
     border-radius: 50%;
 }
@@ -49,7 +49,7 @@ body {
     height: 35px;
     width: 35px;
     border: none;
-    color: #8d3912;
+    color: #271b00;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -63,7 +63,7 @@ body {
 }
 
 .sidebar-header .toggler:hover {
-    background: #f15b1b;
+    background: #8a0303;
 }
 
 .sidebar-header .toggler span {
@@ -119,4 +119,4 @@ body {
     position: absolute;
     bottom: 30px;
     width: 100%;
-}
+} */
