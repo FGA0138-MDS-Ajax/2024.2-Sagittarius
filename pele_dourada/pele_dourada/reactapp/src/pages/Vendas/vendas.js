@@ -1,5 +1,5 @@
 // Estoque/index.js
-import React, { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import logo from '../../assets/logo.svg';
 import Sidebar from '../../components/sidebar/sidebar';
 import ControleVendasEncomendas from '../../components/vendas/vendas';
@@ -13,10 +13,16 @@ function Vendas() {
     }
   }, []);
 
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   return (
-    <div>
-      <Sidebar />
-      <ControleVendasEncomendas/>
+    <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
+    <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      <main className="main-content">
+        <div>
+          <ControleVendasEncomendas/>
+        </div>
+      </main>
     </div>
   );
 }

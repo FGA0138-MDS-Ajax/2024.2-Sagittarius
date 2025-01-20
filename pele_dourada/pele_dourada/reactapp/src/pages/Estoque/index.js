@@ -14,7 +14,6 @@ function Estoque() {
 
   return (
     <div>
-      <Sidebar />
       <ControleEstoque/>
     </div>
   );

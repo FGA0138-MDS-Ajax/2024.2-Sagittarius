@@ -1,23 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../../components/sidebar/sidebar'; 
 import ViewDashboard from '../../components/dashboard/dashboard';
 import logo from '../../assets/logo.svg'; 
 
 function Dashboard() {
-  useEffect(() => {
-    document.title = "Frango Assado Pele Dourada";   
-    const link = document.querySelector('link[rel="icon"]');
-    if (link) {
-      link.href = logo; 
-    }
-  }, []);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div style={{ display: 'flex' }}>
-      <Sidebar />
-      <div style={{ marginLeft: '250px', flex: 1 }}> 
-        <ViewDashboard />
-      </div>
+    <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
+      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      <main className="main-content">
+        <h1>Conteúdo Principal</h1>
+        <p>O conteúdo será empurrado para a direita quando a sidebar abrir.</p>
+      </main>
     </div>
   );
 }

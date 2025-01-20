@@ -36,8 +36,8 @@ body {
 }
 
 .sidebar-header .header-logo  img{
-    width: 100px;
-    height: 100px;
+    width: 40px;
+    height: 40px;
     display: flex;
     object-fit: contain;
     border-radius: 50%;
@@ -119,4 +119,8 @@ body {
     position: absolute;
     bottom: 30px;
     width: 100%;
+}
+
+.material-symbols-rounded{
+    display: none;
 }

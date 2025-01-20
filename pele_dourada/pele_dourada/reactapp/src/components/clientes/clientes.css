@@ -88,3 +88,32 @@
     background-color: #1976D2;
   }
   
+  /* SIDEBAR CONFIG*/
+
+.app-container {
+  display: flex;
+  transition: margin-left 0.4s ease, width 0.4s ease;
+}
+
+.sidebar {
+  width: 270px;
+  transition: width 0.4s ease;
+}
+
+.sidebar.collapsed {
+  width: 85px;
+}
+
+.main-content {
+  flex: 1; /* Faz o conteúdo principal ocupar o restante do espaço */
+  padding: 20px;
+  transition: margin-left 0.4s ease;
+}
+
+.app-container.collapsed .main-content {
+  margin-left: 85px; /* Largura da sidebar colapsada */
+}
+
+.app-container .main-content {
+  margin-left: 270px; /* Largura da sidebar expandida */
+}

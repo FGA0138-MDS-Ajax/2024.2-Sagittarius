@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import logo from '../../assets/logo.svg';
 import Sidebar from '../../components/sidebar/sidebar';
 import ControleClientes from '../../components/clientes/clientes';
@@ -12,10 +12,16 @@ function Clientes() {
     }
   }, []);
 
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   return (
-    <div>
-      <Sidebar />
-      <ControleClientes/>
+    <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
+      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      <main className="main-content">
+        <div>
+          <ControleClientes/>
+        </div>
+      </main>
     </div>
   );
 }
