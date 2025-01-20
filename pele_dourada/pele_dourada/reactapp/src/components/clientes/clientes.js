@@ -56,7 +56,7 @@ function ControleClientes() {
     <div className="controle-clientes">
       <h1>Controle de Clientes</h1>
 
-      {/* Barra de busca */}
+      {/* Barra de busca e botão de adicionar cliente */}
       <div className="controle-clientes-search">
         <input
           type="text"
@@ -65,6 +65,13 @@ function ControleClientes() {
           onChange={handleBuscaChange}
           className="controle-clientes-input"
         />
+        <button 
+          className="controle-clientes-add-button"
+          onClick={() => alert('Adicionar cliente')} // Aqui você pode definir a função para abrir o modal ou outra ação
+        >
+          <i className="fas fa-plus"></i>
+          Adicionar Cliente
+        </button>
       </div>
 
       {/* Tabela de clientes */}
