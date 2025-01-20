@@ -6,6 +6,7 @@ import logo from '../../assets/logo.svg';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
+  const navigate = useNavigate();
   const [formType, setFormType] = useState('login'); // 'login', 'register', ou 'passwordRecovery'
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -27,11 +28,14 @@ function Login() {
 
   
 
-  // trabalhar com os dados usando a api:
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
+
+  
+
     
     
     if (!username || !password) {
@@ -43,6 +47,14 @@ function Login() {
       try { 
         const response = await axios.post('http://127.0.0.1:8000/api/login/', { username, password }); 
         localStorage.setItem('token', response.data.token);
+        const token = localStorage.getItem('token');
+          if (token) {
+              console.log('Token encontrado:', token);
+              // O usuário está autenticado
+          } else {
+              console.log('Token não encontrado.');
+              // O usuário não está autenticado
+          }
         
         // se 'lembrar de mim' estiver marcado, armazene as credenciais
         if (rememberMe) {
@@ -51,7 +63,9 @@ function Login() {
         }
         
         setSuccess('Login realizado com sucesso!');
-        <Link to="/dashboard"/>
+        setTimeout(() => {
+          navigate('/dashboard'); 
+        }, 2000);
       } catch (err) {
         setError(err.response?.data?.error || 'Erro ao fazer login.');
       }
