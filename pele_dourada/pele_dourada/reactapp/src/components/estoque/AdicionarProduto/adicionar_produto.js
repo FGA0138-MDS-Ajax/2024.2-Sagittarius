@@ -1,39 +1,34 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Importando axios para fazer requisições
-import { Link } from 'react-router-dom';
+import axios from 'axios';
 import './adicionar_produto.css';
 
 function AdicionarProduto() {
   const [nome, setNome] = useState('');
   const [preco, setPreco] = useState('');
-  const [categoria, setCategoria] = useState('');
-  const [imagem, setImagem] = useState(null);
-  const [descricao, setDescricao] = useState('');
   const [quantidade, setQuantidade] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!nome || !preco || !categoria || !imagem || !descricao || !quantidade) {
+    
+    if (!nome || !preco || !quantidade) {
       alert('Por favor, preencha todos os campos.');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('nome', nome);
-    formData.append('preco', preco);
-    formData.append('categoria', categoria);
-    formData.append('imagem', imagem);
-    formData.append('descricao', descricao);
-    formData.append('quantidade', quantidade);
+    const productData = {
+      name: nome,
+      price: preco,
+      qtd: quantidade,
+    };
 
     try {
-       {/*alterar depois para a rota certa do django*/}
-      const response = await axios.post('http://localhost:8000/adicionar-produto/', formData, {        
+      const response = await axios.post('http://localhost:8000/api/product/register/', productData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
         },
       });
+
       alert('Produto adicionado com sucesso!');
       console.log(response.data);
     } catch (error) {
@@ -43,24 +38,11 @@ function AdicionarProduto() {
 
     setNome('');
     setPreco('');
-    setCategoria('');
-    setImagem(null);
-    setDescricao('');
     setQuantidade('');
-  };
-
-  const handleImageChange = (e) => {
-    setImagem(e.target.files[0]);
   };
 
   return (
     <div className="adicionar-produto-page">
-      <div className='adicionar-estoque-header'>
-
-      
-      <div className='div-title'>
-      </div>
-      </div>
       <form onSubmit={handleSubmit} className="adicionar-produto-form">
         <div className="adicionar-produto-field">
           <label htmlFor="nome" className="adicionar-produto-label">Nome do Produto</label>
@@ -88,46 +70,7 @@ function AdicionarProduto() {
           />
         </div>
 
-        <div className="adicionar-produto-select-container">
-          <label htmlFor="categoria" className="adicionar-produto-label">Categoria</label>
-          <select
-            id="categoria"
-            value={categoria}
-            onChange={(e) => setCategoria(e.target.value)}
-            required
-            className="adicionar-produto-select"
-          >
-            <option value="">Selecione a categoria</option>
-            <option value="principal">Principal</option>
-            <option value="acompanhamento">Acompanhamento</option>
-          </select>
-        </div>
-
         <div className="adicionar-produto-field">
-          <label htmlFor="imagem" className="adicionar-produto-label">Imagem</label>
-          <input
-            type="file"
-            id="imagem"
-            accept="image/*"
-            onChange={handleImageChange}
-            required
-            className="adicionar-produto-input"
-          />
-        </div>
-
-        <div className="adicionar-produto-field">
-          <textarea
-            id="descricao"
-            value={descricao}
-            onChange={(e) => setDescricao(e.target.value)}
-            placeholder="Digite uma descrição do produto"
-            required
-            className="adicionar-produto-textarea"
-          />
-        </div>
-
-        <div className="adicionar-produto-field">
-
           <label htmlFor="quantidade" className="adicionar-produto-label">Quantidade</label>
           <input
             type="number"
@@ -139,8 +82,9 @@ function AdicionarProduto() {
             className="adicionar-produto-input"
           />
         </div>
+
         <div className='div-adicionar-produto-button'>
-        <button type="submit" className="adicionar-produto-button">Adicionar Produto</button>
+          <button type="submit" className="adicionar-produto-button">Adicionar Produto</button>
         </div>
       </form>
     </div>

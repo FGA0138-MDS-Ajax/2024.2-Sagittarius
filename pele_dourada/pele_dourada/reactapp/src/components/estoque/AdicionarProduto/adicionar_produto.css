@@ -1,7 +1,7 @@
 .adicionar-produto-page {
   display: flex;
-  flex-direction: column; 
-  height: 100%;  
+  flex-direction: column;
+  height: 100%;
   padding: 20px;
   max-width: 800px;
   margin: 0 auto;
@@ -9,46 +9,31 @@
   border-radius: 8px;
 }
 
-
-.voltar-btn {
-  background-color: #F3821B;
-  color: white;
-  border: none;
-  padding: 10px;  
-  cursor: pointer;
-  border-radius: 5px;
-  margin-bottom: 5px; 
-  margin-top:5px;
-}
-
-
-
 .adicionar-produto-title {
   margin: 0;
   text-align: center;
   font-size: 30px;
+  font-weight: bold;
 }
 
 .adicionar-produto-form {
   display: flex;
   flex-direction: column;
-  width: 100%;  
+  width: 100%;
 }
 
 .adicionar-produto-field {
-  margin-bottom: 25px;  
+  margin-bottom: 25px;
 }
 
 .adicionar-produto-label {
   font-weight: bold;
-  margin-bottom: 10px;  
+  margin-bottom: 10px;
   text-transform: capitalize;
 }
 
-.adicionar-produto-input,
-.adicionar-produto-select,
-.adicionar-produto-textarea {
-  padding: 10px;  
+.adicionar-produto-input {
+  padding: 12px;
   font-size: 15px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -57,52 +42,36 @@
   margin-top: 10px;
 }
 
-.adicionar-produto-textarea {
-  resize: vertical;
-  min-height: 100px;  
-  width: 60%;
-}
-
 .adicionar-produto-button {
-
-  padding: 12px;  
+  padding: 12px;
   background-color: #F3821B;
   color: white;
   border: none;
   border-radius: 5px;
-  cursor: pointer; 
+  cursor: pointer;
+  width: 60%; /* Para deixar o botão mais alinhado com os campos */
 }
-
-
 
 .adicionar-produto-button:hover {
   background-color: #f15b1b;
 }
 
-.adicionar-produto-select-container {
+.div-adicionar-produto-button {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 25px;  
+  justify-content: center; /* Centraliza o botão */
+  margin-top: 20px;
 }
 
-.adicionar-produto-select {
-  padding: 12px;  
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.adicionar-produto-input:focus {
+  border-color: #F3821B;
+  outline: none;
 }
 
-.voltar-btn {
-  background-color: #F3821B;
-  color: white;
-  border: none;
-  padding: 10px;  
-  cursor: pointer;
-  border-radius: 5px;
-  margin-bottom: 5px; 
-  margin-top:5px;
-}
-
-.voltar-btn:hover {
-  background-color: #f15b1b;
+@media (max-width: 600px) {
+  .adicionar-produto-input {
+    width: 100%; /* Ajusta para 100% em telas pequenas */
+  }
+  .adicionar-produto-button {
+    width: 100%; /* Ajusta o botão para 100% em telas pequenas */
+  }
 }
