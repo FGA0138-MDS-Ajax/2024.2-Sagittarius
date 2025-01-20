@@ -7,3 +7,4 @@ node_modules/
 pele_dourada/pele_dourada/build/
 build/
 pele_dourada/pele_dourada/package-lock.json
+.vscode/

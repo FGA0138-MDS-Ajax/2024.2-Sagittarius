@@ -30,7 +30,24 @@ class RegisterProductView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
-        new_product = Product(name, qtd, price)
+        new_product = Product(name, price, qtd)
+
+        product = get_product(new_product.name)
+
+        if product:
+            try:
+                update_product(name, new_qtd=qtd+product['qtd'])
+
+                return Response({
+                    'Produto atualizado com sucesso',
+                }, status=status.HTTP_200_OK
+                )
+            except Exception as e:
+                print(e)
+                return Response({
+                    'error': 'Erro ao atualizar produto',
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
 
         try:
             insert_doc(stock_collection, new_product)
@@ -91,6 +108,14 @@ class UpdateProductView(APIView):
 
 
 class DeleteProductView(APIView):
+    @swagger_auto_schema(
+        operation_description="Deleta um produto",
+        responses={200: openapi.Response('Produto deletado com sucesso')},
+        manual_parameters=[
+            openapi.Parameter('name', openapi.IN_QUERY, description="Nome do produto", type=openapi.TYPE_STRING),
+        ],
+    )
+
     def post(self, request):
         name = request.data.get("name")
 
@@ -102,7 +127,7 @@ class DeleteProductView(APIView):
 
         product = Product(name, 0, 0)
 
-        product = get_product(product)
+        product = get_product(product.name)
 
         if not product:
             return Response({
@@ -111,7 +136,7 @@ class DeleteProductView(APIView):
             )
         
         try:
-            delete_product(product)
+            delete_product(product.name)
         except Exception as e:
             print(e)
             return Response({

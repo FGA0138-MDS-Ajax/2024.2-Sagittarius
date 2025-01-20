@@ -32,6 +32,8 @@ function AdicionarProduto() {
 
       alert('Produto adicionado com sucesso!');
       console.log(response.data);
+
+      window.location.reload();
     } catch (error) {
       console.error(error);
       alert('Erro ao adicionar o produto.');

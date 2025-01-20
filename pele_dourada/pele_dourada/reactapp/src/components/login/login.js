@@ -64,7 +64,7 @@ function Login() {
         
         setSuccess('Login realizado com sucesso!');
         setTimeout(() => {
-          navigate('/dashboard'); 
+          navigate('/estoque'); 
         }, 2000);
       } catch (err) {
         setError(err.response?.data?.error || 'Erro ao fazer login.');

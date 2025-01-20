@@ -1,12 +1,15 @@
-from django.utils.deprecation import MiddlewareMixin
-from django.http import JsonResponse
-from bson.objectid import ObjectId
-from pele_dourada.settings import SECRET_KEY
 import jwt
 from api.models import user_collection
+from bson.objectid import ObjectId
+from django.http import JsonResponse
+from django.utils.deprecation import MiddlewareMixin
+
+from pele_dourada.settings import SECRET_KEY
+
 
 class JwtAuthentication(MiddlewareMixin):
-    public_routes = ["/api/login/", "/api/register/", "/swagger/", "/redoc/", "/admin/", "/api/updatepwd/"]
+    public_routes = ["/api/login/", "/api/register/", "/swagger/", "/redoc/", "/admin/", "/api/updatepwd/",
+                     "/api/product/register/", "/api/product/update/", "/api/products", "/api/products/", "/api/product/delete/"]
     
     def process_request(self, request):
         print(request.path)
