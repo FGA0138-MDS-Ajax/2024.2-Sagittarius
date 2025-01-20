@@ -1,6 +1,9 @@
 venv
 __pycache__/
 .env
-node_modules/
-build/
 package-lock.json
+pele_dourada/pele_dourada/node_modules/
+node_modules/
+pele_dourada/pele_dourada/build/
+build/
+pele_dourada/pele_dourada/package-lock.json

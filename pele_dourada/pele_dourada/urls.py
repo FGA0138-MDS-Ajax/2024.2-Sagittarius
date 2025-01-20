@@ -19,6 +19,7 @@ from drf_yasg.views import get_schema_view
 from django.contrib import admin
 from django.urls import path, re_path
 from api.views.admin_views import LoginView, RegisterView, UpdatePasswordView
+from api.views.product_views import RegisterProductView, UpdateProductView, ListProductView, DeleteProductView
 from rest_framework.permissions import AllowAny
 from django.views.generic import TemplateView   
 
@@ -35,12 +36,16 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    # Rotas da aplicação
+    # Rotas da API
     path('admin/', admin.site.urls),
     path('api/login/', LoginView.as_view(), name='login'),
     path('api/register/', RegisterView.as_view(), name='register'),
     # path('', TemplateView.as_view(template_name='build/index.html')),
     path('api/updatepwd/', UpdatePasswordView.as_view(), name='update'),
+    path('api/product/register/', RegisterProductView.as_view(), name='register_product'),
+    path('api/product/update/', UpdateProductView.as_view(), name='update_product'),
+    path('api/products/', ListProductView.as_view(), name='list_products'),
+    path('api/product/delete/', DeleteProductView.as_view(), name='delete_product'),
 
     # Documentação da API
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),

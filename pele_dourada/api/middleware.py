@@ -19,7 +19,7 @@ class JwtAuthentication(MiddlewareMixin):
             return JsonResponse({"error": "Token não fornecido"}, status=401)
         
         try:
-            token = auth_header.split(' ')[1]
+            token = auth_header
             payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
             user_id = payload['id']
 
