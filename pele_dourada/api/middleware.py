@@ -9,7 +9,8 @@ from pele_dourada.settings import SECRET_KEY
 
 class JwtAuthentication(MiddlewareMixin):
     public_routes = ["/api/login/", "/api/register/", "/swagger/", "/redoc/", "/admin/", "/api/updatepwd/",
-                     "/api/product/register/", "/api/product/update/", "/api/products", "/api/products/", "/api/product/delete/"]
+                     "/api/product/register/", "/api/product/update/", "/api/products", "/api/products/", "/api/product/delete/",
+                     "/api/product/update"]
     
     def process_request(self, request):
         print(request.path)

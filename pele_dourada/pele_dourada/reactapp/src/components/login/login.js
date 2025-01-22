@@ -90,7 +90,7 @@ function Login() {
       }
 
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/updatepwd/', { username, password });
+        const response = await axios.post('http://127.0.0.1:8000/api/updatepwd/', { username, password, confirmPassword });
         setSuccess(response.data.success || 'Senha redefinida com sucesso!');
         setFormType('login'); // volta para a tela de login após a redefinição de senha
       } catch (err) {

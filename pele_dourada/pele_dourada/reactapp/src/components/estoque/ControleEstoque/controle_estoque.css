@@ -169,6 +169,40 @@
   color: white; /* Texto em branco para contrastar com o fundo colorido */
 }
 
+.controle-estoque-action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.controle-estoque-edit-button,
+.controle-estoque-remove-button {
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.controle-estoque-edit-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.controle-estoque-edit-button:hover {
+  background-color: #0056b3;
+}
+
+.controle-estoque-remove-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.controle-estoque-remove-button:hover {
+  background-color: #a71d2a;
+}
+
 /* SIDEBAR CONFIG*/
 
 .app-container {
@@ -197,4 +231,116 @@
 
 .app-container .main-content {
   margin-left: 270px; /* Largura da sidebar expandida */
+}
+
+/* Mantém o estilo do contêiner da quantidade */
+.quantidade-container {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  min-width: 40px; /* Define uma largura mínima para evitar encolhimento */
+}
+
+/* Estilo para quantidades altas (verde) */
+.quantidade-container.alta {
+  background-color: #28a745;
+}
+
+/* Estilo para quantidades médias (laranja) */
+.quantidade-container.media {
+  background-color: #ffc107;
+}
+
+/* Estilo para quantidades baixas (vermelho) */
+.quantidade-container.baixa {
+  background-color: #dc3545;
+}
+
+.editar-produto-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centraliza verticalmente */
+  align-items: center; /* Centraliza horizontalmente */
+  height: 100vh; /* Define altura total da tela */
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adiciona sombra para destaque */
+}
+
+.editar-produto-title {
+  margin-bottom: 30px; /* Dá um espaço maior abaixo do título */
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.editar-produto-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza os inputs e botões */
+  width: 100%;
+}
+
+.editar-produto-field {
+  margin-bottom: 25px;
+  width: 100%; /* Garante que os campos ocupem o espaço necessário */
+}
+
+.editar-produto-label {
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+}
+
+.editar-produto-input {
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  display: block;
+  width: 80%; /* Reduz a largura para melhor aparência */
+  margin-top: 10px;
+}
+
+.editar-produto-button {
+  padding: 12px;
+  background-color: #F3821B;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 80%; /* Para manter alinhamento com os campos */
+  text-align: center;
+}
+
+.editar-produto-button:hover {
+  background-color: #f15b1b;
+}
+
+.div-editar-produto-button {
+  display: flex;
+  flex-direction: column; /* Garante que os botões fiquem empilhados */
+  gap: 15px; /* Espaçamento entre os botões */
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.editar-produto-input:focus {
+  border-color: #F3821B;
+  outline: none;
+}
+
+@media (max-width: 600px) {
+  .editar-produto-input,
+  .editar-produto-button {
+    width: 100%; /* Ajusta para 100% em telas pequenas */
+  }
 }
