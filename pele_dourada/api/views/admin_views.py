@@ -88,11 +88,11 @@ class RegisterView(APIView):
         password = request.data.get("password")
         password2 = request.data.get("password2")
         
-        if password != password2:
-            return Response({
-                'error': 'As senhas não coincidem',
-            }, status=status.HTTP_400_BAD_REQUEST
-            )
+        # if password != password2:
+        #     return Response({
+        #         'error': 'As senhas não coincidem',
+        #     }, status=status.HTTP_400_BAD_REQUEST
+        #     )
         
         hash_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         
@@ -162,25 +162,33 @@ class UpdatePasswordView(APIView):
 
     def post(self, request):
         user = request.user
-        old_password = request.data.get("old_password")
-        new_password = request.data.get("new_password")
-        new_password2 = request.data.get("new_password2")
+        username = request.data.get("username")
+        old_password = request.data.get("password")
+        new_password = request.data.get("confirmPassword")
 
-        if new_password != new_password2:
+        if old_password != new_password:
             return Response({
                 'error': 'As senhas não coincidem',
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
-        if not bcrypt.checkpw(old_password.encode('utf-8'), user.password.encode('utf-8')):
-            return Response({
-                'error': 'Senha antiga inválida',
-            }, status=status.HTTP_400_BAD_REQUEST
-            )
+        # if not bcrypt.checkpw(old_password.encode('utf-8'), user.password.encode('utf-8')):
+        #     return Response({
+        #         'error': 'Senha antiga inválida',
+        #     }, status=status.HTTP_400_BAD_REQUEST
+        #     )
 
         hash_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
-        user.password = hash_password
-        user.save()
+        try:
+            update_user(username, new_pwd=hash_password)
+        except Exception as e:
+            print(e)
+            return Response({
+                'error': 'Erro ao atualizar senha',
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        
 
         return Response({
             'success': 'Senha atualizada com sucesso',

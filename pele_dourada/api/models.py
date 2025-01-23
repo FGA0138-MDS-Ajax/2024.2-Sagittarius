@@ -130,6 +130,13 @@ def delete_product(name):
     stock_collection.delete_one({'name' : name})
     return
 
+def decrease_product_qtd(name):
+    product = get_product(name)
+    if product['qtd'] == 1:
+        delete_product(name)
+    else:
+        update_product(name, new_qtd=product['qtd']-1)
+
 def delete_order(number):
     order_collection.delete_one({'number' : number})
     return

@@ -77,15 +77,17 @@ class UpdateProductView(APIView):
     def post(self, request):
         name = request.data.get("name")
         price = request.data.get("price")
-        qtd = request.data.get("qtd")
+        # qtd = request.data.get("qtd")
 
-        if not name or not price or not qtd:
+        if not name or not price:
             return Response({
                 'error': 'Por favor, insira todos os campos',
             }, status=status.HTTP_400_BAD_REQUEST
             )
         
-        product = get_product(Product(name, price, qtd))
+        product = Product(name, price, 0)
+
+        product = get_product(product.name)
 
         if not product:
             return Response({
@@ -94,14 +96,12 @@ class UpdateProductView(APIView):
             )
         
         try:
-            update_product(name, new_price=price, new_qtd=qtd)
+            update_product(product['name'], new_name=name, new_price=price)
         except Exception as e:
             return Response({
                 'error': 'Erro ao atualizar produto',
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-        
-        return Response({
+            
             'Produto atualizado com sucesso',
         }, status=status.HTTP_200_OK
         )
@@ -118,7 +118,6 @@ class DeleteProductView(APIView):
 
     def post(self, request):
         name = request.data.get("name")
-
         if not name:
             return Response({
                 'error': 'Por favor, insira o nome do produto',
@@ -136,7 +135,7 @@ class DeleteProductView(APIView):
             )
         
         try:
-            delete_product(product.name)
+            decrease_product_qtd(product['name'])
         except Exception as e:
             print(e)
             return Response({
