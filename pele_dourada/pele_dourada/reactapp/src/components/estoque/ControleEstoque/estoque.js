@@ -202,23 +202,7 @@ function ControleEstoque() {
                       }
                     />
                   </div>
-                  {/* <div className="editar-produto-field">
-                    <label className="editar-produto-label" htmlFor="edit-qtd">
-                      Quantidade
-                    </label>
-                    <input
-                      id="edit-qtd"
-                      type="number"
-                      className="editar-produto-input"
-                      value={produtoEditando.qtd}
-                      onChange={(e) =>
-                        setProdutoEditando({
-                          ...produtoEditando,
-                          qtd: parseInt(e.target.value, 10),
-                        })
-                      }
-                    />
-                  </div> */}
+                  
                   <div className="div-editar-produto-button">
                     <button type="submit" className="editar-produto-button">
                       Salvar

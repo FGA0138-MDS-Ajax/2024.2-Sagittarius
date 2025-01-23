@@ -1,12 +1,15 @@
 .adicionar-produto-page {
   display: flex;
   flex-direction: column;
-  height: 100%;
   padding: 20px;
-  max-width: 800px;
+  max-width: 900px; /* Limita a largura máxima */
+  width: 100%; /* Garantir que a largura ocupe 100% da área disponível */
   margin: 0 auto;
   background-color: #ffffff;
   border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra suave */
+  height: auto; /* Deixe a altura auto para ajustar ao conteúdo */
+  box-sizing: border-box; /* Garante que o padding seja incluído no cálculo da largura */
 }
 
 .adicionar-produto-title {
@@ -14,6 +17,7 @@
   text-align: center;
   font-size: 30px;
   font-weight: bold;
+  margin-bottom: 30px; /* Aumenta o espaço abaixo do título */
 }
 
 .adicionar-produto-form {
@@ -23,7 +27,7 @@
 }
 
 .adicionar-produto-field {
-  margin-bottom: 25px;
+  margin-bottom: 20px; /* Ajusta o espaço entre os campos */
 }
 
 .adicionar-produto-label {
@@ -38,8 +42,8 @@
   border-radius: 5px;
   border: 1px solid #ccc;
   display: block;
-  width: 60%;
-  margin-top: 10px;
+  width: 100%; /* Ajusta para ocupar toda a largura disponível */
+  margin-top: 5px; /* Diminui a margem superior para aproximar mais do campo */
 }
 
 .adicionar-produto-button {
@@ -49,7 +53,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 60%; /* Para deixar o botão mais alinhado com os campos */
+  width: 100%; /* Ajusta o botão para ocupar toda a largura disponível */
 }
 
 .adicionar-produto-button:hover {
@@ -59,7 +63,7 @@
 .div-adicionar-produto-button {
   display: flex;
   justify-content: center; /* Centraliza o botão */
-  margin-top: 20px;
+  margin-top: 30px; /* Aumenta a margem superior */
 }
 
 .adicionar-produto-input:focus {
@@ -68,9 +72,15 @@
 }
 
 @media (max-width: 600px) {
-  .adicionar-produto-input {
-    width: 100%; /* Ajusta para 100% em telas pequenas */
+  .adicionar-produto-page {
+    width: 90vw; /* Ajusta para 90% da largura da janela em telas pequenas */
+    padding: 15px; /* Diminui o padding em telas pequenas */
   }
+
+  .adicionar-produto-input {
+    width: 100%; /* Ajusta os campos para 100% em telas pequenas */
+  }
+
   .adicionar-produto-button {
     width: 100%; /* Ajusta o botão para 100% em telas pequenas */
   }

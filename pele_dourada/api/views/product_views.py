@@ -100,8 +100,8 @@ class UpdateProductView(APIView):
         except Exception as e:
             return Response({
                 'error': 'Erro ao atualizar produto',
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({
             'Produto atualizado com sucesso',
         }, status=status.HTTP_200_OK
         )

@@ -54,7 +54,7 @@ function AdicionarProduto() {
             id="nome"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-            placeholder="Digite o nome do produto"
+            placeholder="Nome do produto"
             required
             className="adicionar-produto-input"
           />
@@ -67,7 +67,7 @@ function AdicionarProduto() {
             id="preco"
             value={preco}
             onChange={(e) => setPreco(e.target.value)}
-            placeholder="Digite o preço do produto"
+            placeholder="Preço do produto"
             required
             className="adicionar-produto-input"
           />
@@ -80,7 +80,7 @@ function AdicionarProduto() {
             id="quantidade"
             value={quantidade}
             onChange={(e) => setQuantidade(e.target.value)}
-            placeholder="Digite a quantidade disponível"
+            placeholder="Quantidade disponível"
             required
             className="adicionar-produto-input"
           />

@@ -20,8 +20,7 @@ from django.contrib import admin
 from django.urls import path, re_path
 from api.views.admin_views import LoginView, RegisterView, UpdatePasswordView
 from api.views.product_views import RegisterProductView, UpdateProductView, ListProductView, DeleteProductView
-from rest_framework.permissions import AllowAny
-from django.views.generic import TemplateView   
+from rest_framework.permissions import AllowAny 
 
 schema_view = get_schema_view(
     openapi.Info(

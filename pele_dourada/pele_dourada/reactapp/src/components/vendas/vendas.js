@@ -1,93 +1,264 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './vendas.css';
 
-function ControleVendasEncomendas() {
+const VendasPage = () => {
   const [vendas, setVendas] = useState([]);
-  const [filtro, setFiltro] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    nomeCliente: '',
+    metodoPagamento: '',
+    tipoVenda: '',
+    produtos: [],
+  });
+  const [produtosEstoque, setProdutosEstoque] = useState([]);
+  const [produtoSelecionado, setProdutoSelecionado] = useState('');
+
+  const fetchVendas = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/'); // espernado api
+      setVendas(response.data.vendas);
+    } catch (error) {
+      console.error('Erro ao buscar vendas', error);
+    }
+  };
+
+  const fetchProdutosEstoque = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/products');
+      setProdutosEstoque(response.data.products);
+    } catch (error) {
+      console.error('Erro ao buscar produtos', error);
+    }
+  };
 
   useEffect(() => {
-    // simulando api 
-    const vendasDoBanco = [
-      {
-        tipoVenda: 'local',
-        numeroVenda: '001',
-        nomeCliente: 'João Silva',
-        valorVenda: 100,
-        horaVenda: '12:30',
-        formaPagamento: 'Cartão',
-        produtosVendidos: 'frango',
-      },
-      {
-        tipoVenda: 'encomenda',
-        numeroVenda: '002',
-        nomeCliente: 'Maria Oliveira',
-        valorVenda: 200,
-        horaVenda: '14:00',
-        formaPagamento: 'Dinheiro',
-        produtosVendidos: 'frango'
-      },
-    ];
-
-    setVendas(vendasDoBanco);
+    fetchVendas();
+    fetchProdutosEstoque();
   }, []);
 
-  const filteredVendas = vendas.filter((venda) =>
-    venda.nomeCliente.toLowerCase().includes(filtro.toLowerCase()) ||
-    venda.numeroVenda.includes(filtro)
-  );
+  const openModal = () => {
+    setFormData({
+      nomeCliente: '',
+      metodoPagamento: '',
+      tipoVenda: '',
+      produtos: [],
+    });
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => setIsModalOpen(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleAdicionarProduto = (produtoId) => {
+    const produto = produtosEstoque.find((p) => p.id === produtoId);
+
+    if (produto) {
+      const produtoJaAdicionado = formData.produtos.find((p) => p.id === produto.id);
+
+      if (produtoJaAdicionado) {
+        setFormData((prevState) => ({
+          ...prevState,
+          produtos: prevState.produtos.map((p) =>
+            p.id === produto.id ? { ...p, quantidade: p.quantidade + 1 } : p
+          ),
+        }));
+      } else {
+        setFormData((prevState) => ({
+          ...prevState,
+          produtos: [
+            ...prevState.produtos,
+            { ...produto, quantidade: 1 },
+          ],
+        }));
+      }
+    }
+  };
+
+  const handleRemoverProduto = (produtoId) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      produtos: prevState.produtos
+        .map((produto) =>
+          produto.id === produtoId
+            ? produto.quantidade === 1
+              ? null 
+              : { ...produto, quantidade: produto.quantidade - 1 } 
+            : produto
+        )
+        .filter((produto) => produto !== null && produto.quantidade > 0), 
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:8000/api/vendas', formData);
+      if (response.status === 200) {
+        for (const produto of formData.produtos) {
+          const produtoEstoque = produtosEstoque.find((p) => p.id === produto.id);
+
+          if (produtoEstoque) {
+            await axios.put(`http://localhost:8000/api/products/${produto.id}`, {
+              qtd: produtoEstoque.qtd - produto.quantidade,
+            });
+          }
+        }
+        fetchVendas();
+        closeModal();
+      }
+    } catch (error) {
+      console.error('Erro ao realizar venda/encomenda', error);
+    }
+  };
+
+  const calcularTotalVenda = () => {
+    return formData.produtos.reduce((total, produto) => {
+      return total + produto.price * produto.quantidade;
+    }, 0).toFixed(2);
+  };
 
   return (
-    <div className="vendas-container">
-      <h1 className="vendas-title">Gestão de Vendas e Encomendas</h1>
-      
-      <div className="vendas-filter-section">
-        <label className="vendas-label">Filtro de Busca:</label>
-        <input
-          className="vendas-input"
-          type="text"
-          value={filtro}
-          onChange={(e) => setFiltro(e.target.value)}
-          placeholder="Filtrar por nome ou número de venda"
-        />
-      </div>
+    <div className="vendas-page">
+      <h1 className="vendas-title">Vendas e Encomendas</h1>
+      <button onClick={openModal} className="vendas-button">
+        Nova Venda/Encomenda
+      </button>
 
-      {/* botão nova venda*/}
-      <div className="vendas-button-container">
-        <Link to="/" className="vendas-button">
-          Registrar Nova Venda/Encomenda
-        </Link>
-      </div>
-
-      {/* tabela */}
       <table className="vendas-table">
         <thead>
           <tr>
-            <th className="vendas-th">Tipo de Venda</th>
-            <th className="vendas-th">Número da Venda</th>
-            <th className="vendas-th">Nome do Cliente</th>
-            <th className="vendas-th">Valor</th>
-            <th className="vendas-th">Horário</th>
-            <th className="vendas-th">Forma de Pagamento</th>
-            <th className="vendas-th">Produtos</th>
+            <th>Nome do Cliente</th>
+            <th>Tipo</th>
+            <th>Método de Pagamento</th>
+            <th>Produtos</th>
+            <th>Valor Total</th>
           </tr>
         </thead>
         <tbody>
-          {filteredVendas.map((venda, index) => (
-            <tr key={index} className="vendas-tr">
-              <td className="vendas-td">{venda.tipoVenda}</td>
-              <td className="vendas-td">{venda.numeroVenda}</td>
-              <td className="vendas-td">{venda.nomeCliente}</td>
-              <td className="vendas-td">{venda.valorVenda}</td>
-              <td className="vendas-td">{venda.horaVenda}</td>
-              <td className="vendas-td">{venda.formaPagamento}</td>
-              <td className="vendas-td">{venda.produtosVendidos}</td>
+          {vendas.map((venda) => (
+            <tr key={venda.id}>
+              <td>{venda.metodoPagamento}</td>
+              <td>{venda.nomeCliente}</td>
+              <td>{venda.tipoVenda}</td>
+              <td>
+                {venda.produtos.map((produto) => (
+                  <div key={produto.id}>{produto.name}</div>
+                ))}
+              </td>
+              <td>{venda.valorVenda}</td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {isModalOpen && (
+        <div className="vendas-modal-overlay">
+          <div className="vendas-modal-content">
+            <button className="vendas-close-modal" onClick={closeModal}>
+              &times;
+            </button>
+            <div className="vendas-modal-body">
+              <div className="vendas-form-container">
+                <form className="vendas-form" onSubmit={handleSubmit}>
+                  <label>Nome do Cliente</label>
+                  <input
+                    type="text"
+                    name="nomeCliente"
+                    value={formData.nomeCliente}
+                    onChange={handleChange}
+                    className="vendas-input"
+                  />
+                  <label>Método de Pagamento</label>
+                    <select
+                      name="metodoPagamento"
+                      value={formData.metodoPagamento}
+                      onChange={handleChange}
+                      className="vendas-input"
+                    >
+                      <option value="">Selecione uma opção</option>
+                      <option value="credito">Cartão de Crédito</option>
+                      <option value="debito">Cartão de Débito</option>
+                      <option value="pix">Dinheiro</option>
+                      <option value="dinheiro">PIX</option>
+                      <option value="vale_refeicao">Vale Refeição</option>
+                    </select>
+                  <label>Tipo de Venda</label>
+                  <select
+                  name="tipoVenda"
+                  value={formData.tipoVenda}
+                  onChange={handleChange}
+                  className="vendas-input"
+                >
+                  <option value="">Selecione o tipo de venda</option>
+                  <option value="venda">Venda</option>
+                  <option value="encomenda">Encomenda</option>
+                </select>
+                  <h3>Produtos</h3>
+                  {produtosEstoque.map((produto) => (
+                    <div key={produto.id}>
+                      <span>{produto.name}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoverProduto(produto.id)}
+                        className="vendas-button"
+                      >
+                        -
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleAdicionarProduto(produto.id)}
+                        className="vendas-button"
+                      >
+                        +
+                      </button>
+                      
+                    </div>
+                  ))}
+                  <button type="submit" className="vendas-button-finalizar">
+                    Finalizar Venda
+                  </button>
+                </form>
+              </div>
+              <div className="nota-fiscal-container">
+                <h3>Nota Fiscal</h3>
+                <table className="nota-fiscal-table">
+                  <thead>
+                    <tr>
+                      <th>Produto</th>
+                      <th>Quantidade</th>
+                      <th>Preço</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {formData.produtos.map((produto) => (
+                      <tr key={produto.id}>
+                        <td>{produto.name}</td>
+                        <td>{produto.quantidade}</td>
+                        <td>R${produto.price.toFixed(2)}</td>
+                        <td>R${(produto.price * produto.quantidade).toFixed(2)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="total-container">
+                  <h4>Total: R${calcularTotalVenda()}</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
-export default ControleVendasEncomendas;
+export default VendasPage;
