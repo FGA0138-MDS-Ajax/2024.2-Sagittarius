@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './clientes.css';
 import AdicionarCliente from './add_cliente';
+import Sidebar from '../sidebar/sidebar';
 
 
 function ControleClientes() {
@@ -67,6 +68,7 @@ function ControleClientes() {
 
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
+      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       <main className="main-content">
         <div className="controle-clientes-page" id="controle-clientes-page">
           <div className="controle-clientes-title" id="controle-clientes-title">

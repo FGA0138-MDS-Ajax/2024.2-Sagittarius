@@ -12,16 +12,10 @@ function Clientes() {
     }
   }, []);
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
-      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-      <main className="main-content">
-        <div>
-          <ControleClientes/>
-        </div>
-      </main>
+    <div>
+      <ControleClientes/>
     </div>
   );
 }

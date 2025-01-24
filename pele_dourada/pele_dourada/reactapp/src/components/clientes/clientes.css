@@ -112,3 +112,19 @@
 .editar-cliente-button:hover {
   background-color: #f15b1b;
 }
+
+.app-container {
+  display: flex;
+  transition: margin-left 0.4s ease, width 0.4s ease;
+}
+
+.app-container.collapsed .main-content {
+  margin-left: 85px; /* Largura da sidebar colapsada */
+}
+
+.main-content {
+  flex: 1; /* Faz o conteúdo principal ocupar todo o espaço disponível */
+  padding: 20px;
+  margin-left: 270px; /* Largura da sidebar expandida */
+  transition: margin-left 0.4s ease;
+}
