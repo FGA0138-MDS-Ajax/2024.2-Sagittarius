@@ -68,11 +68,12 @@
   background-color: #F3821B;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 25px;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 15px;
   position: relative;
+  margin-right: 30px;
 }
 
 .controle-estoque-add-button a {
@@ -103,8 +104,9 @@
 
 .controle-estoque-table th {
   border: 1px solid #CED4DA;
-  background-color: #ececec;
-  padding: 20px;
+  background-color: #F3821B;
+  padding: 15px;
+  color: white;
 }
 
 .controle-estoque-table td {
@@ -141,7 +143,7 @@
   width: 50%;
   max-width: 500px;
   position: relative;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(59, 59, 59, 0.925);
 }
 
 .close-modal {
@@ -153,7 +155,7 @@
   font-size: 35px; /* Aumente o tamanho para maior visibilidade */
   font-weight: bold; /* Deixe o "X" mais evidente */
   cursor: pointer;
-  color: #333; /* Cor do "X" */
+  color: #000000; /* Cor do "X" */
   transition: color 0.3s;
 }
 
