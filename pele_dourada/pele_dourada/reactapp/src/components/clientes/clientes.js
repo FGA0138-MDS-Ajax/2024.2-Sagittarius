@@ -75,6 +75,7 @@ function ControleClientes() {
             <h1>Controle de Clientes</h1>
           </div>
 
+          
           <div className="div-header-widgets">
             <div className="controle-clientes-search" id="controle-clientes-search">
               <input
@@ -90,7 +91,7 @@ function ControleClientes() {
                 className="controle-clientes-button"
                 id="controle-clientes-button"
                 onClick={() => setIsModalOpen(true)}
-              >
+                >
                 Adicionar Cliente
               </button>
             </div>

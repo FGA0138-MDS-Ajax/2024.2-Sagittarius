@@ -16,14 +16,30 @@
 
 .controle-clientes-search {
   margin-bottom: 15px;
+  position: relative;
 }
 
+.controle-clientes-search::before {
+  content: '\f002'; /* Código Unicode do ícone de lupa no Font Awesome */
+  font-family: 'Font Awesome 6 Free'; /* Certifique-se de que o Font Awesome está carregado */
+  font-weight: 900;
+  position: absolute;
+  left: 10px; /* Distância do lado esquerdo do input */
+  top: 47%; /* Centraliza verticalmente */
+  transform: translateY(-50%); /* Ajusta o posicionamento para o centro */
+  font-size: 14px;
+  color: #ccc;
+  pointer-events: none; /* Evita que o ícone interfira no clique */
+}
+
+
 .controle-clientes-input {
-  padding: 10px;
+  padding: 10px 10px 10px 35px; /* Adiciona espaçamento para acomodar o ícone */
   width: 100%;
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 14px;
+  box-sizing: border-box;
 }
 
 .controle-clientes-add-button {
@@ -34,9 +50,11 @@
   background-color: #F3821B;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 25px;
   cursor: pointer;
   border-radius: 5px;
+  font-size: 15px;
+  margin-right: 30px;
 }
 
 .controle-clientes-button:hover {
@@ -46,6 +64,8 @@
 .controle-clientes-table {
   width: 100%;
   border-collapse: collapse;
+  background-color: #F3821B;
+  color: white;
 }
 
 .controle-clientes-table th,
