@@ -1,23 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import './clientes.css';
-import AdicionarCliente from './add_cliente';
-import Sidebar from '../sidebar/sidebar';
-
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./clientes.css";
+import AdicionarCliente from "./add_cliente";
+import Sidebar from "../sidebar/sidebar";
 
 function ControleClientes() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [clientes, setClientes] = useState([]);
-  const [busca, setBusca] = useState('');
+  const [busca, setBusca] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [clienteEditando, setClienteEditando] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [sortConfig, setSortConfig] = useState({
+    key: "name",
+    direction: "asc",
+  });
 
   useEffect(() => {
     const fetchClientes = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/'); // esperando o enderçeo da api
+        const response = await axios.get("http://localhost:8000/api/");
         setClientes(response.data.clients);
       } catch (error) {
         console.error("Erro ao buscar clientes:", error);
@@ -31,38 +34,60 @@ function ControleClientes() {
 
   const handleBuscaChange = (e) => setBusca(e.target.value);
 
-  const clientesFiltrados = clientes.filter((cliente) =>
-    cliente.name.toLowerCase().includes(busca.toLowerCase())
-  );
+  const requestSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
 
-  // Função para editar cliente
+  const getSortIcon = (key) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === "asc" ? "▲" : "▼";
+    }
+    return "▲▼";
+  };
+
+  const clientesFiltrados = clientes
+    .filter((cliente) =>
+      cliente.name.toLowerCase().includes(busca.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === "asc" ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+
   const handleEditCliente = async (cliente) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/', cliente); // esperando o endereço da api
+      const response = await axios.post("http://localhost:8000/api/", cliente); // esperando api
       alert(response.data);
       setIsEditModalOpen(false);
       setClienteEditando(null);
-      // Atualiza os clientes
       const updatedClientes = clientes.map((c) =>
         c.name === cliente.name ? { ...c, ...cliente } : c
       );
       setClientes(updatedClientes);
     } catch (error) {
       console.error("Erro ao atualizar cliente:", error);
-      alert('Erro ao atualizar o cliente');
+      alert("Erro ao atualizar o cliente");
     }
   };
 
-  
   const handleRemoveCliente = async (cliente) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/', { // esperando enderçeo da pi
+      const response = await axios.post("http://localhost:8000/api/", { // esperando api
         name: cliente.name,
-      });
+      }); 
       window.location.reload();
     } catch (error) {
       console.error("Erro ao deletar cliente:", error);
-      alert('Erro ao deletar o cliente');
+      alert("Erro ao deletar o cliente");
     }
   };
 
@@ -75,9 +100,11 @@ function ControleClientes() {
             <h1>Controle de Clientes</h1>
           </div>
 
-          
           <div className="div-header-widgets">
-            <div className="controle-clientes-search" id="controle-clientes-search">
+            <div
+              className="controle-clientes-search"
+              id="controle-clientes-search"
+            >
               <input
                 className="controle-clientes-input"
                 type="text"
@@ -86,12 +113,15 @@ function ControleClientes() {
                 onChange={handleBuscaChange}
               />
             </div>
-            <div className="controle-clientes-add-button" id="controle-clientes-add-button">
+            <div
+              className="controle-clientes-add-button"
+              id="controle-clientes-add-button"
+            >
               <button
                 className="controle-clientes-button"
                 id="controle-clientes-button"
                 onClick={() => setIsModalOpen(true)}
-                >
+              >
                 Adicionar Cliente
               </button>
             </div>
@@ -103,9 +133,15 @@ function ControleClientes() {
             <table className="controle-clientes-table">
               <thead>
                 <tr>
-                  <th>Cliente</th>
-                  <th>Telefone</th>
-                  <th>Endereço</th>
+                  <th onClick={() => requestSort("name")}>
+                    Cliente {getSortIcon("name")}
+                  </th>
+                  <th onClick={() => requestSort("phone")}>
+                    Telefone {getSortIcon("phone")}
+                  </th>
+                  <th onClick={() => requestSort("address")}>
+                    Endereço {getSortIcon("address")}
+                  </th>
                   <th>Ações</th>
                 </tr>
               </thead>
@@ -138,11 +174,19 @@ function ControleClientes() {
             </table>
           )}
 
-          {/* Modal de Adicionar Cliente */}
           {isModalOpen && (
-            <div className={`modal-overlay ${isModalOpen ? 'open' : ''}`} onClick={() => setIsModalOpen(false)}>
-              <div className={`modal-content ${isModalOpen ? 'open' : ''}`} onClick={(e) => e.stopPropagation()}>
-                <button className="close-modal" onClick={() => setIsModalOpen(false)}>
+            <div
+              className={`modal-overlay ${isModalOpen ? "open" : ""}`}
+              onClick={() => setIsModalOpen(false)}
+            >
+              <div
+                className={`modal-content ${isModalOpen ? "open" : ""}`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  className="close-modal"
+                  onClick={() => setIsModalOpen(false)}
+                >
                   &times;
                 </button>
                 <AdicionarCliente />
@@ -150,10 +194,15 @@ function ControleClientes() {
             </div>
           )}
 
-          {/* Modal de Editar Cliente */}
           {isEditModalOpen && (
-            <div className="modal-overlay" onClick={() => setIsEditModalOpen(false)}>
-              <div className="modal-content editar-cliente-page" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="modal-overlay"
+              onClick={() => setIsEditModalOpen(false)}
+            >
+              <div
+                className="modal-content editar-cliente-page"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <h2 className="editar-cliente-title">Editar Cliente</h2>
                 <form
                   className="editar-cliente-form"
@@ -172,12 +221,18 @@ function ControleClientes() {
                       className="editar-cliente-input"
                       value={clienteEditando.name}
                       onChange={(e) =>
-                        setClienteEditando({ ...clienteEditando, name: e.target.value })
+                        setClienteEditando({
+                          ...clienteEditando,
+                          name: e.target.value,
+                        })
                       }
                     />
                   </div>
                   <div className="editar-cliente-field">
-                    <label className="editar-cliente-label" htmlFor="edit-phone">
+                    <label
+                      className="editar-cliente-label"
+                      htmlFor="edit-phone"
+                    >
                       Telefone
                     </label>
                     <input
@@ -186,12 +241,18 @@ function ControleClientes() {
                       className="editar-cliente-input"
                       value={clienteEditando.phone}
                       onChange={(e) =>
-                        setClienteEditando({ ...clienteEditando, phone: e.target.value })
+                        setClienteEditando({
+                          ...clienteEditando,
+                          phone: e.target.value,
+                        })
                       }
                     />
                   </div>
                   <div className="editar-cliente-field">
-                    <label className="editar-cliente-label" htmlFor="edit-address">
+                    <label
+                      className="editar-cliente-label"
+                      htmlFor="edit-address"
+                    >
                       Endereço
                     </label>
                     <input
@@ -200,7 +261,10 @@ function ControleClientes() {
                       className="editar-cliente-input"
                       value={clienteEditando.address}
                       onChange={(e) =>
-                        setClienteEditando({ ...clienteEditando, address: e.target.value })
+                        setClienteEditando({
+                          ...clienteEditando,
+                          address: e.target.value,
+                        })
                       }
                     />
                   </div>
@@ -211,7 +275,10 @@ function ControleClientes() {
                   </div>
                 </form>
                 <div className="div-editar-cliente-button">
-                  <button onClick={() => setIsEditModalOpen(false)} className="editar-cliente-button">
+                  <button
+                    onClick={() => setIsEditModalOpen(false)}
+                    className="editar-cliente-button"
+                  >
                     Cancelar
                   </button>
                 </div>

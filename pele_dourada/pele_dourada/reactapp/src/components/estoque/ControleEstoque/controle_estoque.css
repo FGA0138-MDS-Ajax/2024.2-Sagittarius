@@ -346,3 +346,7 @@
     width: 100%; /* Ajusta para 100% em telas pequenas */
   }
 }
+
+th {
+  cursor: pointer;
+}

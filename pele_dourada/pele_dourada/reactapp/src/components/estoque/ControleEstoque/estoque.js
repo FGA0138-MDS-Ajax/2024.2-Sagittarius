@@ -12,6 +12,7 @@ function ControleEstoque() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [produtoEditando, setProdutoEditando] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
   useEffect(() => {
     const fetchProdutos = async () => {
@@ -30,18 +31,46 @@ function ControleEstoque() {
 
   const handleBuscaChange = (e) => setBusca(e.target.value);
 
-  const produtosFiltrados = produtos.filter((produto) =>
+  const sortedProdutos = [...produtos].sort((a, b) => {
+    if (sortConfig.key) {
+      const aKey = a[sortConfig.key];
+      const bKey = b[sortConfig.key];
+
+      if (aKey < bKey) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (aKey > bKey) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+    }
+    return 0;
+  });
+
+  const produtosFiltrados = sortedProdutos.filter((produto) =>
     produto.name.toLowerCase().includes(busca.toLowerCase())
   );
 
-  // Função para editar produto
+  const requestSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getSortIcon = (key) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === 'asc' ? '▲' : '▼';
+    }
+    return '▲▼';
+  };
+
   const handleEditProduct = async (produto) => {
     try {
       const response = await axios.post('http://localhost:8000/api/product/update/', produto);
       alert(response.data);
       setIsEditModalOpen(false);
       setProdutoEditando(null);
-      // Atualiza os produtos
       const updatedProdutos = produtos.map((p) =>
         p.name === produto.name ? { ...p, ...produto } : p
       );
@@ -52,15 +81,11 @@ function ControleEstoque() {
     }
   };
 
-  // Função para remover produto
   const handleRemoveProduct = async (produto) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/product/delete/', {
+      await axios.post('http://localhost:8000/api/product/delete/', {
         name: produto.name,
       });
-      // alert(response.data);
-      // Atualiza a lista de produtos
-      // setProdutos(produtos.filter((p) => p.name !== produto.name));
       window.location.reload();
     } catch (error) {
       console.error("Erro ao deletar produto:", error);
@@ -98,9 +123,15 @@ function ControleEstoque() {
             <table className="controle-estoque-table">
               <thead>
                 <tr>
-                  <th>Produto</th>
-                  <th>Preço</th>
-                  <th>Quantidade</th>
+                  <th onClick={() => requestSort('name')}>
+                    Produto {getSortIcon('name')}
+                  </th>
+                  <th onClick={() => requestSort('price')}>
+                    Preço {getSortIcon('price')}
+                  </th>
+                  <th onClick={() => requestSort('qtd')}>
+                    Quantidade {getSortIcon('qtd')}
+                  </th>
                   <th>Ações</th>
                 </tr>
               </thead>
@@ -109,16 +140,19 @@ function ControleEstoque() {
                   <tr key={produto.id}>
                     <td>{produto.name}</td>
                     <td>R$ {produto.price.toFixed(2)}</td>
-                    <td><div
-                      className={`quantidade-container ${produto.qtd > 20
-                        ? "alta"
-                        : produto.qtd > 10
-                          ? "media"
-                          : "baixa"
+                    <td>
+                      <div
+                        className={`quantidade-container ${
+                          produto.qtd > 20
+                            ? "alta"
+                            : produto.qtd > 10
+                              ? "media"
+                              : "baixa"
                         }`}
-                    >
-                      {produto.qtd}
-                    </div></td>
+                      >
+                        {produto.qtd}
+                      </div>
+                    </td>
                     <td>
                       <button
                         className='controle-estoque-edit-button'
@@ -141,7 +175,6 @@ function ControleEstoque() {
             </table>
           )}
 
-          {/* Modal de Adicionar Produto */}
           {isModalOpen && (
             <div className={`modal-overlay ${isModalOpen ? 'open' : ''}`} onClick={() => setIsModalOpen(false)}>
               <div className={`modal-content ${isModalOpen ? 'open' : ''}`} onClick={(e) => e.stopPropagation()}>
@@ -153,8 +186,7 @@ function ControleEstoque() {
             </div>
           )}
 
-        {
-          isEditModalOpen && (
+          {isEditModalOpen && (
             <div className="modal-overlay" onClick={() => setIsEditModalOpen(false)}>
               <div
                 className="modal-content editar-produto-page"
@@ -202,7 +234,7 @@ function ControleEstoque() {
                       }
                     />
                   </div>
-                  
+
                   <div className="div-editar-produto-button">
                     <button type="submit" className="editar-produto-button">
                       Salvar
@@ -219,12 +251,11 @@ function ControleEstoque() {
                 </div>
               </div>
             </div>
-          )
-        }
+          )}
 
-        </div >
-      </main >
-    </div >
+        </div>
+      </main>
+    </div>
   );
 }
 
