@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 
 from pele_dourada.settings import SECRET_KEY
 
+
+
 class RegisterClientView(APIView):
     @swagger_auto_schema(
         operation_description="Registra um novo cliente",

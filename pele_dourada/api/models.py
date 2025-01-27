@@ -57,10 +57,12 @@ class Order(PedidoIDGenerator):
                'products' : self.products,
                'total' : self.total_price()}
 
+
 # collections
 stock_collection = db.stock
 order_collection = db.order
 user_collection = db.user
+client_collection = db.client
 
 # CRUD
 produto1 = Product('batata', 5, 2)
