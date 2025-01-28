@@ -158,8 +158,8 @@ def insert_client(doc):
     if get_client(doc.name) is None:  # Verifica se o cliente já existe pelo nome
         client_collection.insert_one(doc.to_dict())
         print(f"Cliente {doc.name} inserido com sucesso!")
-        return
-    print(f"Cliente {doc.name} já existe!")
+    else:
+        print(f"Cliente {doc.name} já existe!")
 
 # Ler Cliente
 def get_client(name):
@@ -171,9 +171,7 @@ def get_all_clients():
 
 # Atualizar Cliente
 def update_client(name, new_name=None, new_phone=None, new_address=None):
-    update = {
-        '$set': {}
-    }
+    update = {'$set': {}}
     if new_name is not None:
         update['$set']['name'] = new_name
     if new_phone is not None:
@@ -214,4 +212,5 @@ print(clients)
 
 # Deletar um Cliente
 delete_client("João Paulo")
+
 
