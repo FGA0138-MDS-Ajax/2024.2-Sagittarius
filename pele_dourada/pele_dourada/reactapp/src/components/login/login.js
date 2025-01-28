@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import './login.css';
 import logo from '../../assets/logo.svg'; 
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
   const navigate = useNavigate();
@@ -39,7 +41,12 @@ function Login() {
     
     
     if (!username || !password) {
-      setError('Por favor, preencha todos os campos.');
+      toast.error('Por favor, preencha todos os campos.', {
+        position: 'top-left',
+        autoClose: 5000,
+        theme: 'colored',
+        transition: Bounce,
+      });
       return;
     }
 
@@ -62,7 +69,13 @@ function Login() {
           localStorage.setItem('password', password);
         }
         
-        setSuccess('Login realizado com sucesso!');
+        toast.success('Login realizado com sucesso!', {
+          position: 'top-left',
+          autoClose: 5000,
+          theme: 'colored',
+          transition: Bounce,
+        });
+
         setTimeout(() => {
           navigate('/estoque'); 
         }, 2000);
@@ -77,7 +90,14 @@ function Login() {
 
       try {
         const response = await axios.post('http://127.0.0.1:8000/api/register/', { username, password });
-        setSuccess('Cadastro realizado com sucesso!');
+        
+        toast.success('Cadastro realizado com sucesso!', {
+          position: 'top-left',
+          autoClose: 5000,
+          theme: 'colored',
+          transition: Bounce,
+        });
+
         setFormType('login'); // volta para a tela de login após o registro
       } catch (err) {
         setError(err.response?.data?.error || 'Erro ao cadastrar.');
@@ -85,16 +105,32 @@ function Login() {
     } 
     else if (formType === 'passwordRecovery') {
       if (password !== confirmPassword) {
-        setError('As senhas não coincidem.');
+        toast.error('As senhas não coincidem.', {
+          position: 'top-left',
+          autoClose: 5000,
+          theme: 'colored',
+          transition: Bounce,
+        });
+
         return;
       }
 
       try {
         const response = await axios.post('http://127.0.0.1:8000/api/updatepwd/', { username, password, confirmPassword });
-        setSuccess(response.data.success || 'Senha redefinida com sucesso!');
-        setFormType('login'); // volta para a tela de login após a redefinição de senha
-      } catch (err) {
-        setError(err.response?.data?.error || 'Erro ao redefinir senha.');
+        toast.success(response.data.success || 'Senha redefinida com sucesso!', {
+          position: 'top-left',
+          autoClose: 5000,
+          theme: 'colored',
+          transition: Bounce,
+        });
+        setFormType('login');
+        } catch (err) {
+          toast.error(err.response?.data?.error || 'Erro ao redefinir senha.', {
+            position: 'top-left',
+            autoClose: 5000,
+            theme: 'colored',
+            transition: Bounce,
+          });
       }
     }
   };
@@ -213,6 +249,7 @@ function Login() {
           )}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
