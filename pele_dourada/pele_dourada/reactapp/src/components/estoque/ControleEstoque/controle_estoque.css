@@ -144,6 +144,8 @@
   max-width: 500px;
   position: relative;
   box-shadow: 0 4px 8px rgba(59, 59, 59, 0.925);
+  display: flex;
+  justify-content: center;
 }
 
 .close-modal {
@@ -267,7 +269,7 @@
   flex-direction: column;
   justify-content: center; /* Centraliza verticalmente */
   align-items: center; /* Centraliza horizontalmente */
-  height: 100vh; /* Define altura total da tela */
+  height: 600px; /* Define altura total da tela */
   padding: 20px;
   max-width: 800px;
   margin: 0 auto;
@@ -291,6 +293,7 @@
 }
 
 .editar-produto-field {
+  margin-left: 60px;
   margin-bottom: 25px;
   width: 100%; /* Garante que os campos ocupem o espaço necessário */
 }
