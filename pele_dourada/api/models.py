@@ -61,7 +61,7 @@ class Order(PedidoIDGenerator):
 stock_collection = db.stock
 order_collection = db.order
 user_collection = db.user
-
+client_collection = db.client
 # CRUD
 user = User('admin', 'admin')
 # criar documentos
@@ -151,3 +151,67 @@ def delete_order(number):
     return
 
 insert_user(user)
+
+
+# Criar Cliente
+def insert_client(doc):
+    if get_client(doc.name) is None:  # Verifica se o cliente já existe pelo nome
+        client_collection.insert_one(doc.to_dict())
+        print(f"Cliente {doc.name} inserido com sucesso!")
+        return
+    print(f"Cliente {doc.name} já existe!")
+
+# Ler Cliente
+def get_client(name):
+    return client_collection.find_one({'name': name})
+
+# Ler Todos os Clientes
+def get_all_clients():
+    return list(client_collection.find())
+
+# Atualizar Cliente
+def update_client(name, new_name=None, new_phone=None, new_address=None):
+    update = {
+        '$set': {}
+    }
+    if new_name is not None:
+        update['$set']['name'] = new_name
+    if new_phone is not None:
+        update['$set']['phone'] = new_phone
+    if new_address is not None:
+        update['$set']['address'] = new_address
+    
+    result = client_collection.update_one({'name': name}, update)
+    if result.modified_count > 0:
+        print(f"Cliente {name} atualizado com sucesso!")
+    else:
+        print(f"Nenhuma atualização feita para o cliente {name}.")
+
+# Deletar Cliente
+def delete_client(name):
+    result = client_collection.delete_one({'name': name})
+    if result.deleted_count > 0:
+        print(f"Cliente {name} deletado com sucesso!")
+    else:
+        print(f"Cliente {name} não encontrado.")
+
+# Testando 
+
+# Registrar um Cliente
+new_client = Client(name="João Paulo", phone="123456789", address="Rua A, 123")
+insert_client(new_client)
+
+# Ler um Cliente
+client = get_client("João Paulo")
+print(client)
+
+# Atualizar um Cliente
+update_client("João Paulo", new_phone="987654321", new_address="Rua B, 456")
+
+# Ler todos os Clientes
+clients = get_all_clients()
+print(clients)
+
+# Deletar um Cliente
+delete_client("João Paulo")
+
