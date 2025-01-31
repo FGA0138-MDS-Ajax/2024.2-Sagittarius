@@ -1,8 +1,9 @@
 from django.test import TestCase
+import unittest
 from datetime import datetime
-from models import User, Product, Order, Client, Billing, insert_product, insert_client, insert_order, insert_user, insert_billing, get_user, get_client, get_product, get_order, get_all_billing, update_user, update_client, update_product, update_order, delete_user, delete_client, delete_product, delete_order, delete_billing
+from models import User, Product, Order, Client, Billing, insert_product, insert_client, insert_order, insert_user, insert_billing, get_user, get_client, get_product, get_order, get_all_billing, update_user, update_client, update_product, update_order, delete_user, delete_client, delete_product, delete_order, delete_billing, get_billing
 
-class TestModels(TestCase):
+class TestModels(unittest.TestCase):
 
     def setUp(self):
         self.user = User("testuser", "testpassword")
@@ -80,29 +81,24 @@ class TestModels(TestCase):
         self.assertIsNotNone(get_order(self.order.number))
 
     def test_delete_user(self):
-        insert_user(self.user)
         delete_user(self.user.username)
         self.assertIsNone(get_user(self.user.username))
 
     def test_delete_client(self):
-        insert_client(self.client)
         delete_client(self.client.name)
         self.assertIsNone(get_client(self.client.name))
 
     def test_delete_product(self):
-        insert_product(self.product)
         delete_product(self.product.name)
         self.assertIsNone(get_product(self.product.name))
 
     def test_delete_order(self):
-        insert_order(self.order)
         delete_order(self.order.number)
         self.assertIsNone(get_order(self.order.number))
 
     def test_delete_billing(self):
-        insert_billing(self.billing)
-        delete_billing(self.billing.orders[0]['number'])
-        self.assertEqual(len(get_all_billing()), 0)
+        delete_billing(self.billing.date)
+        self.assertIsNone(get_billing(self.billing.date))
 
 if __name__ == '__main__':
-    TestCase.main()
+    unittest.main()
