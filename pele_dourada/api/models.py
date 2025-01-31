@@ -42,9 +42,13 @@ class Product():
                 'qtd' : self.qtd}
     
 class Order(PedidoIDGenerator):
-    def __init__(self, products):
+    def __init__(self, products, name, tipe, payment):
         self.number = self.gerar_codigo_pedido()
+        self.name = name
+        self.tipe = tipe
+        self.payment = payment
         self.products = products
+        self.date = datetime.now().strftime('%H:%M:%S')
 
     def total_price(self):
         order_price = 0
@@ -53,9 +57,25 @@ class Order(PedidoIDGenerator):
         return order_price
     
     def to_dict(self):
-        return{'number' : self.number, 
-               'products' : self.products,
-               'total' : self.total_price()}
+        return{'tipe' : self.tipe,
+               'number' : self.number,
+               'name' : self.name,
+               'total' : self.total_price(),
+               'date' : self.date,
+               'payment' : self.payment,
+               'products' : self.products}
+    
+
+class Client():
+    def __init__(self, name, phone, address):
+        self.name = name
+        self.phone = phone
+        self.address = address
+
+    def to_dict(self):
+        return {'name': self.name,
+                'phone': self.phone,
+                'address': self.address}
 
 # collections
 stock_collection = db.stock
@@ -124,17 +144,25 @@ def update_product(name, new_name=None, new_price=None, new_qtd=None):
     stock_collection.update_one({'name' : name}, update)
     return
 
-def update_order(number, index, new_name=None, new_price=None, new_qtd=None):
+def update_order(number, index=None, new_product=None, new_price=None, new_qtd=None, new_name=None, new_tipe=None, new_payment=None):
     update = {
         '$set': {}
     }
+    if index is not None:
+        if new_product is not None:
+            update['$set']['products.'+str(index)+'.name'] = new_product
+        if new_price is not None:
+            update['$set']['products.'+str(index)+'.price'] = new_price
+        if new_qtd is not None:
+            update['$set']['products.'+str(index)+'.qtd'] = new_qtd        
     if new_name is not None:
-        update['$set']['products.'+str(index)+'.name'] = new_name
-    if new_price is not None:
-        update['$set']['products.'+str(index)+'.price'] = new_price
-    if new_qtd is not None:
-        update['$set']['products.'+str(index)+'.qtd'] = new_qtd  
-    order_collection.update_one({'number': number}, update)    
+        update['$set']['name'] = new_name
+    if new_tipe is not None:
+        update['$set']['tipe'] = new_tipe
+    if new_payment is not None:
+        update['$set']['payment'] = new_payment
+     
+    order_collection.update_one({'number': number}, update)
     return
 
 #deletar documentos
@@ -196,7 +224,7 @@ def delete_client(name):
 # Testando 
 
 # Registrar um Cliente
-new_client = Client(name="João Paulo", phone="123456789", address="Rua A, 123")
+new_client = client(name="João Paulo", phone="123456789", address="Rua A, 123")
 insert_client(new_client)
 
 # Ler um Cliente
