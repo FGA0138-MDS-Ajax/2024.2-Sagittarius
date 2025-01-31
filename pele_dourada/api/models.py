@@ -81,7 +81,7 @@ class Client():
 class Billing():
     def __init__(self, orders):
         self.orders = orders
-        self.date = datetime.strptime(datetime.now().date())
+        self.date = datetime.now().date()
     
     def total_billing(self):
         billing_price = 0
@@ -90,7 +90,7 @@ class Billing():
         return billing_price
     
     def to_dict(self):
-        return {'date' : self.date,
+        return {'date' : self.date.isoformat(),
                 'orders' : self.orders,
                 'total' : self.total_billing()}
 
@@ -98,8 +98,9 @@ class Billing():
 stock_collection = db.stock
 order_collection = db.order
 user_collection = db.user
-client_collection = db.client
+client_collection = db.clients
 billing_collection = db.billing
+
 # CRUD
 # criar documentos
 def insert_product(doc):
@@ -153,6 +154,9 @@ def get_order(number):
 
 def get_all_orders():
     return list(order_collection.find())
+
+def get_billing(date):
+    return billing_collection.find_one({'date' : date})
 
 def get_all_billing():
     return list(billing_collection.find())
@@ -241,8 +245,8 @@ def delete_order(number):
     order_collection.delete_one({'number' : number})
     return
 
-def delete_billing(number):
-    billing_collection.delete_one({'number' : number})
+def delete_billing(date):
+    billing_collection.delete_one({'date' : date})
     return
 
 
