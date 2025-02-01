@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from pele_dourada.settings import SECRET_KEY
 
 
-# Create your views here.
+
 class LoginView(APIView):
     @swagger_auto_schema(
         operation_description="Realiza login de usuário",
@@ -41,15 +41,19 @@ class LoginView(APIView):
 
         new_user = User(username, password)
 
-        user = get_user(new_user)
+        user = get_user(new_user.username)
 
         if not user:
             return Response({
                 'error': 'Usuário não encontrado',
             }, status=status.HTTP_404_NOT_FOUND
             )
+        #converter a senha de str para bytes
+        password_bytes = password.encode('utf-8')
+
+        hashed_password_bytes = user['password'].encode('utf-8')
         
-        if not bcrypt.checkpw(password.encode('utf-8'), user['password']):
+        if not bcrypt.checkpw(password_bytes, hashed_password_bytes):
             return Response({
                 'error': 'Senha inválida',
             }, status=status.HTTP_400_BAD_REQUEST
@@ -90,9 +94,9 @@ class RegisterView(APIView):
         
         if password != password2:
             return Response({
-                'error': 'As senhas não coincidem',
-            }, status=status.HTTP_400_BAD_REQUEST
-            )
+                 'error': 'As senhas não coincidem',
+             }, status=status.HTTP_400_BAD_REQUEST
+             )
         
         hash_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         
@@ -104,7 +108,7 @@ class RegisterView(APIView):
 
         user_body = {
             'username': username,
-            'password': hash_password
+            'password': hash_password.decode('utf-8')
         }
 
 
@@ -162,11 +166,11 @@ class UpdatePasswordView(APIView):
 
     def post(self, request):
         user = request.user
-        old_password = request.data.get("old_password")
-        new_password = request.data.get("new_password")
-        new_password2 = request.data.get("new_password2")
+        username = request.data.get("username")
+        old_password = request.data.get("password")
+        new_password = request.data.get("confirmPassword")
 
-        if new_password != new_password2:
+        if old_password != new_password:
             return Response({
                 'error': 'As senhas não coincidem',
             }, status=status.HTTP_400_BAD_REQUEST
@@ -174,13 +178,21 @@ class UpdatePasswordView(APIView):
 
         if not bcrypt.checkpw(old_password.encode('utf-8'), user.password.encode('utf-8')):
             return Response({
-                'error': 'Senha antiga inválida',
+            'error': 'Senha antiga inválida',
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
         hash_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
-        user.password = hash_password
-        user.save()
+        try:
+            update_user(username, new_pwd=hash_password)
+        except Exception as e:
+            print(e)
+            return Response({
+                'error': 'Erro ao atualizar senha',
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        
 
         return Response({
             'success': 'Senha atualizada com sucesso',
