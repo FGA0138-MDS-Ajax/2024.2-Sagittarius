@@ -72,10 +72,10 @@ O desenvolvimento do projeto segue uma abordagem ágil combinando elementos do *
 |:-------------:|:------------------------------------:|:--------------------------:|
 | 231026509     | Matheus de Alcântara                | Back-end / Banco de Dados  |
 | 231026590     | Vilmar José Fagundes dos Passos Jr. | Back-end / Banco de Dados  |
-| 222015159     | Lucas Guimarães Borges              | Back-end / Front-end                  |
+| 222015159     | Lucas Guimarães Borges              | Back-end / Front-end       |
 | 222006150     | Micael Kauan Freitas Chagas         | Front-end                  |
 | 231026358     | Gabriel Flores Coelho               | Banco de Dados             |
-| 221007635     | André Gustavo Rabelo do Nascimento | Front-end                  |
+| 221007635     | André Gustavo Rabelo do Nascimento  | Front-end                  |
 | 231026400     | João Victor Pires Sapiência Santos  | Back-end                   |
 | 231026302     | Caio Lucas Messias Sabino           | Back-end                   |
 | 221008196     | João Victor Sousa Soares e Silva    | Front-end                  |
@@ -83,8 +83,58 @@ O desenvolvimento do projeto segue uma abordagem ágil combinando elementos do *
 
 ---
 
-## Como Contribuir
+## Como Acessar
 
 1. Clone o repositório:
    ```bash
-   git clone <URL_DO_REPOSITORIO>
+   git clone https://github.com/FGA0138-MDS-Ajax/2024.2-Sagittarius.git
+   ```
+
+2. Navegue até o diretório do projeto:
+   ```bash
+   cd pele_dourada
+   ```
+
+3. Crie e ative um ambiente virtual:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # No Windows use `venv\Scripts\activate`
+   ```
+
+4. Instale as dependências do backend:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+5. Execute as migrações do banco de dados:
+   ```bash
+   python manage.py migrate
+   ```
+
+6. Inicie o servidor de desenvolvimento do backend:
+   ```bash
+   python manage.py runserver
+   ```
+
+7. Instale o Node.js e o npm (se ainda não estiverem instalados):
+   - [Node.js](https://nodejs.org/)
+
+8. Navegue até o diretório do frontend:
+   ```bash
+   cd pele_dourada/frontend
+   ```
+
+9. Instale as dependências do React:
+   ```bash
+   npm install
+   ```
+
+10. Inicie o servidor de desenvolvimento do frontend:
+    ```bash
+    npm start
+    ```
+
+11. Acesse o projeto no navegador:
+    ```
+    http://127.0.0.1:8000/ (backend)
+    http://localhost:3000/ (frontend)
