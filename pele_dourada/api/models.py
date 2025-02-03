@@ -94,12 +94,17 @@ class Billing():
                 'orders' : self.orders,
                 'total' : self.total_billing()}
 
+
 # collections
 stock_collection = db.stock
 order_collection = db.order
 user_collection = db.user
+<<<<<<< HEAD
 client_collection = db.clients
 billing_collection = db.billing
+=======
+client_collection = db.client
+>>>>>>> c1d2ba542a03355d0d564d6a7080bc628d8c2afe
 
 # CRUD
 # criar documentos
