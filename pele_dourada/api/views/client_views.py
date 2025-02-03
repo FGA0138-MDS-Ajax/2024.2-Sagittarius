@@ -8,7 +8,6 @@ from rest_framework.views import APIView
 from pele_dourada.settings import SECRET_KEY
 
 
-
 class RegisterClientView(APIView):
     @swagger_auto_schema(
         operation_description="Registra um novo cliente",
@@ -34,7 +33,7 @@ class RegisterClientView(APIView):
         new_client = Client(name, number, endereco)
 
         try:
-            insert_doc(client_collection, new_client)
+            insert_client(new_client)
         except Exception as e:
             return Response({
                 'error': 'Erro ao registrar cliente',
@@ -98,10 +97,7 @@ class DeleteClientView(APIView):
                 'error': 'Por favor, insira o nome do cliente',
             }, status=status.HTTP_400_BAD_REQUEST
             )
-
-        client = client(name, 0, 0)
-
-        client = get_client(client)
+        client = delete_client(name)
 
         if not client:
             return Response({
@@ -123,28 +119,23 @@ class DeleteClientView(APIView):
         }, status=status.HTTP_200_OK
         )
     
-class GetClientView(APIView):
+class GetClientsView(APIView):
     def get(self, request):
-        name = request.data.get("name"),
-        number = request.data.get("number")
-
-        if not name and not number:
-            return Response({
-                'error': 'Por favor, insira o nome ou número do cliente',
-            }, status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        client = get_client(Client(name, number, 0))
-
-        if not client:
+        clients = []
+        clients_list = get_all_clients()
+        for client in clients_list:
+            clients.append({
+                'name': client['name'],
+                'phone': client['phone'],
+                'endereco': client['address'],
+            })
+        if not clients:
             return Response({
                 'error': 'Cliente não encontrado',
             }, status=status.HTTP_404_NOT_FOUND
             )
         
         return Response({
-            'name': client.name,
-            'number': client.number,
-            'endereco': client.endereco,    
+            'clients': clients
         }, status=status.HTTP_200_OK
         )

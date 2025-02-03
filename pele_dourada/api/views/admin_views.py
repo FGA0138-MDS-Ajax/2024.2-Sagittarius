@@ -13,7 +13,6 @@ from rest_framework.views import APIView
 from pele_dourada.settings import SECRET_KEY
 
 
-
 class LoginView(APIView):
     @swagger_auto_schema(
         operation_description="Realiza login de usuário",
@@ -90,14 +89,8 @@ class RegisterView(APIView):
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
-        password2 = request.data.get("password2")
-        
-        if password != password2:
-            return Response({
-                 'error': 'As senhas não coincidem',
-             }, status=status.HTTP_400_BAD_REQUEST
-             )
-        
+        confirm_password = request.data.get("confirmPassword")
+
         hash_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         
         if user_collection.find_one({"username": username}):

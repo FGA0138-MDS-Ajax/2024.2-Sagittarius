@@ -20,13 +20,9 @@ from django.contrib import admin
 from django.urls import path, re_path
 from api.views.admin_views import LoginView, RegisterView, UpdatePasswordView
 from api.views.product_views import RegisterProductView, UpdateProductView, ListProductView, DeleteProductView
-<<<<<<< HEAD
-from rest_framework.permissions import AllowAny 
-=======
-from api.views.client_views import RegisterClientView, UpdateClientView, DeleteClientView, GetClientView
+from api.views.client_views import RegisterClientView, UpdateClientView, DeleteClientView, GetClientsView
+from api.views.order_views import RegisterOrderView
 from rest_framework.permissions import AllowAny
-from django.views.generic import TemplateView   
->>>>>>> c1d2ba542a03355d0d564d6a7080bc628d8c2afe
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -54,7 +50,8 @@ urlpatterns = [
     path('api/client/register/', RegisterClientView.as_view(), name='register_client'),
     path('api/client/update/', UpdateClientView.as_view(), name='update_client'),
     path('api/client/delete/', DeleteClientView.as_view(), name='delete_client'),
-    path('api/client/get/', GetClientView.as_view(), name='get_client'),
+    path('api/client/get/', GetClientsView.as_view(), name='get_clients'),
+    path('api/order/register/', RegisterOrderView.as_view(), name='register_order'),
 
     # Documentação da API
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
