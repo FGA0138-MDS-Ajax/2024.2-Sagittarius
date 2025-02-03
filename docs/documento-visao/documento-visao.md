@@ -48,9 +48,10 @@ Esses problemas são agravados pela ausência de uma solução tecnológica espe
 A implementação dessa solução permitirá maior controle operacional, redução de erros e economia de tempo, contribuindo diretamente para o crescimento e sustentabilidade do negócio. 
 
 
-![](https://web-api.textin.com/ocr_image/external/7dad51ece9f91740.jpg)
-
-Figura 1 – Diagrama de Ishikawa 
+<div style="text-align:center;">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/img/DiagramaDeIshikawa.png" alt="Diagrama de Ishikawa">
+    <p>Figura 1 - Diagrama de classes</p>
+</div>
 
 ### 1.2 Declaração de Posição do Produto 
 
