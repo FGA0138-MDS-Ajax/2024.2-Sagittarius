@@ -21,7 +21,8 @@ from django.urls import path, re_path
 from api.views.admin_views import LoginView, RegisterView, UpdatePasswordView, LogoutView
 from api.views.product_views import RegisterProductView, UpdateProductView, ListProductView, DeleteProductView
 from rest_framework.permissions import AllowAny 
-from api.views.client_views import RegisterClientView, UpdateClientView, DeleteClientView, GetClientView
+from api.views.order_views import RegisterOrderView
+from api.views.client_views import RegisterClientView, UpdateClientView, DeleteClientView, GetClientsView
 from rest_framework.permissions import AllowAny
 from django.views.generic import TemplateView   
 
