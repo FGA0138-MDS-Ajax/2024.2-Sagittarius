@@ -1,0 +1,162 @@
+/* Página de Vendas */
+.vendas-page {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.vendas-title {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+}
+
+.vendas-button {
+  background-color: #F3821B;
+  color: white;
+  border: none;
+  padding: 2px 4px;
+  margin: 10px 0;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 5px;
+  margin: 4px 2px;
+}
+
+.vendas-button:hover {
+  background-color: #F3821B;
+}
+
+.vendas-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.vendas-table th,
+.vendas-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.vendas-table th {
+  background-color: #F3821B;
+  color: white;
+}
+
+.vendas-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.vendas-table tr:hover {
+  background-color: #ddd;
+}
+
+/* Modal */
+.vendas-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.vendas-modal-content {
+  background: white;
+  width: 60%;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.vendas-close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #aaa;
+}
+
+.vendas-close-modal:hover {
+  color: #333;
+}
+
+.vendas-modal-body {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.vendas-form-container {
+  width: 50%;
+}
+
+.vendas-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.vendas-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.nota-fiscal-container {
+  width: 45%;
+  background-color: #f7f7f7;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nota-fiscal-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.nota-fiscal-table th,
+.nota-fiscal-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.nota-fiscal-table th {
+  background-color: #F3821B;
+  color: white;
+}
+
+.total-container {
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: right;
+  font-size: 1.2rem;
+}
+
+.vendas-button-finalizar {
+  position: absolute; 
+  bottom: 30px; 
+  right: 30px; 
+  padding: 10px 20px; 
+  background-color: #F3821B; 
+  color: white; 
+  border: none;
+  border-radius: 5px; 
+  font-size: 15px; 
+  cursor: pointer; 
+}

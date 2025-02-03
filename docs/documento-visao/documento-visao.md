@@ -14,7 +14,7 @@ Tabela - Integrantes do Grupo:
 | :---: | -- | -- |
 | 231026509  | Matheus de Alcântara da Silva Campos  | Desenvolvedor Back-end e Banco de Dados  |
 | 231026590  | Vilmar José Fagundes dos Passos Júnior  | Desenvolvedor Back-end e Banco de Dados  |
-| 222015159  | Lucas Guimarães Borges  | Desenvolvedor Back-end  |
+| 222015159  | Lucas Guimarães Borges  | Desenvolvedor Back-end e Front-end |
 | 222006150  | Micael Kauan Freitas Chagas  | Desenvolvedor Front-end |
 | 231026358  | Gabriel Flores Coelho  | Banco de Dados  |
 | 221007635  | André Gustavo Rabelo do Nascimento  | Desenvolvedor Front-end |
@@ -47,10 +47,10 @@ Esses problemas são agravados pela ausência de uma solução tecnológica espe
 
 A implementação dessa solução permitirá maior controle operacional, redução de erros e economia de tempo, contribuindo diretamente para o crescimento e sustentabilidade do negócio. 
 
-
-![](https://web-api.textin.com/ocr_image/external/7dad51ece9f91740.jpg)
-
-Figura 1 – Diagrama de Ishikawa 
+<div style="text-align:center;">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/img/DiagramaDeIshiwaka.png" alt="Diagrama de classes">
+    <p>Figura 5 - Diagrama de classes</p>
+</div>
 
 ### 1.2 Declaração de Posição do Produto 
 

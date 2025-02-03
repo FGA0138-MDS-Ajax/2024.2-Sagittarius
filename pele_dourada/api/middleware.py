@@ -1,11 +1,17 @@
-from django.utils.deprecation import MiddlewareMixin
-from django.http import JsonResponse
-from bson.objectid import ObjectId
-from pele_dourada.settings import SECRET_KEY
 import jwt
+from api.models import user_collection
+from bson.objectid import ObjectId
+from django.http import JsonResponse
+from django.utils.deprecation import MiddlewareMixin
+
+from pele_dourada.settings import SECRET_KEY
+
 
 class JwtAuthentication(MiddlewareMixin):
-    public_routes = ["/api/login/", "/api/register/", "/swagger/", "/redoc/", "/admin/", "/api/updatepwd/"]
+    public_routes = ["/api/login/", "/api/register/", "/swagger/", "/redoc/", "/admin/", "/api/updatepwd/",
+                     "/api/product/register/", "/api/product/update/", "/api/products", "/api/products/", "/api/product/delete/",
+                     "/api/product/update", "/api/order/register/", "/api/order/update/", "/api/order/delete/", "/api/order/update",
+                     "/swagger", "/redoc", "/api/client/register/", "/api/client/update/", "/api/client/delete/", "/api/client/get/"]
     
     def process_request(self, request):
         print(request.path)
@@ -18,11 +24,11 @@ class JwtAuthentication(MiddlewareMixin):
             return JsonResponse({"error": "Token não fornecido"}, status=401)
         
         try:
-            token = auth_header.split(' ')[1]
+            token = auth_header
             payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
             user_id = payload['id']
 
-            user = users_collection.find_one({"_id": ObjectId(user_id)})
+            user = user_collection.find_one({"_id": ObjectId(user_id)})
             if not user:
                 return JsonResponse({"error": "Usuário não encontrado"}, status=404)
             
