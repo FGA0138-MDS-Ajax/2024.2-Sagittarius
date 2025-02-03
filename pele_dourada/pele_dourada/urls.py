@@ -18,15 +18,12 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from django.contrib import admin
 from django.urls import path, re_path
-from api.views.admin_views import LoginView, RegisterView, UpdatePasswordView
+from api.views.admin_views import LoginView, RegisterView, UpdatePasswordView, LogoutView
 from api.views.product_views import RegisterProductView, UpdateProductView, ListProductView, DeleteProductView
-<<<<<<< HEAD
 from rest_framework.permissions import AllowAny 
-=======
 from api.views.client_views import RegisterClientView, UpdateClientView, DeleteClientView, GetClientView
 from rest_framework.permissions import AllowAny
 from django.views.generic import TemplateView   
->>>>>>> c1d2ba542a03355d0d564d6a7080bc628d8c2afe
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -45,7 +42,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/login/', LoginView.as_view(), name='login'),
     path('api/register/', RegisterView.as_view(), name='register'),
-    # path('', TemplateView.as_view(template_name='build/index.html')),
+    path('api/logout/', LogoutView.as_view(), name='logout'),
     path('api/updatepwd/', UpdatePasswordView.as_view(), name='update'),
     path('api/product/register/', RegisterProductView.as_view(), name='register_product'),
     path('api/product/update/', UpdateProductView.as_view(), name='update_product'),
