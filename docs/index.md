@@ -40,7 +40,7 @@ Este projeto tem como objetivo desenvolver um **sistema interno de gestão** par
 
 ## Tecnologias Utilizadas
 
-- **Frontend**: HTML, CSS, JavaScript (com Bootstrap).
+- **Frontend**: HTML, CSS, JavaScript com React.
 - **Backend**: Python com Django e Django Rest Framework.
 - **Banco de Dados**: MongoDB.
 - **Ferramentas**:
