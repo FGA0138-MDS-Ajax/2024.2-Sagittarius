@@ -1,33 +1,37 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Importando o Link do react-router-dom
+import axios from 'axios';
+import { Link, useNavigate } from "react-router-dom"; // Importando o Link do react-router-dom
 import "./sidebar.css";
-import Logo from "../../assets/icons/logo.svg";
 import Dashboard from "../../assets/icons/dashboard-icon.svg";
 import Vendas from "../../assets/icons/vendas-icon.svg";
 import Estoque from "../../assets/icons/estoque-icon.svg";
 import Clientes from "../../assets/icons/clientes-icon.svg";
-import Profile from "../../assets/icons/personIcon.svg";
 import Logout from "../../assets/icons/logout-icon.svg";
-import ChevronLeftSvg from "../../assets/icons/chevron_left.svg";
 
-function Sidebar({ isCollapsed, setIsCollapsed }) {
-  const toggleSidebar = () => {
-    setIsCollapsed((prevState) => !prevState);
+function Sidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Token não encontrado');
+        return;
+      }
+      await axios.post('http://127.0.0.1:8000/api/logout/', {}, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      localStorage.removeItem('token');
+      navigate('/');
+    } catch (err) {
+      console.error('Erro ao fazer logout:', err);
+    }
   };
 
   return (
-    <aside className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
-      <header className="sidebar-header">
-        <Link to="/" className="header-logo">
-          <img src={Logo} alt="Logo Frango" />
-        </Link>
-        <button className="toggler sidebar-toggler" onClick={toggleSidebar}>
-          <span className="material-symbols-rounded">
-            <img src={ChevronLeftSvg} alt="Chevron Right" />
-          </span>
-        </button>
-      </header>
-      {/* Navegação */}
+    <aside className="sidebar">
       <nav className="sidebar-nav">
         {/* Navegação Principal */}
         <ul className="nav-list primary-nav">
@@ -59,10 +63,10 @@ function Sidebar({ isCollapsed, setIsCollapsed }) {
         {/* Navegação Secundária */}
         <ul className="nav-list secondary-nav">
           <li className="nav-item">
-            <Link to="/" className="nav-link">
+            <button onClick={handleLogout} className="nav-link logout-button">
               <img src={Logout} alt="Logout Icon" className="nav-icon" />
               <span className="nav-label">Logout</span>
-            </Link>
+            </button>
           </li>
         </ul>
       </nav>

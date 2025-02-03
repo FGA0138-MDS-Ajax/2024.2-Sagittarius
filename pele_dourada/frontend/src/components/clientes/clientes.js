@@ -20,7 +20,7 @@ function ControleClientes() {
   useEffect(() => {
     const fetchClientes = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/");
+        const response = await axios.get("http://localhost:8000/api/client/get/");
         setClientes(response.data.clients);
       } catch (error) {
         console.error("Erro ao buscar clientes:", error);
@@ -65,7 +65,7 @@ function ControleClientes() {
 
   const handleEditCliente = async (cliente) => {
     try {
-      const response = await axios.post("http://localhost:8000/api/", cliente); // esperando api
+      const response = await axios.post("http://localhost:8000/api/client/update/", cliente); // esperando api
       alert(response.data);
       setIsEditModalOpen(false);
       setClienteEditando(null);
@@ -81,7 +81,7 @@ function ControleClientes() {
 
   const handleRemoveCliente = async (cliente) => {
     try {
-      const response = await axios.post("http://localhost:8000/api/", { // esperando api
+      const response = await axios.post("http://localhost:8000/api/client/delete/", { // esperando api
         name: cliente.name,
       }); 
       window.location.reload();

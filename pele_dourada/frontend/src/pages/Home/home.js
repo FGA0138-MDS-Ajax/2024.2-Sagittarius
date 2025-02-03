@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import Login from '../../components/login/login';
-import logo from '../../assets/images/frango.png'; 
+import logo from '../../assets/icons/logo.svg'; 
 
 function Home() {
   useEffect(() => {
