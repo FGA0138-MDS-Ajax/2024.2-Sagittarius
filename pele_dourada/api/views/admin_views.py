@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from pele_dourada.settings import SECRET_KEY
 
 
-# Create your views here.
+
 class LoginView(APIView):
     @swagger_auto_schema(
         operation_description="Realiza login de usuário",
@@ -48,8 +48,12 @@ class LoginView(APIView):
                 'error': 'Usuário não encontrado',
             }, status=status.HTTP_404_NOT_FOUND
             )
+        #converter a senha de str para bytes
+        password_bytes = password.encode('utf-8')
+
+        hashed_password_bytes = user['password'].encode('utf-8')
         
-        if not bcrypt.checkpw(password.encode('utf-8'), user['password']):
+        if not bcrypt.checkpw(password_bytes, hashed_password_bytes):
             return Response({
                 'error': 'Senha inválida',
             }, status=status.HTTP_400_BAD_REQUEST
@@ -88,11 +92,11 @@ class RegisterView(APIView):
         password = request.data.get("password")
         password2 = request.data.get("password2")
         
-        # if password != password2:
-        #     return Response({
-        #         'error': 'As senhas não coincidem',
-        #     }, status=status.HTTP_400_BAD_REQUEST
-        #     )
+        if password != password2:
+            return Response({
+                 'error': 'As senhas não coincidem',
+             }, status=status.HTTP_400_BAD_REQUEST
+             )
         
         hash_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         
@@ -104,7 +108,7 @@ class RegisterView(APIView):
 
         user_body = {
             'username': username,
-            'password': hash_password
+            'password': hash_password.decode('utf-8')
         }
 
 
@@ -172,11 +176,11 @@ class UpdatePasswordView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
-        # if not bcrypt.checkpw(old_password.encode('utf-8'), user.password.encode('utf-8')):
-        #     return Response({
-        #         'error': 'Senha antiga inválida',
-        #     }, status=status.HTTP_400_BAD_REQUEST
-        #     )
+        if not bcrypt.checkpw(old_password.encode('utf-8'), user.password.encode('utf-8')):
+            return Response({
+            'error': 'Senha antiga inválida',
+            }, status=status.HTTP_400_BAD_REQUEST
+            )
 
         hash_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
         try:
