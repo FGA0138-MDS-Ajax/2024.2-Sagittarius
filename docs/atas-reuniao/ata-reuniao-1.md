@@ -30,7 +30,7 @@ Documentação da Visão do produto e projeto
 
 ### 1. Elaboração do documento de Visão do Projeto
 **Discussão:**
-Foram levantadas questões sobre o projeto e seu funcionamento. Nesse tópico, foi feito contato com o cliente sobre a aplicação web a fim de definir os problemas que o software pretende resolver e das principais funcionalidades que devem ser incluídas.
+Foram levantadas questões sobre o projeto e seu funcionamento. Nesse tópico, foi feito contato com o cliente sobre a aplicação desktop a fim de definir os problemas que o software pretende resolver e das principais funcionalidades que devem ser incluídas.
 
 **Decisões:**
 - Definição dos objetivos principais do projeto, incluindo as funcionalidades essenciais e os requisitos do cliente.
