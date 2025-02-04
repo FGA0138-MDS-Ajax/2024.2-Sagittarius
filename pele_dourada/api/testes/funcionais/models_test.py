@@ -1,7 +1,7 @@
 from django.test import TestCase
 import unittest
 from datetime import datetime
-from models import User, Product, Order, Client, Billing, insert_product, insert_client, insert_order, insert_user, insert_billing, get_user, get_client, get_product, get_order, get_all_billing, update_user, update_client, update_product, update_order, delete_user, delete_client, delete_product, delete_order, delete_billing, get_billing
+from ...models import User, Product, Order, Client, Billing, insert_product, insert_client, insert_order, insert_user, insert_billing, get_user, get_client, get_product, get_order, get_all_billing, update_user, update_client, update_product, update_order, delete_user, delete_client, delete_product, delete_order, delete_billing, get_billing
 
 class TestModels(unittest.TestCase):
 

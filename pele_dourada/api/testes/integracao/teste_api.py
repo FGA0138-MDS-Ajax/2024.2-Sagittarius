@@ -70,3 +70,13 @@ def test_invalid_login(mock_db, client):
     
     assert response.status_code == 404
     assert response.data["error"] == "Usuário não encontrado"
+
+def test_order_register(mock_db, client):
+    order_data = {
+        "name": "testuser",
+        "tipe": "type1",
+        "payment": "payment1",
+        "products": [{"name": "testproduct", "price": 10.0, "qtd": 5}]
+    }
+
+    response = client.post("/api/order/register", order_data, format="json")
