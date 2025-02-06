@@ -1,13 +1,13 @@
 ---
-sidebar_label: "08/05/2024"
+sidebar_label: "13/11/2024"
 sidebar_position: 3
 ---
 
 # Ata da Reunião
 
 **Data:** 18/11/2024  
-**Horário de Início:** 21:00  
-**Horário de Término:** 22:00  
+**Horário de Início:** 20:00  
+**Horário de Término:** 20:30  
 **Local:** Servidor no Discord
 
 ## Participantes
@@ -65,9 +65,9 @@ Matheus de Alcântara e Fábio Santos Araújo.
 
 
 ## Próxima Reunião
-**Data:** 25/11/2024  
+**Data:** 21/11/2024  
 **Local:** Servidor no Discord  
-**Horário:** 20:30
+**Horário:** 20:00
 
 ## Observações
 Reunião para dar início à programação e estruturação do projeto.
