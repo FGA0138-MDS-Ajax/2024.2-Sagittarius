@@ -1,13 +1,13 @@
 ---
-sidebar_label: "12/11/2024"
+sidebar_label: "05/11/2024"
 sidebar_position: 2
 ---
 
 # Ata da Reunião
 
-**Data:** 12/11/2024  
-**Horário de Início:** 20:30  
-**Horário de Término:** 21:40  
+**Data:** 05/11/2024  
+**Horário de Início:** 19:20
+**Horário de Término:** 20:10
 **Local:** Servidor no Discord
 
 ## Participantes
@@ -43,7 +43,7 @@ Foram levantadas questões sobre o projeto e seu funcionamento. Nesse tópico, f
 Todos os integrantes do grupo Sagittarius.
 
 ## Próxima Reunião
-**Data:** 18/11/2024  
+**Data:** 13/11/2024  
 **Local:** Servidor no Discord  
 **Horário:** 20:00  
 
