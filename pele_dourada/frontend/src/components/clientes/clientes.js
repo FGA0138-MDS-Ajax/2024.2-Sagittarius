@@ -66,23 +66,6 @@ function ControleClientes() {
       return 0;
     });
 
-<<<<<<< Updated upstream
-  const handleEditCliente = async (cliente) => {
-    try {
-      const response = await axios.post("http://localhost:8000/api/client/update/", cliente); // esperando api
-      alert(response.data);
-      setIsEditModalOpen(false);
-      setClienteEditando(null);
-      const updatedClientes = clientes.map((c) =>
-        c.name === cliente.name ? { ...c, ...cliente } : c
-      );
-      setClientes(updatedClientes);
-    } catch (error) {
-      console.error("Erro ao atualizar cliente:", error);
-      alert("Erro ao atualizar o cliente");
-    }
-  };
-=======
     const handleEditCliente = async (cliente) => {
       try {
         const response = await axios.post("http://localhost:8000/api/client/update/", {
@@ -102,7 +85,6 @@ function ControleClientes() {
         alert("Erro ao atualizar o cliente");
       }
     };
->>>>>>> Stashed changes
 
   const handleRemoveCliente = async (cliente) => {
     try {
