@@ -1,30 +1,65 @@
-/* SIDEBAR CONFIG*/
-
-.app-container {
+.dashboard-container {
+    display: grid;
+    gap: 16px;
+    padding: 24px;
+    grid-template-columns: 1fr;
+    text-align: center;
+    background-color: #F9F9F9;
+  }
+  
+  @media (min-width: 768px) {
+    .dashboard-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .dashboard-container {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .dashboard-card {
+    background: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #F3821B;
+  }
+  
+  .dashboard-card h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #F3821B;
+  }
+  
+  .dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .dashboard-table th, .dashboard-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .dashboard-table th {
+    background-color: #F3821B;
+    color: white;
+  }
+  
+  .dashboard-filters {
     display: flex;
-    transition: margin-left 0.4s ease, width 0.4s ease;
-}
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
   
-.sidebar {
-    width: 270px;
-    transition: width 0.4s ease;
-}
-  
-.sidebar.collapsed {
-    width: 85px;
-}
-  
-.main-content {
-    flex: 1; /* Faz o conteúdo principal ocupar o restante do espaço */
-    padding: 20px;
-    transition: margin-left 0.4s ease;
-}
-  
-.app-container.collapsed .main-content {
-    margin-left: 85px; /* Largura da sidebar colapsada */
-}
-  
-.app-container .main-content {
-    margin-left: 270px; /* Largura da sidebar expandida */
-}
+  .dashboard-filters input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
   

@@ -50,9 +50,12 @@ function ControleClientes() {
   };
 
   const clientesFiltrados = clientes
-    .filter((cliente) =>
-      cliente.name.toLowerCase().includes(busca.toLowerCase())
-    )
+    .filter((cliente) => {
+      if (typeof cliente.name !== 'string') {
+        return false;
+      }
+      return cliente.name.toLowerCase().includes(busca.toLowerCase());
+    })
     .sort((a, b) => {
       if (a[sortConfig.key] < b[sortConfig.key]) {
         return sortConfig.direction === "asc" ? -1 : 1;
@@ -63,6 +66,7 @@ function ControleClientes() {
       return 0;
     });
 
+<<<<<<< Updated upstream
   const handleEditCliente = async (cliente) => {
     try {
       const response = await axios.post("http://localhost:8000/api/", cliente); // esperando api
@@ -78,6 +82,27 @@ function ControleClientes() {
       alert("Erro ao atualizar o cliente");
     }
   };
+=======
+    const handleEditCliente = async (cliente) => {
+      try {
+        const response = await axios.post("http://localhost:8000/api/client/update/", {
+          name: cliente.name,
+          number: cliente.number,
+          endereco: cliente.endereco
+        });
+        alert(response.data);
+        setIsEditModalOpen(false);
+        setClienteEditando(null);
+        const updatedClientes = clientes.map((c) =>
+          c.name === cliente.name ? { ...c, ...cliente } : c
+        );
+        setClientes(updatedClientes);
+      } catch (error) {
+        console.error("Erro ao atualizar cliente:", error.response ? error.response.data : error.message);
+        alert("Erro ao atualizar o cliente");
+      }
+    };
+>>>>>>> Stashed changes
 
   const handleRemoveCliente = async (cliente) => {
     try {

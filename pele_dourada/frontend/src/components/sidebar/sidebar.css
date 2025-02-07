@@ -106,6 +106,7 @@ body {
 .sidebar-nav .nav-link:hover {
     color: #271b00;
     background: #faa556;
+    cursor: pointer;
 }
 
 .sidebar-nav .nav-link .nav-label{
