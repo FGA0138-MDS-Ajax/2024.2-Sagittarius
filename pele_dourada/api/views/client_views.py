@@ -51,8 +51,8 @@ class UpdateClientView(APIView):
         responses={200: openapi.Response('Cliente atualizado com sucesso')},
         manual_parameters=[
             openapi.Parameter('name', openapi.IN_QUERY, description="Nome do cliente", type=openapi.TYPE_STRING),
-            openapi.Parameter('number', openapi.IN_QUERY, description="Número do cliente", type=openapi.TYPE_STRING),
-            openapi.Parameter('endereco', openapi.IN_QUERY, description="Endereço do cliente", type=openapi.TYPE_STRING),
+            openapi.Parameter('number', openapi.IN_QUERY, description="Número do cliente", type=openapi.TYPE_NUMBER),
+            openapi.Parameter('endereco', openapi.IN_QUERY, description="Endereço do cliente", type=openapi.TYPE_INTEGER),
         ],
     )
     
@@ -61,28 +61,32 @@ class UpdateClientView(APIView):
         number = request.data.get("number")
         endereco = request.data.get("endereco")
 
-        if not name:
+        if not name or not number or not endereco:
             return Response({
-                'error': 'Por favor, insira o nome do cliente',
-            }, status=status.HTTP_400_BAD_REQUEST)
-
-        client = get_client(name)
+                'error': 'Por favor, insira todos os campos',
+            }, status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        client = get_client(Client(name, number, endereco))
 
         if not client:
             return Response({
                 'error': 'Cliente não encontrado',
-            }, status=status.HTTP_404_NOT_FOUND)
-
+            }, status=status.HTTP_404_NOT_FOUND
+            )
+        
         try:
-            update_client(name, new_phone=number, new_address=endereco)
+            update_product(name, new_number=number, new_endereco=endereco)
         except Exception as e:
             return Response({
-                'error': str(e),
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+                'error': 'Erro ao atualizar cliente',
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
         return Response({
             'Cliente atualizado com sucesso',
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_200_OK
+        )
 
 class DeleteClientView(APIView):
     def post(self, request):

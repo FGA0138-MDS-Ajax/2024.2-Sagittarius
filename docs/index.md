@@ -40,7 +40,7 @@ Este projeto tem como objetivo desenvolver um **sistema interno de gestão** par
 
 ## Tecnologias Utilizadas
 
-- **Frontend**: HTML, CSS, JavaScript (com Bootstrap).
+- **Frontend**: HTML, CSS, JavaScript com React.
 - **Backend**: Python com Django e Django Rest Framework.
 - **Banco de Dados**: MongoDB.
 - **Ferramentas**:
@@ -49,6 +49,34 @@ Este projeto tem como objetivo desenvolver um **sistema interno de gestão** par
   - **Discord**: Comunicação entre os membros da equipe.
   - **Miro**: Organização visual das tarefas (Kanban).
   - **Docker**: Ambiente local para desenvolvimento.
+
+---
+
+## **Padrão de Nomenclatura para Branches e Commits**  
+
+## **Branches**  
+Utilizamos a seguinte convenção para nomear as branches, garantindo clareza e organização no desenvolvimento:  
+
+| Prefixo            | Descrição                                      | Exemplo                  |
+|--------------------|----------------------------------------------|--------------------------|
+| `feat/nome-da-branch`   | Para o desenvolvimento de uma nova funcionalidade. | `feat/adicionar-login`  |
+| `fix/nome-da-branch`    | Para a correção de bugs no código.         | `fix/corrigir-login`    |
+| `refactor/nome-da-branch` | Para refatoração ou reescrita de código.    | `refactor/melhorar-auth` |
+| `chore/nome-da-branch`   | Para alterações na configuração do projeto. | `chore/atualizar-dependencias` |
+| `docs/nome-da-branch`    | Para atualização ou adição de documentação. | `docs/atualizar-readme` |
+
+---
+
+## **Commits**  
+Os commits devem seguir um padrão consistente para facilitar a leitura do histórico do repositório:  
+
+| Prefixo        | Descrição                                         | Exemplo                              |
+|---------------|-------------------------------------------------|--------------------------------------|
+| `feat:`       | Adiciona uma nova funcionalidade ao código.     | `feat: implementar login social`   |
+| `fix:`        | Corrige um bug existente no código.             | `fix: corrigir erro na autenticação` |
+| `refactor:`   | Refatora ou reescreve parte do código sem alterar a funcionalidade. | `refactor: otimizar query de busca` |
+| `chore:`      | Modifica configurações ou dependências do projeto. | `chore: atualizar versão do eslint` |
+| `docs:`       | Atualiza ou adiciona documentação.              | `docs: adicionar guia de contribuição` |
 
 ---
 

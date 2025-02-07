@@ -17,7 +17,6 @@ function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  
   // limpar os dados se trocar de tela:
   useEffect(() => {
     setUsername('');
@@ -28,19 +27,12 @@ function Login() {
     setRememberMe(false);
   }, [formType]); 
 
-  
-
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
 
-  
-
-    
-    
-    if (!username || !password) {
+    if (!username || !password || (formType === 'register' && !confirmPassword)) {
       toast.error('Por favor, preencha todos os campos.', {
         position: 'top-left',
         autoClose: 5000,
@@ -55,13 +47,13 @@ function Login() {
         const response = await axios.post('http://127.0.0.1:8000/api/login/', { username, password }); 
         localStorage.setItem('token', response.data.token);
         const token = localStorage.getItem('token');
-          if (token) {
-              console.log('Token encontrado:', token);
-              // O usuário está autenticado
-          } else {
-              console.log('Token não encontrado.');
-              // O usuário não está autenticado
-          }
+        if (token) {
+          console.log('Token encontrado:', token);
+          // O usuário está autenticado
+        } else {
+          console.log('Token não encontrado.');
+          // O usuário não está autenticado
+        }
         
         // se 'lembrar de mim' estiver marcado, armazene as credenciais
         if (rememberMe) {
@@ -83,13 +75,8 @@ function Login() {
         setError(err.response?.data?.error || 'Erro ao fazer login.');
       }
     } else if (formType === 'register') {
-      if (password !== confirmPassword) {
-        setError('As senhas não coincidem.');
-        return;
-      }
-
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/register/', { username, password });
+        const response = await axios.post('http://127.0.0.1:8000/api/register/', { username, password, password2: confirmPassword });
         
         toast.success('Cadastro realizado com sucesso!', {
           position: 'top-left',
@@ -104,19 +91,8 @@ function Login() {
       }
     } 
     else if (formType === 'passwordRecovery') {
-      if (password !== confirmPassword) {
-        toast.error('As senhas não coincidem.', {
-          position: 'top-left',
-          autoClose: 5000,
-          theme: 'colored',
-          transition: Bounce,
-        });
-
-        return;
-      }
-
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/updatepwd/', { username, password, confirmPassword });
+        const response = await axios.post('http://127.0.0.1:8000/api/updatepwd/', { username, password });
         toast.success(response.data.success || 'Senha redefinida com sucesso!', {
           position: 'top-left',
           autoClose: 5000,
@@ -176,19 +152,19 @@ function Login() {
             />
           </div>
 
-          {formType === 'register' || formType === 'passwordRecovery' ? (
+          {formType === 'register' && (
             <div className="login-form-group">
               <input
                 type="password"
                 id="confirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirmar Senha"
+                placeholder="Confirme a Senha"
                 required
                 className="login-input"
               />
             </div>
-          ) : null}
+          )}
 
           {formType === 'login' && (
             <div className="remember-me">
