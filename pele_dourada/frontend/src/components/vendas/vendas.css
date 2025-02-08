@@ -1,30 +1,47 @@
 /* Página de Vendas */
-.vendas-page {
-  font-family: Arial, sans-serif;
+.main-content {
+  flex: 1; /* Faz o conteúdo principal ocupar o restante do espaço */
   padding: 20px;
-  background-color: #f9f9f9;
+  transition: margin-left 0.4s ease;
+}
+
+.vendas-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 10px 0 10px;
 }
 
 .vendas-title {
-  text-align: center;
-  font-size: 2rem;
-  color: #333;
+  padding-left: 20px;
+  width: 100%;
+  font-size: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #CED4DA;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.vendas-add-button {
+  margin-left: 50px;
 }
 
 .vendas-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   background-color: #F3821B;
   color: white;
   border: none;
-  padding: 2px 4px;
-  margin: 10px 0;
+  padding: 10px 25px;
   cursor: pointer;
-  font-size: 1rem;
   border-radius: 5px;
-  margin: 4px 2px;
+  font-size: 20px;
+  position: relative;
+  margin-right: 30px;
 }
 
 .vendas-button:hover {
-  background-color: #F3821B;
+  background-color: #f15b1b;
 }
 
 .vendas-table {

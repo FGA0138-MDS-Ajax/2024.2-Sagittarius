@@ -13,16 +13,9 @@ function Vendas() {
     }
   }, []);
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
   return (
-    <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
-    <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-      <main className="main-content">
-        <div>
-          <ControleVendasEncomendas/>
-        </div>
-      </main>
+    <div>
+      <ControleVendasEncomendas/>
     </div>
   );
 }
