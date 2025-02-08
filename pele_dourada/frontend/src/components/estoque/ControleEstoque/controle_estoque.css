@@ -331,8 +331,8 @@
 
 .div-editar-produto-button {
   display: flex;
-  flex-direction: column; /* Garante que os botões fiquem empilhados */
-  gap: 15px; /* Espaçamento entre os botões */
+  justify-content: space-around; /* Garante que os botões fiquem empilhados */
+  gap: 30px; /* Espaçamento entre os botões */
   align-items: center;
   width: 100%;
   margin-top: 20px;

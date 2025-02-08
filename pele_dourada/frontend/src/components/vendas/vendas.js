@@ -12,13 +12,12 @@ const VendasPage = () => {
     produtos: [],
   });
   const [produtosEstoque, setProdutosEstoque] = useState([]);
-  const [produtoSelecionado, setProdutoSelecionado] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" });
 
   const fetchVendas = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/"); // espernado api
-      setVendas(response.data.vendas);
+      const response = await axios.get("http://localhost:8000/api/order/list/");
+      setVendas(response.data.orders);
     } catch (error) {
       console.error("Erro ao buscar vendas", error);
     }
@@ -26,7 +25,7 @@ const VendasPage = () => {
 
   const fetchProdutosEstoque = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/products");
+      const response = await axios.get("http://localhost:8000/api/products/");
       setProdutosEstoque(response.data.products);
     } catch (error) {
       console.error("Erro ao buscar produtos", error);
@@ -100,8 +99,19 @@ const VendasPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8000/api/", formData); // esperando api
-      if (response.status === 200) {
+      const response = await axios.post("http://localhost:8000/api/order/register/", {
+        name: formData.nomeCliente,
+        tipe: formData.tipoVenda,
+        payment: formData.metodoPagamento,
+        products: formData.produtos.map((produto) => ({
+          id: produto.id,
+          name: produto.name,
+          price: produto.price,
+          quantidade: produto.quantidade,
+        })),
+      });
+
+      if (response.status === 201) {
         for (const produto of formData.produtos) {
           const produtoEstoque = produtosEstoque.find(
             (p) => p.id === produto.id
@@ -189,15 +199,15 @@ const VendasPage = () => {
         <tbody>
           {sortedVendas.map((venda) => (
             <tr key={venda.id}>
-              <td>{venda.nomeCliente}</td>
-              <td>{venda.tipoVenda}</td>
-              <td>{venda.metodoPagamento}</td>
+              <td>{venda.name}</td>
+              <td>{venda.tipe}</td>
+              <td>{venda.payment}</td>
               <td>
-                {venda.produtos.map((produto) => (
+                {venda.products.map((produto) => (
                   <div key={produto.id}>{produto.name}</div>
                 ))}
               </td>
-              <td>R${venda.valorVenda.toFixed(2)}</td>
+              <td>R${venda.total_price.toFixed(2)}</td>
             </tr>
           ))}
         </tbody>

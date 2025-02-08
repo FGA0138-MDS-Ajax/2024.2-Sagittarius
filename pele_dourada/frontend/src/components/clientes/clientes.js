@@ -158,7 +158,7 @@ function ControleClientes() {
                     <td>{cliente.name}</td>
                     <td>{cliente.phone}</td>
                     <td>{cliente.address}</td>
-                    <td>
+                    <td className="buttons-actions">
                       <button
                         className="controle-clientes-edit-button"
                         onClick={() => {
