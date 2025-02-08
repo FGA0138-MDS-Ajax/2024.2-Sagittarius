@@ -237,6 +237,7 @@
   margin-left: 270px; /* Largura da sidebar expandida */
 }
 
+
 /* Mantém o estilo do contêiner da quantidade */
 .quantidade-container {
   display: inline-block;
@@ -353,4 +354,3 @@
 th {
   cursor: pointer;
 }
-
