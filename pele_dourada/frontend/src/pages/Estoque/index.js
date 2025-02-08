@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import logo from '../../assets/icons/logo.svg';
 import ControleEstoque from '../../components/estoque/ControleEstoque/estoque';
-import Sidebar from '../../components/sidebar/sidebar';
+
 
 function Estoque() {
   useEffect(() => {
