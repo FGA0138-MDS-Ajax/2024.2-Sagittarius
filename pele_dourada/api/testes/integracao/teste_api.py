@@ -70,3 +70,18 @@ def test_invalid_login(mock_db, client):
     
     assert response.status_code == 404
     assert response.data["error"] == "Usuário não encontrado"
+    
+def test_invalid_register(mock_db, client):
+    """Teste de registro com senha de confirmação errada"""
+    mock_db.user_collection.delete_many({})
+    user_data = {
+        "username": "user",
+        "password": "testpassword",
+        "password2": "wrongpassword"
+    }
+    
+    response = client.post("/api/register/", user_data, format="json")
+    print(response.data)
+    
+    assert response.status_code == 400
+    assert response.data["error"] == "As senhas não coincidem"
