@@ -1,6 +1,5 @@
 import pytest
 import bcrypt
-import jwt
 import mongomock
 from rest_framework.test import APIClient
 from api.models import user_collection
@@ -81,7 +80,6 @@ def test_invalid_register(mock_db, client):
     }
     
     response = client.post("/api/register/", user_data, format="json")
-    print(response.data)
     
     assert response.status_code == 400
     assert response.data["error"] == "As senhas não coincidem"
