@@ -35,6 +35,13 @@
     }
   }
   
+.dashboard-grid {
+  display: flex;
+  gap: 5%;
+  justify-content: space-around;
+  width: 100%;
+}
+
 .dashboard-title {
   padding-left: 20px;
   width: 100%;
@@ -44,47 +51,131 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 }
 
-  .dashboard-card {
+.dashboard-card {
     background: white;
     padding: 16px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-top: 4px solid #F3821B;
-  }
+    width: 95%;
+}
   
-  .dashboard-card h2 {
+.dashboard-card h2 {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 12px;
     color: #F3821B;
-  }
+}
   
-  .dashboard-table {
+.dashboard-table {
     width: 100%;
     border-collapse: collapse;
-  }
+}
   
-  .dashboard-table th, .dashboard-table td {
+.dashboard-table th, .dashboard-table td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
-  }
+}
   
-  .dashboard-table th {
+.dashboard-table th {
     background-color: #F3821B;
     color: white;
-  }
+}
   
-  .dashboard-filters {
+.dashboard-filters {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 20px;
+    width: 100%;
     margin-bottom: 16px;
-  }
+}
   
-  .dashboard-filters input {
+.dashboard-datepicker{
+  display: flex;
+  flex-direction: row;
+}
+
+.dashboard-label{
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-filters input {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-  }
+}
   
+
+/* CONTADORES */
+.dashboard-div-counters {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0 10px 0 10px;
+}
+
+.dashboard-card-counter {
+  flex: 1;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  min-height: 120px;
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.card-subtitle {
+  font-size: 16px;
+  color: #555;
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon img {
+  width: 30px;
+  height: 30px;
+}
+
+/* Definição de cores específicas para cada card */
+.vendas {
+  background-color: #009DFF;
+  color: white;
+}
+
+.pedidos {
+  background-color: #3DDE02;
+  color: white;
+}
+
+.estoque {
+  background-color: #FFBB00;
+  color: white;
+}
+
+.clientes {
+  background-color: #FF0000;
+  color: white;
+}
