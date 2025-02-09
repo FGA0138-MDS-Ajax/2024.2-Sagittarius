@@ -122,3 +122,17 @@ body {
     bottom: 30px;
     width: 100%;
 }
+
+.sidebar.collapsed .sidebar-nav .secondary-nav {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sidebar-nav .secondary-nav .nav-item{
+    display: flex;
+    justify-content: center;
+}
+
+.sidebar-nav .secondary-nav .nav-item .nav-link{
+    border: none;
+}
