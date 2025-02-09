@@ -4,6 +4,7 @@ import './controle_estoque.css';
 import AdicionarProduto from '../AdicionarProduto/adicionar_produto';
 import Sidebar from '../../../components/sidebar/sidebar';
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
+import { BsFillBoxSeamFill } from "react-icons/bs";
 
 
 function ControleEstoque() {
@@ -151,7 +152,9 @@ function ControleEstoque() {
               />
             </div>
             <div className="controle-estoque-add-button" id="controle-estoque-add-button">
-              <button className="controle-estoque-button" id="controle-estoque-button" onClick={() => setIsModalOpen(true)}>Adicionar Produto</button>
+              <button className="controle-estoque-button" id="controle-estoque-button" onClick={() => setIsModalOpen(true)}>
+              <BsFillBoxSeamFill />
+              Adicionar Produto</button>
             </div>
           </div>
 

@@ -3,6 +3,7 @@ import axios from "axios";
 import "./clientes.css";
 import AdicionarCliente from "./add_cliente";
 import Sidebar from "../sidebar/sidebar";
+import { ImUserPlus } from "react-icons/im";
 
 function ControleClientes() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -129,6 +130,7 @@ function ControleClientes() {
                 id="controle-clientes-button"
                 onClick={() => setIsModalOpen(true)}
               >
+                <ImUserPlus />
                 Adicionar Cliente
               </button>
             </div>
