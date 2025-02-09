@@ -263,26 +263,30 @@ const VendasPage = () => {
                         <option value="venda">Venda</option>
                         <option value="encomenda">Encomenda</option>
                       </select>
-                      <h3>Produtos</h3>
-                      {produtosEstoque.map((produto) => (
-                        <div key={produto.id}>
-                          <span>{produto.name}</span>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoverProduto(produto.id)}
-                            className="vendas-button"
-                          >
-                            -
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleAdicionarProduto(produto.id)}
-                            className="vendas-button"
-                          >
-                            +
-                          </button>
-                        </div>
-                      ))}
+                      <div className="vendas-div-titulo-botoes-mais-menos">
+                        <h3>Produtos</h3>
+                        {produtosEstoque.map((produto) => (
+                          <div className="vendas-div-botao-mais-menos" key={produto.id}>
+                            <span>{produto.name}</span>
+                            <div className="vendas-div-espacamento-botao-mais-menos">
+                              <button
+                                type="button"
+                                onClick={() => handleRemoverProduto(produto.id)}
+                                className="vendas-botao-mais-menos"
+                              >
+                                -
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleAdicionarProduto(produto.id)}
+                                className="vendas-botao-mais-menos"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                       <button type="submit" className="vendas-button-finalizar">
                         Finalizar Venda
                       </button>
