@@ -1,7 +1,4 @@
-## sidebar_position: 11 
-## sidebar_label: "Relatório de Testes"
-
-# Relatório de Testes: Serviços e Controladores da Aplicação
+## Relatório de Testes: Serviços e Controladores da Aplicação
 
 ## Sumário Executivo
 
