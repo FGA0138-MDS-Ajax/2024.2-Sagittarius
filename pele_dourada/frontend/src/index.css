@@ -56,3 +56,21 @@ table tr:hover {
     background-color: #f1f1f1;
 }
 
+/***** BUTTON *****/
+
+button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #F3821B;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+button a {
+    text-decoration: none;
+}

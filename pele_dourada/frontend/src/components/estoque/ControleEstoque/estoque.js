@@ -95,6 +95,41 @@ function ControleEstoque() {
     }
   };
 
+  const formatCurrency = (value) => {
+    if (!value) return "R$ 0,00";
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  };
+  
+  const handlePriceChange = (e, setProdutoEditando) => {
+    let rawValue = e.target.value.replace(/[^\d,]/g, "").replace(",", ".");
+    let numericValue = parseFloat(rawValue) || 0;
+  
+    setProdutoEditando((prev) => ({
+      ...prev,
+      price: numericValue,
+    }));
+  };
+
+  function EditarProduto({ produtoEditando, setProdutoEditando }) {
+    return (
+      <div className="editar-produto-field">
+        <label className="editar-produto-label" htmlFor="edit-price">
+          Preço
+        </label>
+        <input
+          id="edit-price"
+          type="text"
+          className="editar-produto-input"
+          value={formatCurrency(produtoEditando.price)}
+          onChange={(e) => handlePriceChange(e, setProdutoEditando)}
+        />
+      </div>
+    );
+  }
+
 
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>

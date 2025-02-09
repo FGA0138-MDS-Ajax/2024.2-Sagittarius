@@ -94,14 +94,26 @@
 /***** FILTRO *****/
 .dashboard-filters {
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
+    align-items: center;
     gap: 20px;
     width: 100%;
 }
-  
-.dashboard-datepicker{
+
+.dashboard-datepickers {
   display: flex;
-  flex-direction: row;
+  gap: 10px;
+  width: 50%;
+}
+
+.dashboard-div-button-export{
+  display: flex;
+  justify-content: right;
+  width: 100%;
+}
+
+.dashboard-button-export:hover{
+  background-color: #f15b1b;
 }
 
 .dashboard-label{

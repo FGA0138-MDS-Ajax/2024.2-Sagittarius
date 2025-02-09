@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import './dashboard.css';
+import { LuFileSpreadsheet } from "react-icons/lu";
 import Sidebar from '../sidebar/sidebar';
 import VendasIcon from '../../assets/icons/dashboard-vendas-icon.svg';
 import ValorIcon from '../../assets/icons/dashboard-valor-icon.svg';
@@ -114,6 +115,8 @@ function ViewDashboard() {
           
         <div className="dashboard-contents" id="dashboard-contents">
           <div className="dashboard-filters">
+            
+            <div className='dashboard-datepickers'>
                 <label className="dashboard-label">
                   Data de Início:
                   <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
@@ -122,8 +125,16 @@ function ViewDashboard() {
                   Data de Término:
                   <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                 </label>
+            </div>
+
+                <div className='dashboard-div-button-export'>
+                  <button className="dashboard-button-export" id="exportar-csv" onClick="">
+                    <LuFileSpreadsheet/>
+                    Exportar CSV</button>
+                </div>
+
           </div>
-          
+
           <div className='dashboard-grid'>
 
             <div className="dashboard-card">

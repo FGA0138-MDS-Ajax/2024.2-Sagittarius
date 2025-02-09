@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./vendas.css";
+import { MdOutlinePointOfSale } from "react-icons/md";
+import { GiChickenOven } from "react-icons/gi";
 import Sidebar from '../../components/sidebar/sidebar';
 
 const VendasPage = () => {
@@ -182,7 +184,9 @@ const VendasPage = () => {
               <h1>Vendas e Encomendas</h1>
           </div>
           <div className="vendas-add-button" id="vendas-add-button">
-              <button className="vendas-button" id="vendas-button" onClick={() => setIsModalOpen(true)}>Nova Venda/Encomenda</button>
+              <button className="vendas-button" id="vendas-button" onClick={() => setIsModalOpen(true)}>
+              <GiChickenOven />
+              Nova Venda / Encomenda</button>
           </div>
 
 
@@ -232,6 +236,7 @@ const VendasPage = () => {
                     <form className="vendas-form" onSubmit={handleSubmit}>
                       <label>Nome do Cliente</label>
                       <input
+                        placeholder="Nome do cliente"
                         type="text"
                         name="nomeCliente"
                         value={formData.nomeCliente}
@@ -267,7 +272,6 @@ const VendasPage = () => {
                         <h3>Produtos</h3>
                         {produtosEstoque.map((produto) => (
                           <div className="vendas-div-botao-mais-menos" key={produto.id}>
-                            <span>{produto.name}</span>
                             <div className="vendas-div-espacamento-botao-mais-menos">
                               <button
                                 type="button"
@@ -276,6 +280,7 @@ const VendasPage = () => {
                               >
                                 -
                               </button>
+                              <span>{produto.name}</span>
                               <button
                                 type="button"
                                 onClick={() => handleAdicionarProduto(produto.id)}
@@ -287,9 +292,12 @@ const VendasPage = () => {
                           </div>
                         ))}
                       </div>
-                      <button type="submit" className="vendas-button-finalizar">
-                        Finalizar Venda
-                      </button>
+                      <div className="vendas-total-finalizar">
+                        <button type="submit" className="vendas-button-finalizar">
+                          <MdOutlinePointOfSale />
+                          Finalizar Venda
+                        </button>
+                      </div>
                     </form>
                   </div>
                   <div className="nota-fiscal-container">

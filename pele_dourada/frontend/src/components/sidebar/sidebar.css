@@ -136,3 +136,7 @@ body {
 .sidebar-nav .secondary-nav .nav-item .nav-link{
     border: none;
 }
+
+.sidebar-nav .nav-link.active {
+    background: #faa556; /* Cor do hover */
+}

@@ -22,6 +22,9 @@
 }
 
 .vendas-add-button {
+  display: flex;
+  justify-content: right;
+  width: 100%;
   margin-left: 50px;
 }
 
@@ -35,7 +38,7 @@
   padding: 10px 25px;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 20px;
+  font-size: 15px;
   position: relative;
   margin-right: 30px;
 }
@@ -152,7 +155,8 @@
 
 .vendas-div-espacamento-botao-mais-menos{
   display: flex;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: space-evenly;
   width: 100%;
   margin-top: 8px;
 }
@@ -163,12 +167,20 @@
   align-items: center;
   background-color: #F3821B;
   color: white;
-  padding: 10px 25px;
+  padding: 5px 15px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 100%;
+  aspect-ratio: 1/1;
   font-size: 20px;
 }
 
 .vendas-botao-mais-menos:hover, .vendas-button-finalizar:hover{
   background-color: #f15b1b;
+}
+
+.vendas-total-finalizar {
+  display: flex; 
+  align-items: flex-end;
+  justify-content: space-around;
+  width: 50%;
 }
