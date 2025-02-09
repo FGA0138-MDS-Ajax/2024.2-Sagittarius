@@ -11,16 +11,16 @@ sidebar_position: 2
 **Local:** Servidor no Discord
 
 ## Participantes
-1.Matheus de Alcântara
-2.Vilmar José Fagundes dos Passos Jr.
-3.Lucas Guimarães Borges
-4.Micael Kauan Freitas Chagas
-5.Gabriel Flores Coelho
-6.André Gustavo Rabelo do Nascimento
-7.João Victor Pires Sapiência Santos
-8.Caio Lucas Messias Sabino
-9.João Victor Sousa Soares e Silva
-10.Fábio Santos Araújo
+1. Matheus de Alcântara
+2. Vilmar José Fagundes dos Passos Jr.
+3. Lucas Guimarães Borges
+4. Micael Kauan Freitas Chagas
+5. Gabriel Flores Coelho
+6. André Gustavo Rabelo do Nascimento
+7. João Victor Pires Sapiência Santos
+8. Caio Lucas Messias Sabino
+9. João Victor Sousa Soares e Silva
+10. Fábio Santos Araújo
 
 
 ## Objetivos
