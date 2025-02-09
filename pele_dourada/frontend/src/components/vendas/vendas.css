@@ -45,29 +45,7 @@
 }
 
 .vendas-table {
-  width: 100%;
-  border-collapse: collapse;
   margin-top: 20px;
-}
-
-.vendas-table th,
-.vendas-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
-}
-
-.vendas-table th {
-  background-color: #F3821B;
-  color: white;
-}
-
-.vendas-table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.vendas-table tr:hover {
-  background-color: #ddd;
 }
 
 /* Modal */
@@ -139,23 +117,6 @@
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.nota-fiscal-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.nota-fiscal-table th,
-.nota-fiscal-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-.nota-fiscal-table th {
-  background-color: #F3821B;
-  color: white;
 }
 
 .total-container {

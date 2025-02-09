@@ -3,6 +3,8 @@ import axios from 'axios';
 import './controle_estoque.css';
 import AdicionarProduto from '../AdicionarProduto/adicionar_produto';
 import Sidebar from '../../../components/sidebar/sidebar';
+import { FaPencilAlt, FaTimes } from 'react-icons/fa';
+
 
 function ControleEstoque() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -155,20 +157,22 @@ function ControleEstoque() {
                       </div>
                     </td>
                     <td>
-                      <button
-                        className='controle-estoque-edit-button'
-                        onClick={() => {
-                          setProdutoEditando(produto);
-                          setIsEditModalOpen(true);
-                        }}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        className='controle-estoque-remove-button'
-                        onClick={() => handleRemoveProduct(produto)}>
-                        Remover
-                      </button>
+                      <div className='controle-estoque-acoes'>
+                        <button
+                          className='controle-estoque-edit-button'
+                          onClick={() => {
+                            setProdutoEditando(produto);
+                            setIsEditModalOpen(true);
+                          }}
+                        >
+                          <FaPencilAlt className="icon-button" /> Editar
+                        </button>
+                        <button
+                          className='controle-estoque-remove-button'
+                          onClick={() => handleRemoveProduct(produto)}>
+                          <FaTimes className="icon-button" /> Remover
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

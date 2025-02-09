@@ -111,8 +111,19 @@ function ViewDashboard() {
             </div>
           </div>
         </div>
-                  
+          
         <div className="dashboard-contents" id="dashboard-contents">
+          <div className="dashboard-filters">
+                <label className="dashboard-label">
+                  Data de Início:
+                  <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                </label>
+                <label className="dashboard-label">
+                  Data de Término:
+                  <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                </label>
+          </div>
+          
           <div className='dashboard-grid'>
 
             <div className="dashboard-card">
@@ -150,17 +161,6 @@ function ViewDashboard() {
             </div>
 
           </div>
-
-            <div className="dashboard-filters">
-              <label className="dashboard-label">
-                Data de Início:
-                <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-              </label>
-              <label className="dashboard-label">
-                Data de Término:
-                <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-              </label>
-            </div>
             <div className="dashboard-section">
               
               <div className="dashboard-card">

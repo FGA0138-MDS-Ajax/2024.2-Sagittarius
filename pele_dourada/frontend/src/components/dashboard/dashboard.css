@@ -35,6 +35,12 @@
     }
   }
   
+
+.dashboard-section .dashboard-card{
+  width: 100%;
+}
+
+
 .dashboard-grid {
   display: flex;
   gap: 5%;
@@ -66,7 +72,9 @@
     margin-bottom: 12px;
     color: #F3821B;
 }
-  
+
+
+/***** TABELAS *****/
 .dashboard-table {
     width: 100%;
     border-collapse: collapse;
@@ -82,13 +90,13 @@
     background-color: #F3821B;
     color: white;
 }
-  
+
+/***** FILTRO *****/
 .dashboard-filters {
     display: flex;
-    justify-content: center;
+    justify-content: right;
     gap: 20px;
     width: 100%;
-    margin-bottom: 16px;
 }
   
 .dashboard-datepicker{
@@ -108,7 +116,7 @@
 }
   
 
-/* CONTADORES */
+/***** CONTADORES *****/
 .dashboard-div-counters {
   display: flex;
   justify-content: space-between;
