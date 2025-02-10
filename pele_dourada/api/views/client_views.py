@@ -18,33 +18,29 @@ class RegisterClientView(APIView):
             openapi.Parameter('endereco', openapi.IN_QUERY, description="Endereço do cliente", type=openapi.TYPE_STRING),
         ]
     )
-
     def post(self, request):
-        name = request.data.get("name"),
-        number = request.data.get("number"),
-        endereco = request.data.get("endereco"),
+        name = request.data.get("name")
+        number = request.data.get("number")
+        endereco = request.data.get("endereco")
 
         if not name or not number or not endereco:
             return Response({
                 'error': 'Por favor, insira todos os campos',
-            }, status=status.HTTP_400_BAD_REQUEST
-            )
+            }, status=status.HTTP_400_BAD_REQUEST)
         
         new_client = Client(name, number, endereco)
-
         try:
             insert_client(new_client)
         except Exception as e:
             return Response({
                 'error': 'Erro ao registrar cliente',
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         return Response({
-            "Cliente registrado com sucesso"
-        }, status=status.HTTP_201_CREATED
-        )
-    
+            "message": "Cliente registrado com sucesso"
+        }, status=status.HTTP_201_CREATED)
+
+
 class UpdateClientView(APIView):
     @swagger_auto_schema(
         operation_description="Atualiza um cliente",
@@ -55,8 +51,7 @@ class UpdateClientView(APIView):
             openapi.Parameter('endereco', openapi.IN_QUERY, description="Endereço do cliente", type=openapi.TYPE_INTEGER),
         ],
     )
-    
-    def post(self, request):
+    def put(self, request):
         name = request.data.get("name")
         number = request.data.get("number")
         endereco = request.data.get("endereco")
@@ -64,46 +59,42 @@ class UpdateClientView(APIView):
         if not name or not number or not endereco:
             return Response({
                 'error': 'Por favor, insira todos os campos',
-            }, status=status.HTTP_400_BAD_REQUEST
-            )
+            }, status=status.HTTP_400_BAD_REQUEST)
         
         client = get_client(Client(name, number, endereco))
 
         if not client:
             return Response({
                 'error': 'Cliente não encontrado',
-            }, status=status.HTTP_404_NOT_FOUND
-            )
+            }, status=status.HTTP_404_NOT_FOUND)
         
         try:
             update_product(name, new_number=number, new_endereco=endereco)
         except Exception as e:
             return Response({
                 'error': 'Erro ao atualizar cliente',
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         return Response({
             'Cliente atualizado com sucesso',
-        }, status=status.HTTP_200_OK
-        )
+        }, status=status.HTTP_200_OK)
+
 
 class DeleteClientView(APIView):
-    def post(self, request):
+    def delete(self, request): 
         name = request.data.get("name")
 
         if not name:
             return Response({
                 'error': 'Por favor, insira o nome do cliente',
-            }, status=status.HTTP_400_BAD_REQUEST
-            )
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
         client = delete_client(name)
 
         if not client:
             return Response({
                 'error': 'Cliente não encontrado',
-            }, status=status.HTTP_404_NOT_FOUND
-            )
+            }, status=status.HTTP_404_NOT_FOUND)
         
         try:
             delete_client(client)
@@ -111,14 +102,13 @@ class DeleteClientView(APIView):
             print(e)
             return Response({
                 'error': 'Erro ao deletar cliente',
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response({
             'Cliente deletado com sucesso',
-        }, status=status.HTTP_200_OK
-        )
+        }, status=status.HTTP_200_OK)
     
+
 class GetClientsView(APIView):
     def get(self, request):
         clients = []
@@ -132,10 +122,8 @@ class GetClientsView(APIView):
         if not clients:
             return Response({
                 'error': 'Cliente não encontrado',
-            }, status=status.HTTP_404_NOT_FOUND
-            )
+            }, status=status.HTTP_404_NOT_FOUND)
         
         return Response({
             'clients': clients
-        }, status=status.HTTP_200_OK
-        )
+        }, status=status.HTTP_200_OK)

@@ -32,28 +32,24 @@ class LoginView(APIView):
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
-       
+
         if not username or not password:
             return Response({
                 'error': 'Por favor, insira nome de usuário e senha',
-            }, status=status.HTTP_400_BAD_REQUEST
-            )
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         new_user = User(username, password)
-
         user = get_user(new_user.username)
 
         if not user:
             return Response({
                 'error': 'Usuário não encontrado',
-            }, status=status.HTTP_404_NOT_FOUND
-            )
-        
-        if not bcrypt.checkpw(password.encode('utf-8'), user['password']):
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
             return Response({
                 'error': 'Senha inválida',
-            }, status=status.HTTP_400_BAD_REQUEST
-            )
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         payload = {
             'id': str(user['_id']),
@@ -62,8 +58,7 @@ class LoginView(APIView):
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
-
-        return Response({'token': token}, status=status.HTTP_200_OK)
+        return Response({'token': token, 'message': 'Login realizado com sucesso'}, status=status.HTTP_200_OK)
 
 
 class RegisterView(APIView):

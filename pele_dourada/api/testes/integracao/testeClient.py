@@ -1,88 +1,107 @@
 import pytest
 import mongomock
+import bcrypt
 from unittest.mock import patch
 from rest_framework.test import APIClient
-from api import models
-from bson import ObjectId
 
-@pytest.fixture
+@pytest.fixture()
 def mock_db():
-    """Cria um banco MongoDB simulado com mongomock"""
     client = mongomock.MongoClient()
     return client.pele_dourada
 
-@pytest.fixture
-def client():
-    """Retorna um cliente de testes do Django REST Framework"""
+@pytest.fixture()
+def api_client():
     return APIClient()
 
-@pytest.fixture
-def mock_cliente():
-    """Cria um cliente fictício para testes"""
-    return {"nome": "Cliente Teste", "numero": "61999999999", "endereco": "Rua Teste, 123"}
+@pytest.fixture()
+def auth_client(api_client, mock_db):
+    password = "testpassword"
+    hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+    user_data = {"username": "testuser", "password": hashed_password}
 
-@pytest.fixture
-def auth_client(client, mock_db):
-    """Autentica o cliente de testes e retorna o cliente autenticado"""
-    # Criar usuário fictício
-    user_data = {
-        "username": "testuser",
-        "password": "testpassword"
-    }
-    client.post("/api/register/", user_data, format="json")
-    
-    # Login com o usuário fictício
-    response = client.post("/api/login/", user_data, format="json")
-    assert response.status_code == 200  # Certifica que o login foi bem-sucedido
-    token = response.data.get("token")
+    patcher = patch("api.models.user_collection", mock_db.users)
+    patcher.start()
+    mock_db.users.insert_one(user_data)
+
+    response = api_client.post(
+        "/api/login/",
+        {"username": "testuser", "password": "testpassword"},
+        format="json"
+    )
+    assert response.status_code == 200, f"Erro no login: {response.json()}"
+    token = response.json().get("token")
     assert token, "Erro: Token não foi retornado no login."
 
-    # Configura o cliente autenticado
-    client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
-    return client
+    api_client.credentials(HTTP_AUTHORIZATION=f"JWT {token}")
 
-@pytest.fixture
+    yield api_client
+    patcher.stop()
+
+@pytest.fixture()
 def mock_client_collection(mock_db):
-    """Mocka a coleção do MongoDB"""
     with patch("api.models.client_collection", mock_db.client_collection):
         yield mock_db.client_collection
 
-def test_create_cliente(mock_client_collection, auth_client, mock_cliente):
-    """Teste para criar um cliente"""
-    mock_client_collection.delete_many({})
+@pytest.fixture()
+def mock_cliente():
+    return {"name": "Cliente Teste", "number": "61999999999", "endereco": "Rua Teste, 123"}
 
-    response = auth_client.post("/api/clientes/", mock_cliente, format="json")
-    assert response.status_code == 201
-    assert "cliente_id" in response.data
+@pytest.fixture()
+def client_db_document(mock_cliente):
+    return {
+        "name": mock_cliente["name"],
+        "phone": mock_cliente["number"],
+        "address": mock_cliente["endereco"],
+    }
 
-def test_get_cliente(mock_client_collection, auth_client, mock_cliente):
-    """Teste para ler um cliente"""
-    mock_client_collection.delete_many({})
-    cliente_id = str(mock_client_collection.insert_one(mock_cliente).inserted_id)  # Converter ObjectId para string
-
-    response = auth_client.get(f"/api/clientes/{cliente_id}/", format="json")
+def test_register_cliente(auth_client, mock_client_collection):
+    new_client = {"name": "Cliente Novo", "number": "61977777777", "endereco": "Rua Nova, 456"}
+    response = auth_client.post("/api/client/register/", new_client, format="json")
+    assert response.status_code == 201, f"Erro ao criar cliente: {response.json()}"
+    assert response.json().get("message") == "Cliente registrado com sucesso"
     
-    assert response.status_code == 200
-    assert response.data["nome"] == mock_cliente["nome"]
+    client_data = mock_client_collection.find_one({"name": new_client["name"]})
+    assert client_data is not None, "Cliente novo não foi salvo no banco"
 
-def test_update_cliente(mock_client_collection, auth_client, mock_cliente):
-    """Teste para atualizar um cliente"""
-    mock_client_collection.delete_many({})
-    cliente_id = str(mock_client_collection.insert_one(mock_cliente).inserted_id)  # Converter ObjectId para string
-
-    updated_data = {"nome": "Cliente Atualizado", "numero": "61988888888", "endereco": "Rua Atualizada, 456"}
-    response = auth_client.put(f"/api/clientes/{cliente_id}/", updated_data, format="json")
+def test_get_cliente(auth_client, mock_client_collection, client_db_document):
+    """
+    Testa a listagem de clientes utilizando o cliente
+    """
+    mock_client_collection.insert_one(client_db_document)
     
-    assert response.status_code == 200
-    assert response.data["nome"] == updated_data["nome"]
-    assert response.data["numero"] == updated_data["numero"]
-    assert response.data["endereco"] == updated_data["endereco"]
+    response = auth_client.get("/api/client/get/", format="json")
+    assert response.status_code == 200, f"Erro ao obter clientes: {response.json()}"
+    
+    clientes = response.json().get("clients", [])
+    found = any(c.get("name") == client_db_document["name"] for c in clientes)
+    assert found, "Cliente não encontrado na lista"
 
-def test_delete_cliente(mock_client_collection, auth_client, mock_cliente):
-    """Teste para deletar um cliente"""
-    mock_client_collection.delete_many({})
-    cliente_id = str(mock_client_collection.insert_one(mock_cliente).inserted_id)  # Converter ObjectId para string
+def test_update_cliente(auth_client, mock_client_collection, client_db_document):
+    """
+    Testa a atualização do cliente
+    """
+    mock_client_collection.insert_one(client_db_document)
+    
+    updated_data = {
+        "name": client_db_document["name"],  
+        "number": "61988888888",
+        "endereco": "Rua Atualizada, 456"
+    }
+    response = auth_client.put("/api/client/update/", updated_data, format="json")
+    assert response.status_code == 200, f"Erro ao atualizar cliente: {response.json()}"
 
-    response = auth_client.delete(f"/api/clientes/{cliente_id}/", format="json")
-    assert response.status_code == 204
-    assert mock_client_collection.find_one({"_id": ObjectId(cliente_id)}) is None
+    client_data = mock_client_collection.find_one({"name": client_db_document["name"]})
+    assert client_data is not None, "Cliente não encontrado após atualização"
+    assert client_data.get("phone") == "61988888888", "Número do cliente não foi atualizado"
+
+def test_delete_cliente(auth_client, mock_client_collection, client_db_document):
+    """
+    Testa a deleção do cliente 
+    """
+    mock_client_collection.insert_one(client_db_document)
+    
+    response = auth_client.delete("/api/client/delete/", data={"name": client_db_document["name"]}, format="json")
+    assert response.status_code == 200, f"Erro ao deletar cliente: {response.json()}"
+
+    client_data = mock_client_collection.find_one({"name": client_db_document["name"]})
+    assert client_data is None, "Cliente ainda existe após deleção"
