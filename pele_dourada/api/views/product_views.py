@@ -50,7 +50,7 @@ class RegisterProductView(APIView):
                 )
 
         try:
-            insert_doc(stock_collection, new_product)
+            insert_product(new_product)
         except Exception as e:
             return Response({
                 'error': 'Erro ao registrar produto',

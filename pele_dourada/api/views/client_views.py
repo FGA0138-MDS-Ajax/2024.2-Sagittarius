@@ -76,7 +76,7 @@ class UpdateClientView(APIView):
             )
         
         try:
-            update_product(name, new_number=number, new_endereco=endereco)
+            update_client(name, new_name=name , new_phone=number, new_address=endereco)
         except Exception as e:
             return Response({
                 'error': 'Erro ao atualizar cliente',

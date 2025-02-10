@@ -14,17 +14,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
+from api.views.admin_views import (LoginView, LogoutView, RegisterView,
+                                   UpdatePasswordView)
+from api.views.billing_views import GetBillingView, RegisterBillingView
+from api.views.client_views import (DeleteClientView, GetClientsView,
+                                    RegisterClientView, UpdateClientView)
+from api.views.order_views import RegisterOrderView
+from api.views.product_views import (DeleteProductView, ListProductView,
+                                     RegisterProductView, UpdateProductView)
 from django.contrib import admin
 from django.urls import path, re_path
-from api.views.admin_views import LoginView, RegisterView, UpdatePasswordView, LogoutView
-from api.views.product_views import RegisterProductView, UpdateProductView, ListProductView, DeleteProductView
-from rest_framework.permissions import AllowAny 
-from api.views.order_views import RegisterOrderView
-from api.views.client_views import RegisterClientView, UpdateClientView, DeleteClientView, GetClientsView
+from django.views.generic import TemplateView
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
 from rest_framework.permissions import AllowAny
-from django.views.generic import TemplateView   
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -54,6 +57,8 @@ urlpatterns = [
     path('api/client/delete/', DeleteClientView.as_view(), name='delete_client'),
     path('api/client/get/', GetClientsView.as_view(), name='get_clients'),
     path('api/order/register/', RegisterOrderView.as_view(), name='register_order'),
+    path('api/billing/register/', RegisterBillingView.as_view(), name='register_billing'),
+    path('api/billing/get/', GetBillingView.as_view(), name='get_billing'),
 
     # Documentação da API
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),

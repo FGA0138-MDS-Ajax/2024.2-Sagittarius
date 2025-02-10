@@ -99,14 +99,11 @@ class RegisterView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
-        user_body = {
-            'username': username,
-            'password': hash_password.decode('utf-8')
-        }
+        new_user = User(username, hash_password)
 
 
         try:
-            user = user_collection.insert_one(user_body)
+            insert_user(new_user)
         except:
             return Response({
                 'error': 'Erro ao criar usuário',
@@ -115,7 +112,6 @@ class RegisterView(APIView):
         
         return Response({
             'success': 'Usuário criado com sucesso',
-            'user_id': str(user.inserted_id),
         }, status=status.HTTP_201_CREATED
         )
 

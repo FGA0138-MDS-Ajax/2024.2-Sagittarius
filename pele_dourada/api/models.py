@@ -1,7 +1,9 @@
-from pymongo import MongoClient
-from dotenv import load_dotenv, find_dotenv
 import os
 from datetime import datetime
+
+from dotenv import find_dotenv, load_dotenv
+from pymongo import MongoClient
+
 load_dotenv(find_dotenv())
 
 # conexao cliente servidor
@@ -49,7 +51,7 @@ class Order(PedidoIDGenerator):
         self.payment = payment
         self.products = products
         self.confirm = False
-        self.date = datetime.now().strftime('%H:%M:%S')
+        self.date = datetime.today()
 
     def total_price(self):
         order_price = 0
@@ -81,7 +83,7 @@ class Client():
 class Billing():
     def __init__(self, orders):
         self.orders = orders
-        self.date = datetime.now().date()
+        self.date = datetime.today()
     
     def total_billing(self):
         billing_price = 0
@@ -90,7 +92,7 @@ class Billing():
         return billing_price
     
     def to_dict(self):
-        return {'date' : self.date.isoformat(),
+        return {'date' : self.date,
                 'orders' : self.orders,
                 'total' : self.total_billing()}
 
@@ -161,6 +163,23 @@ def get_billing(date):
 
 def get_all_billing():
     return list(billing_collection.find())
+
+def get_billing_date_interval(data_inicial, data_final):
+    data_inicial = datetime.strptime(data_inicial, '%Y-%m-%d')
+    # data_final = datetime.strptime(data_final, '%Y-%m-%d')
+
+    faturamento = db.billing.find({
+        'date': {
+            '$gte': data_inicial,
+            '$lte': data_final
+        }
+    })
+
+    faturamento_list = []
+    for faturamento in faturamento:
+        faturamento['_id'] = str(faturamento['_id'])
+        faturamento_list.append(faturamento)
+    return faturamento
 
 # atualizar documentos
 def update_user(username, new_username=None, new_pwd=None):
