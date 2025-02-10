@@ -16,7 +16,7 @@ Including another URLconf
 """
 from api.views.admin_views import (LoginView, LogoutView, RegisterView,
                                    UpdatePasswordView)
-from api.views.billing_views import GetBillingView, RegisterBillingView
+from api.views.billing_views import GetBillingView, RegisterBillingView, GenerateBillingReportView
 from api.views.client_views import (DeleteClientView, GetClientsView,
                                     RegisterClientView, UpdateClientView)
 from api.views.order_views import RegisterOrderView
@@ -59,6 +59,7 @@ urlpatterns = [
     path('api/order/register/', RegisterOrderView.as_view(), name='register_order'),
     path('api/billing/register/', RegisterBillingView.as_view(), name='register_billing'),
     path('api/billing/get/', GetBillingView.as_view(), name='get_billing'),
+    path('api/billing/export/', GenerateBillingReportView.as_view(), name='export_billing'),
 
     # Documentação da API
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),

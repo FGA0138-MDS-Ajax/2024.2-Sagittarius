@@ -83,7 +83,10 @@ class Client():
 class Billing():
     def __init__(self, orders):
         self.orders = orders
-        self.date = datetime.today()
+        self.date = datetime.today().date()
+
+    def date_to_int(self):
+        return int(self.date.strftime('%Y%m%d'))
     
     def total_billing(self):
         billing_price = 0
@@ -92,7 +95,7 @@ class Billing():
         return billing_price
     
     def to_dict(self):
-        return {'date' : self.date,
+        return {'date' : self.date_to_int(),
                 'orders' : self.orders,
                 'total' : self.total_billing()}
 
@@ -165,9 +168,6 @@ def get_all_billing():
     return list(billing_collection.find())
 
 def get_billing_date_interval(data_inicial, data_final):
-    data_inicial = datetime.strptime(data_inicial, '%Y-%m-%d')
-    # data_final = datetime.strptime(data_final, '%Y-%m-%d')
-
     faturamento = db.billing.find({
         'date': {
             '$gte': data_inicial,

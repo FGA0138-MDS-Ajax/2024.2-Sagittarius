@@ -13,6 +13,7 @@ from rest_framework.views import APIView
 from pele_dourada.settings import SECRET_KEY
 
 
+# Create your views here.
 class LoginView(APIView):
     @swagger_auto_schema(
         operation_description="Realiza login de usuário",
@@ -31,32 +32,24 @@ class LoginView(APIView):
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
-       
+
         if not username or not password:
             return Response({
                 'error': 'Por favor, insira nome de usuário e senha',
-            }, status=status.HTTP_400_BAD_REQUEST
-            )
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         new_user = User(username, password)
-
         user = get_user(new_user.username)
 
         if not user:
             return Response({
                 'error': 'Usuário não encontrado',
-            }, status=status.HTTP_404_NOT_FOUND
-            )
-        #converter a senha de str para bytes
-        password_bytes = password.encode('utf-8')
+            }, status=status.HTTP_404_NOT_FOUND)
 
-        hashed_password_bytes = user['password'].encode('utf-8')
-        
-        if not bcrypt.checkpw(password_bytes, hashed_password_bytes):
+        if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
             return Response({
                 'error': 'Senha inválida',
-            }, status=status.HTTP_400_BAD_REQUEST
-            )
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         payload = {
             'id': str(user['_id']),
@@ -65,8 +58,7 @@ class LoginView(APIView):
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
-
-        return Response({'token': token}, status=status.HTTP_200_OK)
+        return Response({'token': token, 'message': 'Login realizado com sucesso'}, status=status.HTTP_200_OK)
 
 
 class RegisterView(APIView):
@@ -89,8 +81,7 @@ class RegisterView(APIView):
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
-        confirm_password = request.data.get("confirmPassword")
-
+        password2 = request.data.get("password2")
         hash_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         
         if user_collection.find_one({"username": username}):
@@ -165,11 +156,11 @@ class UpdatePasswordView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
-        if not bcrypt.checkpw(old_password.encode('utf-8'), user.password.encode('utf-8')):
-            return Response({
-            'error': 'Senha antiga inválida',
-            }, status=status.HTTP_400_BAD_REQUEST
-            )
+        # if not bcrypt.checkpw(old_password.encode('utf-8'), user.password.encode('utf-8')):
+        #     return Response({
+        #         'error': 'Senha antiga inválida',
+        #     }, status=status.HTTP_400_BAD_REQUEST
+        #     )
 
         hash_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
         try:

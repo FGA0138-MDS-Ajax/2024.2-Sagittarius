@@ -1,6 +1,5 @@
 import pytest
 import bcrypt
-import jwt
 import mongomock
 from rest_framework.test import APIClient
 from api.models import user_collection
@@ -70,13 +69,17 @@ def test_invalid_login(mock_db, client):
     
     assert response.status_code == 404
     assert response.data["error"] == "Usuário não encontrado"
-
-def test_order_register(mock_db, client):
-    order_data = {
-        "name": "testuser",
-        "tipe": "type1",
-        "payment": "payment1",
-        "products": [{"name": "testproduct", "price": 10.0, "qtd": 5}]
+    
+def test_invalid_register(mock_db, client):
+    """Teste de registro com senha de confirmação errada"""
+    mock_db.user_collection.delete_many({})
+    user_data = {
+        "username": "user",
+        "password": "testpassword",
+        "password2": "wrongpassword"
     }
-
-    response = client.post("/api/order/register", order_data, format="json")
+    
+    response = client.post("/api/register/", user_data, format="json")
+    
+    assert response.status_code == 400
+    assert response.data["error"] == "As senhas não coincidem"
