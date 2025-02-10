@@ -11,7 +11,8 @@ class JwtAuthentication(MiddlewareMixin):
     public_routes = ["/api/login/", "/api/register/", "/swagger/", "/redoc/", "/admin/", "/api/updatepwd/",
                      "/api/product/register/", "/api/product/update/", "/api/products", "/api/products/", "/api/product/delete/",
                      "/api/product/update", "/api/order/register/", "/api/order/update/", "/api/order/delete/", "/api/order/update",
-                     "/swagger", "/redoc", "/api/client/register/", "/api/client/update/", "/api/client/delete/", "/api/client/get/"]
+                     "/swagger", "/redoc", "/api/client/register/", "/api/client/update/", "/api/client/delete/", "/api/client/get/",
+                     "/api/orders/"]
     
     def process_request(self, request):
         print(request.path)

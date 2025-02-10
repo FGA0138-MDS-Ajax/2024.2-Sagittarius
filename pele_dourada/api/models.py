@@ -119,13 +119,13 @@ def insert_client(doc):
     return
 
 def insert_order(doc):
-    if(get_product(doc.number) == None):
+    if(get_order(doc.number) == None):
         order_collection.insert_one(doc.to_dict())
         return
     return print('produto ja existe')
 
 def insert_user(doc):
-    if(get_product(doc.username) == None):
+    if(get_user(doc.username) == None):
         user_collection.insert_one(doc.to_dict())
         return
     return print('produto ja existe')

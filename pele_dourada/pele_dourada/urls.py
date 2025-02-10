@@ -21,7 +21,7 @@ from django.urls import path, re_path
 from api.views.admin_views import LoginView, RegisterView, UpdatePasswordView, LogoutView
 from api.views.product_views import RegisterProductView, UpdateProductView, ListProductView, DeleteProductView
 from rest_framework.permissions import AllowAny 
-from api.views.order_views import RegisterOrderView
+from api.views.order_views import RegisterOrderView, DeleteOrderView, ListOrdersView, UpdateOrderView
 from api.views.client_views import RegisterClientView, UpdateClientView, DeleteClientView, GetClientsView
 from rest_framework.permissions import AllowAny
 from django.views.generic import TemplateView   
@@ -54,6 +54,9 @@ urlpatterns = [
     path('api/client/delete/', DeleteClientView.as_view(), name='delete_client'),
     path('api/client/get/', GetClientsView.as_view(), name='get_clients'),
     path('api/order/register/', RegisterOrderView.as_view(), name='register_order'),
+    path('api/order/delete/', DeleteOrderView.as_view(), name='delete_order'),
+    path('api/orders/', ListOrdersView.as_view(), name='list_orders'),
+    path('api/order/update/', UpdateOrderView.as_view(), name='update_order'),
 
     # Documentação da API
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
