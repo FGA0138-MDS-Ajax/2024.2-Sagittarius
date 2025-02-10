@@ -83,10 +83,7 @@ class Client():
 class Billing():
     def __init__(self, orders):
         self.orders = orders
-        self.date = datetime.today().date()
-
-    def date_to_int(self):
-        return int(self.date.strftime('%Y%m%d'))
+        self.date = datetime.today()
     
     def total_billing(self):
         billing_price = 0
@@ -95,7 +92,7 @@ class Billing():
         return billing_price
     
     def to_dict(self):
-        return {'date' : self.date_to_int(),
+        return {'date' : self.date,
                 'orders' : self.orders,
                 'total' : self.total_billing()}
 
@@ -124,13 +121,13 @@ def insert_client(doc):
     return
 
 def insert_order(doc):
-    if(get_product(doc.number) == None):
+    if(get_order(doc.number) == None):
         order_collection.insert_one(doc.to_dict())
         return
     return print('produto ja existe')
 
 def insert_user(doc):
-    if(get_product(doc.username) == None):
+    if(get_user(doc.username) == None):
         user_collection.insert_one(doc.to_dict())
         return
     return print('produto ja existe')
@@ -168,6 +165,9 @@ def get_all_billing():
     return list(billing_collection.find())
 
 def get_billing_date_interval(data_inicial, data_final):
+    data_inicial = datetime.strptime(data_inicial, '%Y-%m-%d')
+    # data_final = datetime.strptime(data_final, '%Y-%m-%d')
+
     faturamento = db.billing.find({
         'date': {
             '$gte': data_inicial,
