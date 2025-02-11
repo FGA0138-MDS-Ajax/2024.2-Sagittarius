@@ -75,3 +75,10 @@
     width: 100%; /* Ajusta o botão para 100% em telas pequenas */
   }
 }
+
+.mensagem-sucesso {
+  margin-top: 20px;
+  color: green;
+  font-weight: bold;
+  text-align: center;
+}
