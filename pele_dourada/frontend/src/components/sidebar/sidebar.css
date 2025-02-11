@@ -56,10 +56,12 @@ body {
     cursor: pointer;
     border-radius: 8px;
     background: #F3821B;
+    transition: 0.4s ease;
 }
 
 .sidebar.collapsed .sidebar-header .toggler {
     transform: translate(3px, 65px);
+    transition: 0.4s ease;
 }
 
 .sidebar-header .toggler:hover {
@@ -75,6 +77,7 @@ body {
 
 .sidebar.collapsed .sidebar-header .toggler span{
     transform: rotate(180deg);
+    transition: 0.4s ease;
 }
 
 /* Primary nav bar */
