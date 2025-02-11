@@ -20,7 +20,7 @@ const VendasPage = () => {
 
   const fetchVendas = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/order/list/");
+      const response = await axios.get("http://localhost:8000/api/orders/");
       setVendas(response.data.orders);
     } catch (error) {
       console.error("Erro ao buscar vendas", error);
@@ -117,22 +117,35 @@ const VendasPage = () => {
 
       if (response.status === 201) {
         for (const produto of formData.produtos) {
-          const produtoEstoque = produtosEstoque.find(
-            (p) => p.id === produto.id
-          );
-
-          if (produtoEstoque) {
-            await axios.put(
-              `http://localhost:8000/api/products/${produto.id}`,
-              {
-                qtd: produtoEstoque.qtd - produto.quantidade,
-              }
+            const produtoEstoque = produtosEstoque.find(
+                (p) => p.name === produto.name  
             );
-          }
+    
+            if (produtoEstoque) {
+                const novaQtd = produtoEstoque.qtd - produto.quantidade;
+    
+                // Verifica se há estoque suficiente antes de atualizar
+                if (novaQtd < 0) {
+                    alert(`Estoque insuficiente para o produto: ${produto.name}`);
+                    return; // Interrompe o loop e não permite a atualização
+                }
+    
+                await axios.put(
+                    `http://localhost:8000/api/product/update/`,
+                    {
+                        name: produtoEstoque.name,
+                        qtd: novaQtd, 
+                        price: produtoEstoque.price 
+                    }
+                );
+            }
         }
         fetchVendas();
         closeModal();
-      }
+    }
+    
+    
+    
     } catch (error) {
       console.error("Erro ao realizar venda/encomenda", error);
     }
@@ -144,6 +157,18 @@ const VendasPage = () => {
         return total + produto.price * produto.quantidade;
       }, 0)
       .toFixed(2);
+  };
+
+  const calcularTotalVendaPorProdutos = (produtos) => {
+    return produtos
+      .reduce((total, produto) => {
+        return total + produto.price * produto.quantidade;
+      }, 0)
+      .toFixed(2);
+  };
+
+  const capitalize = (str) => {
+    return str.replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
   const requestSort = (key) => {
@@ -211,15 +236,15 @@ const VendasPage = () => {
             <tbody>
               {sortedVendas.map((venda) => (
                 <tr key={venda.id}>
-                  <td>{venda.name}</td>
-                  <td>{venda.tipe}</td>
-                  <td>{venda.payment}</td>
+                  <td>{capitalize(venda.name)}</td>
+                  <td>{capitalize(venda.tipe)}</td>
+                  <td>{capitalize(venda.payment)}</td>
                   <td>
                     {venda.products.map((produto) => (
-                      <div key={produto.id}>{produto.name}</div>
+                      <div key={produto.id}>{capitalize(produto.name)}</div>
                     ))}
                   </td>
-                  <td>R${venda.total_price.toFixed(2)}</td>
+                  <td>R${calcularTotalVendaPorProdutos(venda.products)}</td>
                 </tr>
               ))}
             </tbody>
@@ -280,7 +305,7 @@ const VendasPage = () => {
                               >
                                 -
                               </button>
-                              <span>{produto.name}</span>
+                              <span>{capitalize(produto.name)}</span>
                               <button
                                 type="button"
                                 onClick={() => handleAdicionarProduto(produto.id)}
@@ -314,7 +339,7 @@ const VendasPage = () => {
                       <tbody>
                         {formData.produtos.map((produto) => (
                           <tr key={produto.id}>
-                            <td>{produto.name}</td>
+                            <td>{capitalize(produto.name)}</td>
                             <td>{produto.quantidade}</td>
                             <td>R${produto.price.toFixed(2)}</td>
                             <td>
