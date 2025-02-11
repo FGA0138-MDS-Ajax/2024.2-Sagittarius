@@ -76,8 +76,9 @@ class UpdateProductView(APIView):
     
     def put(self, request):
         name = request.data.get("name")
-        price = request.data.get("price")
-        qtd = request.data.get("qtd")  # Agora capturando a quantidade
+        new_name = request.data.get("new_name") 
+        new_price = request.data.get("price")
+        new_qtd = request.data.get("qtd")  # Agora capturando a quantidade
 
         if not name or price is None or qtd is None:
             return Response({
@@ -92,7 +93,7 @@ class UpdateProductView(APIView):
             }, status=status.HTTP_404_NOT_FOUND)
         
         try:
-            update_product(product['name'], new_name=name, new_price=price, new_qtd=qtd)  # Atualizando também a quantidade
+            update_product(product['name'], new_name=new_name, new_price=new_price, new_qtd=new_qtd)  # Atualizando também a quantidade
         except Exception as e:
             return Response({
                 'error': 'Erro ao atualizar produto',
