@@ -74,7 +74,7 @@ class UpdateProductView(APIView):
         ],
     )
     
-    def post(self, request):
+    def put(self, request):
         name = request.data.get("name")
         price = request.data.get("price")
         # qtd = request.data.get("qtd")
@@ -116,7 +116,7 @@ class DeleteProductView(APIView):
         ],
     )
 
-    def post(self, request):
+    def delete(self, request):
         name = request.data.get("name")
         if not name:
             return Response({
@@ -152,7 +152,8 @@ class DeleteProductView(APIView):
 class ListProductView(APIView):
     def get(self, request):
         products = []
-        for product in stock_collection.find():
+        products_list = get_all_products()
+        for product in products_list:
             products.append({
                 'id': str(product['_id']),
                 'name': product['name'],

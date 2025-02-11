@@ -69,7 +69,7 @@ class UpdateClientView(APIView):
             }, status=status.HTTP_404_NOT_FOUND)
         
         try:
-            update_client(name, new_name=name , new_phone=number, new_address=endereco)
+            update_client(name, new_phone=number, new_address=endereco)
         except Exception as e:
             return Response({
                 'error': 'Erro ao atualizar cliente',
@@ -89,7 +89,7 @@ class DeleteClientView(APIView):
                 'error': 'Por favor, insira o nome do cliente',
             }, status=status.HTTP_400_BAD_REQUEST)
         
-        client = delete_client(name)
+        client = get_client(name)
 
         if not client:
             return Response({

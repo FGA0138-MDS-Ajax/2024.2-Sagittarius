@@ -144,7 +144,7 @@ class UpdatePasswordView(APIView):
         ],
     )
 
-    def post(self, request):
+    def put(self, request):
         user = request.user
         username = request.data.get("username")
         old_password = request.data.get("password")
