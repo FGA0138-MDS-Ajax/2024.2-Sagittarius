@@ -59,7 +59,7 @@ class DeleteOrderView(APIView):
         ]
     )
 
-    def post(self, request):
+    def delete(self, request):
         number = request.data.get("number")
 
         if not number:
@@ -99,7 +99,7 @@ class UpdateOrderView(APIView):
         ],
     )
 
-    def post(self, request):
+    def put(self, request):
         number = request.data.get("number")
         index = request.data.get("index")
         new_product = request.data.get("new_product")
