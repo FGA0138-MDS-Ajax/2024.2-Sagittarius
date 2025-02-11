@@ -313,7 +313,7 @@ const VendasPage = () => {
                               <button
                                 type="button"
                                 onClick={() => handleRemoverProduto(produto.id)}
-                                className="vendas-button-remover"
+                                className="vendas-botao-mais-menos"
                               >
                                 -
                               </button>
@@ -321,7 +321,7 @@ const VendasPage = () => {
                               <button
                                 type="button"
                                 onClick={() => handleAdicionarProduto(produto.id)}
-                                className="vendas-button-adicionar"
+                                className="vendas-botao-mais-menos"
                               >
                                 +
                               </button>
@@ -329,10 +329,41 @@ const VendasPage = () => {
                           </div>
                         ))}
                       </div>
-                      <button type="submit" className="vendas-submit">
-                        Confirmar Venda
-                      </button>
+                      <div className="vendas-total-finalizar">
+                        <button type="submit" className="vendas-button-finalizar">
+                          <MdOutlinePointOfSale />
+                          Finalizar Venda
+                        </button>
+                      </div>
                     </form>
+                  </div>
+                  <div className="nota-fiscal-container">
+                    <h3>Nota Fiscal</h3>
+                    <table className="nota-fiscal-table">
+                      <thead>
+                        <tr>
+                          <th>Produto</th>
+                          <th>Quantidade</th>
+                          <th>Preço</th>
+                          <th>Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {formData.produtos.map((produto) => (
+                          <tr key={produto.id}>
+                            <td>{capitalize(produto.name)}</td>
+                            <td>{produto.quantidade}</td>
+                            <td>R${produto.price.toFixed(2)}</td>
+                            <td>
+                              R${(produto.price * produto.quantidade).toFixed(2)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div className="total-container">
+                      <h4>Total: R${calcularTotalVenda()}</h4>
+                    </div>
                   </div>
                 </div>
               </div>
