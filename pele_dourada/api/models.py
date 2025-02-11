@@ -113,11 +113,11 @@ def insert_product(doc):
     return print('produto ja existe')
 
 def insert_client(doc):
-    if get_client(doc.name) is None:  # Verifica se o cliente já existe pelo nome
+    if get_client(doc.phone) is None:  # Verifica se o cliente já existe pelo número de telefone
         client_collection.insert_one(doc.to_dict())
-        print(f"Cliente {doc.name} inserido com sucesso!")
+        print(f"Cliente {doc.phone} inserido com sucesso!")
     else:
-        print(f"Cliente {doc.name} já existe!")
+        print(f"Cliente {doc.phone} já existe!")
     return
 
 def insert_order(doc):
@@ -249,12 +249,12 @@ def delete_user(username):
     user_collection.delete_one({'username' : username})
     return
 
-def delete_client(name):
-    result = client_collection.delete_one({'name': name})
+def delete_client(phone):
+    result = client_collection.delete_one({'phone': phone})
     if result.deleted_count > 0:
-        print(f"Cliente {name} deletado com sucesso!")
+        print(f"Cliente {phone} deletado com sucesso!")
     else:
-        print(f"Cliente {name} não encontrado.")
+        print(f"Cliente {phone} não encontrado.")
     return
 
 def delete_product(name):

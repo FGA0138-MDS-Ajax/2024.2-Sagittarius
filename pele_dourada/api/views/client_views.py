@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+
 class RegisterClientView(APIView):
     @swagger_auto_schema(
         operation_description="Registra um novo cliente",
@@ -31,6 +32,7 @@ class RegisterClientView(APIView):
             )
         
         new_client = Client(name, phone, address)
+        print(new_client.to_dict())
 
         try:
             insert_client(new_client)
@@ -87,14 +89,14 @@ class UpdateClientView(APIView):
 
 class DeleteClientView(APIView):
     def delete(self, request): 
-        name = request.data.get("name")
-
-        if not name:
+        phone = request.data.get("phone")
+        if not phone:
             return Response({
                 'error': 'Por favor, insira o nome do cliente',
             }, status=status.HTTP_400_BAD_REQUEST)
         
-        client = get_client(name)
+        client = get_client(phone)
+        print(client)
 
         if not client:
             return Response({
@@ -102,7 +104,7 @@ class DeleteClientView(APIView):
             }, status=status.HTTP_404_NOT_FOUND)
         
         try:
-            delete_client(client)
+            delete_client(client['phone'])
         except Exception as e:
             print(e)
             return Response({

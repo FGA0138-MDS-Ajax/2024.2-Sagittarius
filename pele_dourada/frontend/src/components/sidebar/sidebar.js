@@ -91,10 +91,19 @@ function Sidebar({ isCollapsed, setIsCollapsed }) {
         {/* Navegação Secundária */}
         <ul className="nav-list secondary-nav">
           <li className="nav-item">
+            <Link
+              to="/"
+              className={`nav-link ${location.pathname === "/" ? "active" : ""}`}
+            >
+              <img src={Logout} alt="Logout Icon" className="nav-icon" />
+              <span className="nav-label">Logout</span>
+            </Link>
+            {/* 
             <button onClick={handleLogout} className="nav-link logout-button">
               <img src={Logout} alt="Logout Icon" className="nav-icon" />
               <span className="nav-label">Logout</span>
-            </button>
+            </button> 
+            */}
           </li>
         </ul>
       </nav>
