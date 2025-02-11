@@ -82,7 +82,7 @@ function Login() {
         });
 
         setTimeout(() => {
-          navigate('/estoque'); 
+          navigate('/dashboard'); 
         }, 2000);
       } catch (err) {
         console.error('Erro ao fazer login:', err.response?.data);
