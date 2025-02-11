@@ -17,6 +17,7 @@ function ControleEstoque() {
   const [produtoRemovendo, setProdutoRemovendo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const fetchProdutos = async () => {
@@ -72,13 +73,14 @@ function ControleEstoque() {
   const handleEditProduct = async (produto) => {
     try {
       const response = await axios.put('http://localhost:8000/api/product/update/', produto);
-      alert(response.data);
       setIsEditModalOpen(false);
       setProdutoEditando(null);
       const updatedProdutos = produtos.map((p) =>
         p.name === produto.name ? { ...p, ...produto } : p
       );
       setProdutos(updatedProdutos);
+      setSuccessMessage('Produto editado com sucesso!');
+      setTimeout(() => setSuccessMessage(''), 3000); // Limpa a mensagem após 3 segundos
     } catch (error) {
       console.error("Erro ao atualizar produto:", error);
       alert('Erro ao atualizar o produto');
@@ -169,6 +171,12 @@ function ControleEstoque() {
               Adicionar Produto</button>
             </div>
           </div>
+
+          {successMessage && (
+            <div className="success-message">
+              {successMessage}
+            </div>
+          )}
 
           {isLoading ? (
             <div>Carregando...</div>
