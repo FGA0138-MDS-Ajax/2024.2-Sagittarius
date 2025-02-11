@@ -67,32 +67,30 @@ function ControleClientes() {
       return 0;
     });
 
-    const handleEditCliente = async (cliente) => {
-      try {
-        const response = await axios.post("http://localhost:8000/api/client/update/", {
-          name: cliente.name,
-          number: cliente.number,
-          endereco: cliente.endereco
-        });
-        alert(response.data);
-        setIsEditModalOpen(false);
-        setClienteEditando(null);
-        const updatedClientes = clientes.map((c) =>
-          c.name === cliente.name ? { ...c, ...cliente } : c
-        );
-        setClientes(updatedClientes);
-      } catch (error) {
-        console.error("Erro ao atualizar cliente:", error.response ? error.response.data : error.message);
-        alert("Erro ao atualizar o cliente");
-      }
-    };
+  const handleEditCliente = async (cliente) => {
+    try {
+      const response = await axios.put(`http://localhost:8000/api/client/update/${cliente.id}/`, {
+        name: cliente.name,
+        phone: cliente.phone,
+        endereco: cliente.endereco
+      });
+      alert(response.data);
+      setIsEditModalOpen(false);
+      setClienteEditando(null);
+      const updatedClientes = clientes.map((c) =>
+        c.id === cliente.id ? { ...c, ...cliente } : c
+      );
+      setClientes(updatedClientes);
+    } catch (error) {
+      console.error("Erro ao atualizar cliente:", error.response ? error.response.data : error.message);
+      alert("Erro ao atualizar o cliente");
+    }
+  };
 
   const handleRemoveCliente = async (cliente) => {
     try {
-      const response = await axios.post("http://localhost:8000/api/client/delete/", { // esperando api
-        name: cliente.name,
-      }); 
-      window.location.reload();
+      await axios.delete(`http://localhost:8000/api/client/delete/${cliente.id}/`);
+      setClientes(clientes.filter((c) => c.id !== cliente.id));
     } catch (error) {
       console.error("Erro ao deletar cliente:", error);
       alert("Erro ao deletar o cliente");
@@ -148,8 +146,8 @@ function ControleClientes() {
                   <th onClick={() => requestSort("phone")}>
                     Telefone {getSortIcon("phone")}
                   </th>
-                  <th onClick={() => requestSort("address")}>
-                    Endereço {getSortIcon("address")}
+                  <th onClick={() => requestSort("endereco")}>
+                    Endereço {getSortIcon("endereco")}
                   </th>
                   <th>Ações</th>
                 </tr>
@@ -159,7 +157,7 @@ function ControleClientes() {
                   <tr key={cliente.id}>
                     <td>{cliente.name}</td>
                     <td>{cliente.phone}</td>
-                    <td>{cliente.address}</td>
+                    <td>{cliente.endereco}</td>
                     <td className="buttons-actions">
                       <button
                         className="controle-clientes-edit-button"
@@ -268,11 +266,11 @@ function ControleClientes() {
                       id="edit-address"
                       type="text"
                       className="editar-cliente-input"
-                      value={clienteEditando.address}
+                      value={clienteEditando.endereco}
                       onChange={(e) =>
                         setClienteEditando({
                           ...clienteEditando,
-                          address: e.target.value,
+                          endereco: e.target.value,
                         })
                       }
                     />

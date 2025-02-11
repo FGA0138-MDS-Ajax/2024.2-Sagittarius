@@ -5,40 +5,45 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from pele_dourada.settings import SECRET_KEY
-
-
 class RegisterClientView(APIView):
     @swagger_auto_schema(
         operation_description="Registra um novo cliente",
-        responses={201: openapi.Response('Cliente registrado com sucesso')},
-        manual_parameters=[
-            openapi.Parameter('name', openapi.IN_QUERY, description="Nome do cliente", type=openapi.TYPE_STRING),
-            openapi.Parameter('number', openapi.IN_QUERY, description="Número de telefone do cliente", type=openapi.TYPE_STRING),
-            openapi.Parameter('endereco', openapi.IN_QUERY, description="Endereço do cliente", type=openapi.TYPE_STRING),
-        ]
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'name': openapi.Schema(type=openapi.TYPE_STRING, description='Nome do cliente'),
+                'phone': openapi.Schema(type=openapi.TYPE_STRING, description='Número de telefone do cliente'),
+                'address': openapi.Schema(type=openapi.TYPE_STRING, description='Endereço do cliente'),
+            },
+            required=['name', 'phone', 'address']
+        ),
+        responses={201: openapi.Response('Cliente registrado com sucesso')}
     )
     def post(self, request):
         name = request.data.get("name")
-        number = request.data.get("number")
-        endereco = request.data.get("endereco")
+        phone = request.data.get("phone")
+        address = request.data.get("address")
 
-        if not name or not number or not endereco:
+        if not name or not phone or not address:
             return Response({
                 'error': 'Por favor, insira todos os campos',
-            }, status=status.HTTP_400_BAD_REQUEST)
+            }, status=status.HTTP_400_BAD_REQUEST
+            )
         
-        new_client = Client(name, number, endereco)
+        new_client = Client(name, phone, address)
+
         try:
             insert_client(new_client)
         except Exception as e:
             return Response({
                 'error': 'Erro ao registrar cliente',
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
         
         return Response({
-            "message": "Cliente registrado com sucesso"
-        }, status=status.HTTP_201_CREATED)
+            "Cliente registrado com sucesso"
+        }, status=status.HTTP_201_CREATED
+        )
 
 
 class UpdateClientView(APIView):
