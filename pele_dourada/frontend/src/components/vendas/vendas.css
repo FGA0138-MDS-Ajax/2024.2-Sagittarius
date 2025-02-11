@@ -112,6 +112,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  position: relative;
 }
 
 .nota-fiscal-container {
@@ -208,4 +209,47 @@
 .pagination button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.autocomplete-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #000000;
+  border-top: none;
+  max-height: 150px;
+  max-width: 530px;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 1000;
+  background-color: rgb(255, 132, 0);
+  width: calc(100% - 50px); 
+}
+
+.autocomplete-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.autocomplete-item:hover {
+  background-color: #f0f0f0;
+}
+
+.expand-products {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
+.vendas-search {
+  margin:0;
+  text-align: center;
+}
+
+.vendas-search-input {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
 }

@@ -16,9 +16,13 @@ const VendasPage = () => {
     produtos: [],
   });
   const [produtosEstoque, setProdutosEstoque] = useState([]);
+  const [clientes, setClientes] = useState([]);
+  const [filteredClientes, setFilteredClientes] = useState([]);
+  const [expandedVendas, setExpandedVendas] = useState({});
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10); // Limite de 10 itens por página
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchVendas = async () => {
     try {
@@ -38,9 +42,19 @@ const VendasPage = () => {
     }
   };
 
+  const fetchClientes = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/client/get/");
+      setClientes(response.data.clients);
+    } catch (error) {
+      console.error("Erro ao buscar clientes", error);
+    }
+  };
+
   useEffect(() => {
     fetchVendas();
     fetchProdutosEstoque();
+    fetchClientes();
   }, []);
 
   const openModal = () => {
@@ -61,6 +75,25 @@ const VendasPage = () => {
       ...prevState,
       [name]: value,
     }));
+
+    if (name === "nomeCliente") {
+      if (value) {
+        const filtered = clientes.filter((cliente) =>
+          cliente.name.toLowerCase().includes(value.toLowerCase())
+        );
+        setFilteredClientes(filtered);
+      } else {
+        setFilteredClientes([]);
+      }
+    }
+  };
+
+  const handleSelectCliente = (cliente) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      nomeCliente: cliente.name,
+    }));
+    setFilteredClientes([]);
   };
 
   const handleAdicionarProduto = (produtoId) => {
@@ -104,9 +137,10 @@ const VendasPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const nomeCliente = formData.nomeCliente || "Cliente sem nome";
     try {
       const response = await axios.post("http://localhost:8000/api/order/register/", {
-        name: formData.nomeCliente,
+        name: nomeCliente,
         tipe: formData.tipoVenda,
         payment: formData.metodoPagamento,
         products: formData.produtos.map((produto) => ({
@@ -212,6 +246,29 @@ const VendasPage = () => {
 
   const totalPages = Math.ceil(sortedVendas.length / itemsPerPage);
 
+  const toggleExpand = (vendaId) => {
+    setExpandedVendas((prevState) => ({
+      ...prevState,
+      [vendaId]: !prevState[vendaId],
+    }));
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredVendas = itemsToDisplay.filter((venda) => {
+    const searchTermLower = searchTerm.toLowerCase();
+    return (
+      venda.name.toLowerCase().includes(searchTermLower) ||
+      venda.tipe.toLowerCase().includes(searchTermLower) ||
+      venda.payment.toLowerCase().includes(searchTermLower) ||
+      venda.products.some((produto) =>
+        produto.name.toLowerCase().includes(searchTermLower)
+      )
+    );
+  });
+
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
@@ -221,23 +278,33 @@ const VendasPage = () => {
             <h1>Vendas e Encomendas</h1>
           </div>
           <div className="vendas-add-button" id="vendas-add-button">
-            <button className="vendas-button" id="vendas-button" onClick={() => setIsModalOpen(true)}>
+            <button className="vendas-button" id="vendas-button" onClick={openModal}>
               <GiChickenOven />
               Nova Venda / Encomenda
             </button>
           </div>
 
+          <div className="vendas-search">
+            <input
+              type="text"
+              placeholder="Buscar vendas..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="vendas-search-input"
+            />
+          </div>
+
           <table className="vendas-table">
             <thead>
               <tr>
-                <th onClick={() => requestSort("nomeCliente")}>
-                  Nome do Cliente {getSortIcon("nomeCliente")}
+                <th onClick={() => requestSort("name")}>
+                  Nome do Cliente {getSortIcon("name")}
                 </th>
-                <th onClick={() => requestSort("tipoVenda")}>
-                  Tipo {getSortIcon("tipoVenda")}
+                <th onClick={() => requestSort("tipe")}>
+                  Tipo {getSortIcon("tipe")}
                 </th>
-                <th onClick={() => requestSort("metodoPagamento")}>
-                  Método de Pagamento {getSortIcon("metodoPagamento")}
+                <th onClick={() => requestSort("payment")}>
+                  Método de Pagamento {getSortIcon("payment")}
                 </th>
                 <th>Produtos</th>
                 <th onClick={() => requestSort("valorVenda")}>
@@ -246,15 +313,25 @@ const VendasPage = () => {
               </tr>
             </thead>
             <tbody>
-              {itemsToDisplay.map((venda) => (
+              {filteredVendas.map((venda) => (
                 <tr key={venda.id}>
                   <td>{capitalize(venda.name)}</td>
                   <td>{capitalize(venda.tipe)}</td>
                   <td>{capitalize(venda.payment)}</td>
                   <td>
-                    {venda.products.map((produto) => (
-                      <div key={produto.id}>{capitalize(produto.name)}</div>
-                    ))}
+                    {venda.products.length > 1 && !expandedVendas[venda.id] ? (
+                      <>
+                        <div>{capitalize(venda.products[0].name)} ({venda.products[0].quantidade})</div>
+                        <div className="expand-products" onClick={() => toggleExpand(venda.id)}>...</div>
+                      </>
+                    ) : (
+                      venda.products.map((produto) => (
+                        <div key={produto.id}>{capitalize(produto.name)} ({produto.quantidade})</div>
+                      ))
+                    )}
+                    {expandedVendas[venda.id] && (
+                      <div className="expand-products" onClick={() => toggleExpand(venda.id)}>Mostrar menos</div>
+                    )}
                   </td>
                   <td>R${calcularTotalVendaPorProdutos(venda.products)}</td>
                 </tr>
@@ -292,6 +369,19 @@ const VendasPage = () => {
                         onChange={handleChange}
                         className="vendas-input"
                       />
+                      {filteredClientes.length > 0 && formData.nomeCliente && (
+                        <ul className="autocomplete-list">
+                          {filteredClientes.map((cliente) => (
+                            <li
+                              key={cliente.id}
+                              onClick={() => handleSelectCliente(cliente)}
+                              className="autocomplete-item"
+                            >
+                              {cliente.name}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                       <label>Método de Pagamento</label>
                       <select
                         name="metodoPagamento"
@@ -304,7 +394,6 @@ const VendasPage = () => {
                         <option value="debito">Cartão de Débito</option>
                         <option value="pix">Dinheiro</option>
                         <option value="dinheiro">PIX</option>
-                        <option value="vale_refeicao">Vale Refeição</option>
                       </select>
                       <label>Tipo de Venda</label>
                       <select
