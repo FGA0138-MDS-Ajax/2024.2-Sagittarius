@@ -69,6 +69,7 @@ class UpdateProductView(APIView):
         responses={200: openapi.Response('Produto atualizado com sucesso')},
         manual_parameters=[
             openapi.Parameter('name', openapi.IN_QUERY, description="Nome do produto", type=openapi.TYPE_STRING),
+            openapi.Parameter('new_name', openapi.IN_QUERY, description="Novo nome do produto", type=openapi.TYPE_STRING),
             openapi.Parameter('price', openapi.IN_QUERY, description="Preço do produto", type=openapi.TYPE_NUMBER),
             openapi.Parameter('qtd', openapi.IN_QUERY, description="Quantidade do produto", type=openapi.TYPE_INTEGER),
         ],
@@ -80,7 +81,7 @@ class UpdateProductView(APIView):
         new_price = request.data.get("price")
         new_qtd = request.data.get("qtd")  # Agora capturando a quantidade
 
-        if not name or price is None or qtd is None:
+        if not name or new_price is None or new_qtd is None:
             return Response({
                 'error': 'Por favor, insira todos os campos',
             }, status=status.HTTP_400_BAD_REQUEST)
