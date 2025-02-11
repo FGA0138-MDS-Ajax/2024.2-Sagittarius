@@ -116,29 +116,40 @@ const VendasPage = () => {
           quantidade: produto.quantidade,
         })),
       });
-
+  
       if (response.status === 201) {
         for (const produto of formData.produtos) {
-          const produtoEstoque = produtosEstoque.find(
-            (p) => p.id === produto.id
-          );
-
-          if (produtoEstoque) {
-            await axios.put(
-              `http://localhost:8000/api/products/${produto.id}`,
-              {
-                qtd: produtoEstoque.qtd - produto.quantidade,
-              }
+            const produtoEstoque = produtosEstoque.find(
+                (p) => p.name === produto.name  // Buscar pelo nome
             );
-          }
+    
+            if (produtoEstoque) {
+                const novaQtd = produtoEstoque.qtd - produto.quantidade;
+    
+                // Verifica se há estoque suficiente antes de atualizar
+                if (novaQtd < 0) {
+                    alert(`Estoque insuficiente para o produto: ${produto.name}`);
+                    return; // Interrompe o loop e não permite a atualização
+                }
+    
+                await axios.put(
+                    `http://localhost:8000/api/product/update/`,
+                    {
+                        name: produtoEstoque.name,
+                        qtd: novaQtd, // Atualiza a quantidade no estoque
+                        price: produtoEstoque.price // Mantém o preço original
+                    }
+                );
+            }
         }
         fetchVendas();
         closeModal();
-      }
+    }
     } catch (error) {
       console.error("Erro ao realizar venda/encomenda", error);
     }
   };
+  
 
   const calcularTotalVenda = () => {
     return formData.produtos
