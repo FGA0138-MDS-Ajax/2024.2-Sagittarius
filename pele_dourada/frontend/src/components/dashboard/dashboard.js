@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import './dashboard.css';
 import { LuFileSpreadsheet } from "react-icons/lu";
 import Sidebar from '../sidebar/sidebar';
@@ -8,6 +8,9 @@ import VendasIcon from '../../assets/icons/dashboard-vendas-icon.svg';
 import ValorIcon from '../../assets/icons/dashboard-valor-icon.svg';
 import EstoqueIcon from '../../assets/icons/dashboard-estoque-icon.svg';
 import ClientesIcon from '../../assets/icons/dashboard-clientes-icon.svg';
+import { CSVLink } from "react-csv";
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF4560', '#00E396', '#775DD0', '#FEB019', '#FF4560'];
 
 function ViewDashboard() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -50,8 +53,34 @@ function ViewDashboard() {
     }
   };
 
+  const calculateTotalSales = () => {
+    return orders.reduce((total, order) => total + order.payment, 0).toFixed(2);
+  };
+
+  const calculateTotalOrders = () => {
+    return orders.length;
+  };
+
+  const calculateTotalStock = () => {
+    return products.reduce((total, product) => total + product.qtd, 0);
+  };
+
   const ordersData = orders.map(order => ({ name: order.name, total: order.payment }));
-  const productsData = products.map(product => ({ name: product.name, quantidade: product.qtd }));
+  const productsData = products.map((product, index) => ({ name: product.name, quantidade: product.qtd, color: COLORS[index % COLORS.length] }));
+
+  const exportData = () => {
+    const csvData = [
+      ["Nome do Cliente", "Telefone", "Endereço"],
+      ...clients.map(client => [client.name, client.phone, client.endereco]),
+      [],
+      ["Produto", "Quantidade", "Preço Total"],
+      ...orders.flatMap(order => order.products.map(product => [product.name, product.quantidade, product.price * product.quantidade])),
+      [],
+      ["Produto", "Quantidade em Estoque"],
+      ...products.map(product => [product.name, product.qtd])
+    ];
+    return csvData;
+  };
 
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
@@ -68,7 +97,7 @@ function ViewDashboard() {
             <div className="card-content">
               <div>
                 <h3 className="card-title">Vendas</h3>
-                <p className="card-subtitle">R$ 0,00</p>
+                <p className="card-subtitle">R$ {calculateTotalSales()}</p>
               </div>
               <div className="card-icon">
                 <img src={VendasIcon} alt="Ícone de Vendas" />
@@ -80,7 +109,7 @@ function ViewDashboard() {
             <div className="card-content">
               <div>
                 <h3 className="card-title">Pedidos</h3>
-                <p className="card-subtitle">0</p>
+                <p className="card-subtitle">{calculateTotalOrders()}</p>
               </div>
               <div className="card-icon">
                 <img src={ValorIcon} alt="Ícone de Valor" />
@@ -92,7 +121,7 @@ function ViewDashboard() {
             <div className="card-content">
               <div>
                 <h3 className="card-title">Estoque</h3>
-                <p className="card-subtitle">0 Itens</p>
+                <p className="card-subtitle">{calculateTotalStock()} Itens</p>
               </div>
               <div className="card-icon">
                 <img src={EstoqueIcon} alt="Ícone de Estoque" />
@@ -104,7 +133,7 @@ function ViewDashboard() {
             <div className="card-content">
               <div>
                 <h3 className="card-title">Clientes</h3>
-                <p className="card-subtitle">0</p>
+                <p className="card-subtitle">{clients.length}</p>
               </div>
               <div className="card-icon">
                 <img src={ClientesIcon} alt="Ícone de Clientes" />
@@ -128,9 +157,11 @@ function ViewDashboard() {
             </div>
 
                 <div className='dashboard-div-button-export'>
-                  <button className="dashboard-button-export" id="exportar-csv" onClick="">
+                  <CSVLink data={exportData()} filename={"dashboard-data.csv"} className="dashboard-button-export" id="exportar-csv">
+                    
                     <LuFileSpreadsheet/>
-                    Exportar CSV</button>
+                    <span className="dashboard-button-export" id="exportar-csv">Exportar CSV</span>
+                  </CSVLink>
                 </div>
 
           </div>
@@ -178,12 +209,13 @@ function ViewDashboard() {
                 <h2>Produtos</h2>
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
-                    <Pie data={productsData} dataKey="quantidade" nameKey="name" cx="50%" cy="50%" outerRadius={100} fill="#F3821B" label>
+                    <Pie data={productsData} dataKey="quantidade" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
                       {productsData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill="#F3821B" />
+                        <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
                     <Tooltip />
+                    <Legend />
                   </PieChart>
                 </ResponsiveContainer>
               </div>

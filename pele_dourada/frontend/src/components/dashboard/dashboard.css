@@ -112,8 +112,18 @@
   width: 100%;
 }
 
+.dashboard-button-export{
+  text-decoration: none;
+  background-color: #f15b1b;
+  padding: 10px;
+  border-radius: 5px;
+  color:white;
+}
+
 .dashboard-button-export:hover{
   background-color: #f15b1b;
+  border-radius: 5px;
+  text-decoration: underline;
 }
 
 .dashboard-label{
