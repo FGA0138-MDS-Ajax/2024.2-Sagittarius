@@ -133,11 +133,12 @@ const VendasPage = () => {
                 }
     
                 await axios.put(
-                    `http://localhost:8000/api/product/update/`,
-                    {
-                        name: produtoEstoque.name,
-                        qtd: novaQtd, // Atualiza a quantidade no estoque
-                        price: produtoEstoque.price // Mantém o preço original
+                  `http://localhost:8000/api/product/update/`,
+                  {
+                      oldName: produtoEstoque.name, // Nome antigo
+                      newName: produtoEstoque.name, // Nome novo (mesmo nome)
+                      qtd: novaQtd, // Atualiza a quantidade no estoque
+                      price: produtoEstoque.price // Mantém o preço original
                     }
                 );
             }
