@@ -37,7 +37,7 @@ function ViewDashboard() {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/order/list/');
+      const response = await axios.get('http://localhost:8000/api/orders/');
       setOrders(response.data.orders);
     } catch (error) {
       console.error('Erro ao buscar encomendas:', error);
@@ -53,19 +53,32 @@ function ViewDashboard() {
     }
   };
 
-  const calculateTotalSales = () => {
-    return orders.reduce((total, order) => total + order.payment, 0).toFixed(2);
+  const filterOrdersByDate = (orders, startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    return orders.filter(order => {
+      const orderDate = new Date(order.date);
+      return orderDate >= start && orderDate <= end;
+    });
   };
 
-  const calculateTotalOrders = () => {
-    return orders.length;
+  const calculateTotalSales = (filteredOrders) => {
+    return filteredOrders.reduce((total, order) => total + order.total, 0).toFixed(2);
+  };
+
+  const calculateTotalOrders = (filteredOrders) => {
+    return filteredOrders.length;
   };
 
   const calculateTotalStock = () => {
     return products.reduce((total, product) => total + product.qtd, 0);
   };
 
-  const ordersData = orders.map(order => ({ name: order.name, total: order.payment }));
+  const filteredOrders = filterOrdersByDate(orders, startDate, endDate);
+  const totalSales = calculateTotalSales(filteredOrders);
+  const totalOrders = calculateTotalOrders(filteredOrders);
+
+  const ordersData = filteredOrders.map(order => ({ name: order.name, total: order.total }));
   const productsData = products.map((product, index) => ({ name: product.name, quantidade: product.qtd, color: COLORS[index % COLORS.length] }));
 
   const exportData = () => {
@@ -74,7 +87,7 @@ function ViewDashboard() {
       ...clients.map(client => [client.name, client.phone, client.endereco]),
       [],
       ["Produto", "Quantidade", "Preço Total"],
-      ...orders.flatMap(order => order.products.map(product => [product.name, product.quantidade, product.price * product.quantidade])),
+      ...filteredOrders.flatMap(order => order.products.map(product => [product.name, product.quantidade, product.price * product.quantidade])),
       [],
       ["Produto", "Quantidade em Estoque"],
       ...products.map(product => [product.name, product.qtd])
@@ -97,7 +110,7 @@ function ViewDashboard() {
             <div className="card-content">
               <div>
                 <h3 className="card-title">Vendas</h3>
-                <p className="card-subtitle">R$ {calculateTotalSales()}</p>
+                <p className="card-subtitle">R$ {totalSales}</p>
               </div>
               <div className="card-icon">
                 <img src={VendasIcon} alt="Ícone de Vendas" />
@@ -109,7 +122,7 @@ function ViewDashboard() {
             <div className="card-content">
               <div>
                 <h3 className="card-title">Pedidos</h3>
-                <p className="card-subtitle">{calculateTotalOrders()}</p>
+                <p className="card-subtitle">{totalOrders}</p>
               </div>
               <div className="card-icon">
                 <img src={ValorIcon} alt="Ícone de Valor" />

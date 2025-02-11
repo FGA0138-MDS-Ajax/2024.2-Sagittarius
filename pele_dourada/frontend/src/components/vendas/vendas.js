@@ -17,10 +17,12 @@ const VendasPage = () => {
   });
   const [produtosEstoque, setProdutosEstoque] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10); // Limite de 10 itens por página
 
   const fetchVendas = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/order/list/");
+      const response = await axios.get("http://localhost:8000/api/orders/");
       setVendas(response.data.orders);
     } catch (error) {
       console.error("Erro ao buscar vendas", error);
@@ -146,6 +148,18 @@ const VendasPage = () => {
       .toFixed(2);
   };
 
+  const calcularTotalVendaPorProdutos = (produtos) => {
+    return produtos
+      .reduce((total, produto) => {
+        return total + produto.price * produto.quantidade;
+      }, 0)
+      .toFixed(2);
+  };
+
+  const capitalize = (str) => {
+    return str.replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
   const requestSort = (key) => {
     let direction = "asc";
     if (sortConfig.key === key && sortConfig.direction === "asc") {
@@ -175,20 +189,31 @@ const VendasPage = () => {
     return 0;
   });
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const itemsToDisplay = sortedVendas.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(sortedVendas.length / itemsPerPage);
+
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       <main className="main-content">
         <div className="vendas-page" id="vendas-page">
           <div className="vendas-title" id="vendas-title">
-              <h1>Vendas e Encomendas</h1>
+            <h1>Vendas e Encomendas</h1>
           </div>
           <div className="vendas-add-button" id="vendas-add-button">
-              <button className="vendas-button" id="vendas-button" onClick={() => setIsModalOpen(true)}>
+            <button className="vendas-button" id="vendas-button" onClick={() => setIsModalOpen(true)}>
               <GiChickenOven />
-              Nova Venda / Encomenda</button>
+              Nova Venda / Encomenda
+            </button>
           </div>
-
 
           <table className="vendas-table">
             <thead>
@@ -209,21 +234,33 @@ const VendasPage = () => {
               </tr>
             </thead>
             <tbody>
-              {sortedVendas.map((venda) => (
+              {itemsToDisplay.map((venda) => (
                 <tr key={venda.id}>
-                  <td>{venda.name}</td>
-                  <td>{venda.tipe}</td>
-                  <td>{venda.payment}</td>
+                  <td>{capitalize(venda.name)}</td>
+                  <td>{capitalize(venda.tipe)}</td>
+                  <td>{capitalize(venda.payment)}</td>
                   <td>
                     {venda.products.map((produto) => (
-                      <div key={produto.id}>{produto.name}</div>
+                      <div key={produto.id}>{capitalize(produto.name)}</div>
                     ))}
                   </td>
-                  <td>R${venda.total_price.toFixed(2)}</td>
+                  <td>R${calcularTotalVendaPorProdutos(venda.products)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+
+          <div className="pagination">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageChange(index + 1)}
+                className={currentPage === index + 1 ? "active" : ""}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
 
           {isModalOpen && (
             <div className="vendas-modal-overlay">
@@ -280,7 +317,7 @@ const VendasPage = () => {
                               >
                                 -
                               </button>
-                              <span>{produto.name}</span>
+                              <span>{capitalize(produto.name)}</span>
                               <button
                                 type="button"
                                 onClick={() => handleAdicionarProduto(produto.id)}
@@ -314,7 +351,7 @@ const VendasPage = () => {
                       <tbody>
                         {formData.produtos.map((produto) => (
                           <tr key={produto.id}>
-                            <td>{produto.name}</td>
+                            <td>{capitalize(produto.name)}</td>
                             <td>{produto.quantidade}</td>
                             <td>R${produto.price.toFixed(2)}</td>
                             <td>
