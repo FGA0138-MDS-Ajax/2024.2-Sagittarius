@@ -32,7 +32,7 @@ function Login() {
     setError('');
     setSuccess('');
 
-    if (!username || !password || (formType === 'register' && !confirmPassword)) {
+    if (!username || !password || (formType === 'register' && !confirmPassword) || (formType === 'passwordRecovery' && !confirmPassword)) {
       toast.error('Por favor, preencha todos os campos.', {
         position: 'top-left',
         autoClose: 5000,
@@ -42,9 +42,22 @@ function Login() {
       return;
     }
 
+    if (formType === 'register' || formType === 'passwordRecovery') {
+      if (password !== confirmPassword) {
+        toast.error('As senhas não coincidem.', {
+          position: 'top-left',
+          autoClose: 5000,
+          theme: 'colored',
+          transition: Bounce,
+        });
+        return;
+      }
+    }
+
     if (formType === 'login') {
       try { 
         const response = await axios.post('http://127.0.0.1:8000/api/login/', { username, password }); 
+        console.log('Resposta do backend:', response.data);
         localStorage.setItem('token', response.data.token);
         const token = localStorage.getItem('token');
         if (token) {
@@ -72,11 +85,13 @@ function Login() {
           navigate('/estoque'); 
         }, 2000);
       } catch (err) {
+        console.error('Erro ao fazer login:', err.response?.data);
         setError(err.response?.data?.error || 'Erro ao fazer login.');
       }
     } else if (formType === 'register') {
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/register/', { username, password, password2: confirmPassword });
+        const response = await axios.post('http://127.0.0.1:8000/api/register/', { username, password, confirmPassword: confirmPassword });
+        console.log('Resposta do backend:', response.data);
         
         toast.success('Cadastro realizado com sucesso!', {
           position: 'top-left',
@@ -87,12 +102,14 @@ function Login() {
 
         setFormType('login'); // volta para a tela de login após o registro
       } catch (err) {
+        console.error('Erro ao cadastrar:', err.response?.data);
         setError(err.response?.data?.error || 'Erro ao cadastrar.');
       }
     } 
     else if (formType === 'passwordRecovery') {
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/updatepwd/', { username, password });
+        const response = await axios.put('http://127.0.0.1:8000/api/updatepwd/', { username, password, confirmPassword: confirmPassword });
+        console.log('Resposta do backend:', response.data);
         toast.success(response.data.success || 'Senha redefinida com sucesso!', {
           position: 'top-left',
           autoClose: 5000,
@@ -101,6 +118,7 @@ function Login() {
         });
         setFormType('login');
         } catch (err) {
+          console.error('Erro ao redefinir senha:', err.response?.data);
           toast.error(err.response?.data?.error || 'Erro ao redefinir senha.', {
             position: 'top-left',
             autoClose: 5000,
@@ -152,7 +170,7 @@ function Login() {
             />
           </div>
 
-          {formType === 'register' && (
+          {(formType === 'register' || formType === 'passwordRecovery') && (
             <div className="login-form-group">
               <input
                 type="password"
