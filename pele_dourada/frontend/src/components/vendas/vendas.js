@@ -17,6 +17,8 @@ const VendasPage = () => {
   });
   const [produtosEstoque, setProdutosEstoque] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10); // Limite de 10 itens por página
 
   const fetchVendas = async () => {
     try {
@@ -117,35 +119,22 @@ const VendasPage = () => {
 
       if (response.status === 201) {
         for (const produto of formData.produtos) {
-            const produtoEstoque = produtosEstoque.find(
-                (p) => p.name === produto.name  
+          const produtoEstoque = produtosEstoque.find(
+            (p) => p.id === produto.id
+          );
+
+          if (produtoEstoque) {
+            await axios.put(
+              `http://localhost:8000/api/products/${produto.id}`,
+              {
+                qtd: produtoEstoque.qtd - produto.quantidade,
+              }
             );
-    
-            if (produtoEstoque) {
-                const novaQtd = produtoEstoque.qtd - produto.quantidade;
-    
-                // Verifica se há estoque suficiente antes de atualizar
-                if (novaQtd < 0) {
-                    alert(`Estoque insuficiente para o produto: ${produto.name}`);
-                    return; // Interrompe o loop e não permite a atualização
-                }
-    
-                await axios.put(
-                    `http://localhost:8000/api/product/update/`,
-                    {
-                        name: produtoEstoque.name,
-                        qtd: novaQtd, 
-                        price: produtoEstoque.price 
-                    }
-                );
-            }
+          }
         }
         fetchVendas();
         closeModal();
-    }
-    
-    
-    
+      }
     } catch (error) {
       console.error("Erro ao realizar venda/encomenda", error);
     }
@@ -200,20 +189,31 @@ const VendasPage = () => {
     return 0;
   });
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const itemsToDisplay = sortedVendas.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(sortedVendas.length / itemsPerPage);
+
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       <main className="main-content">
         <div className="vendas-page" id="vendas-page">
           <div className="vendas-title" id="vendas-title">
-              <h1>Vendas e Encomendas</h1>
+            <h1>Vendas e Encomendas</h1>
           </div>
           <div className="vendas-add-button" id="vendas-add-button">
-              <button className="vendas-button" id="vendas-button" onClick={() => setIsModalOpen(true)}>
+            <button className="vendas-button" id="vendas-button" onClick={() => setIsModalOpen(true)}>
               <GiChickenOven />
-              Nova Venda / Encomenda</button>
+              Nova Venda / Encomenda
+            </button>
           </div>
-
 
           <table className="vendas-table">
             <thead>
@@ -234,7 +234,7 @@ const VendasPage = () => {
               </tr>
             </thead>
             <tbody>
-              {sortedVendas.map((venda) => (
+              {itemsToDisplay.map((venda) => (
                 <tr key={venda.id}>
                   <td>{capitalize(venda.name)}</td>
                   <td>{capitalize(venda.tipe)}</td>
@@ -249,6 +249,18 @@ const VendasPage = () => {
               ))}
             </tbody>
           </table>
+
+          <div className="pagination">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageChange(index + 1)}
+                className={currentPage === index + 1 ? "active" : ""}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
 
           {isModalOpen && (
             <div className="vendas-modal-overlay">
@@ -301,7 +313,7 @@ const VendasPage = () => {
                               <button
                                 type="button"
                                 onClick={() => handleRemoverProduto(produto.id)}
-                                className="vendas-botao-mais-menos"
+                                className="vendas-button-remover"
                               >
                                 -
                               </button>
@@ -309,7 +321,7 @@ const VendasPage = () => {
                               <button
                                 type="button"
                                 onClick={() => handleAdicionarProduto(produto.id)}
-                                className="vendas-botao-mais-menos"
+                                className="vendas-button-adicionar"
                               >
                                 +
                               </button>
@@ -317,41 +329,10 @@ const VendasPage = () => {
                           </div>
                         ))}
                       </div>
-                      <div className="vendas-total-finalizar">
-                        <button type="submit" className="vendas-button-finalizar">
-                          <MdOutlinePointOfSale />
-                          Finalizar Venda
-                        </button>
-                      </div>
+                      <button type="submit" className="vendas-submit">
+                        Confirmar Venda
+                      </button>
                     </form>
-                  </div>
-                  <div className="nota-fiscal-container">
-                    <h3>Nota Fiscal</h3>
-                    <table className="nota-fiscal-table">
-                      <thead>
-                        <tr>
-                          <th>Produto</th>
-                          <th>Quantidade</th>
-                          <th>Preço</th>
-                          <th>Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {formData.produtos.map((produto) => (
-                          <tr key={produto.id}>
-                            <td>{capitalize(produto.name)}</td>
-                            <td>{produto.quantidade}</td>
-                            <td>R${produto.price.toFixed(2)}</td>
-                            <td>
-                              R${(produto.price * produto.quantidade).toFixed(2)}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    <div className="total-container">
-                      <h4>Total: R${calcularTotalVenda()}</h4>
-                    </div>
                   </div>
                 </div>
               </div>
