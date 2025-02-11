@@ -76,17 +76,17 @@ class UpdateProductView(APIView):
     )
     
     def put(self, request):
-        name = request.data.get("name")
-        new_name = request.data.get("new_name") 
+        old_name = request.data.get("oldName")
+        new_name = request.data.get("newName") 
         new_price = request.data.get("price")
-        new_qtd = request.data.get("qtd")  # Agora capturando a quantidade
+        new_qtd = request.data.get("qtd")
 
-        if not name or new_price is None or new_qtd is None:
+        if not old_name or new_name is None or new_price is None or new_qtd is None:
             return Response({
                 'error': 'Por favor, insira todos os campos',
             }, status=status.HTTP_400_BAD_REQUEST)
         
-        product = get_product(name)  # Busca o produto pelo nome
+        product = get_product(old_name)  # Busca o produto pelo nome antigo
 
         if not product:
             return Response({

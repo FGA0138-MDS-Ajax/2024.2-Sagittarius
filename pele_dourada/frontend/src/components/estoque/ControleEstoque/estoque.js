@@ -72,11 +72,17 @@ function ControleEstoque() {
 
   const handleEditProduct = async (produto) => {
     try {
-      const response = await axios.put('http://localhost:8000/api/product/update/', produto);
+      await axios.put('http://localhost:8000/api/product/update/', {
+        oldName: produtoEditando.oldName,
+        newName: produtoEditando.name,
+        price: produtoEditando.price,
+        qtd: produtoEditando.qtd
+      });
+
       setIsEditModalOpen(false);
       setProdutoEditando(null);
       const updatedProdutos = produtos.map((p) =>
-        p.name === produto.name ? { ...p, ...produto } : p
+        p.name === produtoEditando.oldName ? { ...p, ...produtoEditando } : p
       );
       setProdutos(updatedProdutos);
       setSuccessMessage('Produto editado com sucesso!');
@@ -101,7 +107,7 @@ function ControleEstoque() {
       console.error("Erro ao deletar produto:", error);
       alert('Erro ao deletar o produto');
     }
-};
+  };
 
   const formatCurrency = (value) => {
     if (!value) return "R$ 0,00";
@@ -131,7 +137,7 @@ function ControleEstoque() {
           id="edit-price"
           type="text"
           className="editar-produto-input"
-          value={formatCurrency(produtoEditando.price)}
+          value={formatCurrency(produtoEditando?.price)}
           onChange={(e) => handlePriceChange(e, setProdutoEditando)}
         />
       </div>
@@ -219,7 +225,7 @@ function ControleEstoque() {
                         <button
                           className='controle-estoque-edit-button'
                           onClick={() => {
-                            setProdutoEditando(produto);
+                            setProdutoEditando({ ...produto, oldName: produto.name });
                             setIsEditModalOpen(true);
                           }}
                         >
@@ -296,6 +302,23 @@ function ControleEstoque() {
                         setProdutoEditando({
                           ...produtoEditando,
                           price: parseFloat(e.target.value),
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="editar-produto-field">
+                    <label className="editar-produto-label" htmlFor="edit-qtd">
+                      Quantidade
+                    </label>
+                    <input
+                      id="edit-qtd"
+                      type="number"
+                      className="editar-produto-input"
+                      value={produtoEditando.qtd}
+                      onChange={(e) =>
+                        setProdutoEditando({
+                          ...produtoEditando,
+                          qtd: parseInt(e.target.value, 10),
                         })
                       }
                     />
