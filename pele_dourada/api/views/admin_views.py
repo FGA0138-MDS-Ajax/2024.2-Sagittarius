@@ -46,7 +46,7 @@ class LoginView(APIView):
                 'error': 'Usuário não encontrado',
             }, status=status.HTTP_404_NOT_FOUND)
 
-        if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+        if not bcrypt.checkpw(password.encode('utf-8'), user['password']):
             return Response({
                 'error': 'Senha inválida',
             }, status=status.HTTP_400_BAD_REQUEST)
@@ -84,14 +84,13 @@ class RegisterView(APIView):
         password2 = request.data.get("password2")
         hash_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         
-        if user_collection.find_one({"username": username}):
+        if get_user(username):
             return Response({
                 'error': 'Nome de usuário já existe',
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
         new_user = User(username, hash_password)
-
 
         try:
             insert_user(new_user)
