@@ -85,38 +85,25 @@
   color: #999;
 }
 
-.remember-me {
+
+
+.action-buttons-login{
+  margin-top: 10px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  margin-top: 10px;
-}
-
-.remember-me label {
-  margin-top: 5px;
-  font-size: 14px;
-}
-
-.remember-me-checkbox:checked {
-  accent-color: #F3821B;
-}
-
-.action-buttons {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
   width: 100%;
 }
 
 .register-button,
 .forgot-password-button,
 .back-to-login-button {
-  width: 100%;
   font-size: 14px;
   background-color: transparent;
   color: #F3821B;
   border: none;
   cursor: pointer;
+  text-align: center;
 }
 
 .register-button:hover,

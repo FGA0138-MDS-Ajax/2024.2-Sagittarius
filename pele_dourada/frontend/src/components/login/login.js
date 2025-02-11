@@ -184,25 +184,14 @@ function Login() {
             </div>
           )}
 
-          {formType === 'login' && (
-            <div className="remember-me">
-              <input
-                type="checkbox"
-                id="rememberMe"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-                className="remember-me-checkbox"
-              />
-              <label htmlFor="rememberMe" className="remember-me-label">Lembrar de mim</label>
-            </div>
-          )}
+         
 
           <button type="submit" className="login-button">
             {formType === 'login' ? 'Entrar' : formType === 'register' ? 'Cadastrar' : 'Redefinir Senha'}
           </button>
         </form>
 
-        <div className="action-buttons">
+        <div className="action-buttons-login">
           {formType === 'login' ? (
             <>
               <button
