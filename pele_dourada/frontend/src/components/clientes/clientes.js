@@ -17,6 +17,8 @@ function ControleClientes() {
     key: "name",
     direction: "asc",
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(15); // Limite de 15 itens por página
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -97,6 +99,17 @@ function ControleClientes() {
     }
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const itemsToDisplay = clientesFiltrados.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(clientesFiltrados.length / itemsPerPage);
+
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
@@ -137,48 +150,62 @@ function ControleClientes() {
           {isLoading ? (
             <div>Carregando...</div>
           ) : (
-            <table className="controle-clientes-table">
-              <thead>
-                <tr>
-                  <th onClick={() => requestSort("name")}>
-                    Cliente {getSortIcon("name")}
-                  </th>
-                  <th onClick={() => requestSort("phone")}>
-                    Telefone {getSortIcon("phone")}
-                  </th>
-                  <th onClick={() => requestSort("endereco")}>
-                    Endereço {getSortIcon("endereco")}
-                  </th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {clientesFiltrados.map((cliente) => (
-                  <tr key={cliente.id}>
-                    <td>{cliente.name}</td>
-                    <td>{cliente.phone}</td>
-                    <td>{cliente.endereco}</td>
-                    <td className="buttons-actions">
-                      <button
-                        className="controle-clientes-edit-button"
-                        onClick={() => {
-                          setClienteEditando(cliente);
-                          setIsEditModalOpen(true);
-                        }}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        className="controle-clientes-remove-button"
-                        onClick={() => handleRemoveCliente(cliente)}
-                      >
-                        Remover
-                      </button>
-                    </td>
+            <>
+              <table className="controle-clientes-table">
+                <thead>
+                  <tr>
+                    <th onClick={() => requestSort("name")}>
+                      Cliente {getSortIcon("name")}
+                    </th>
+                    <th onClick={() => requestSort("phone")}>
+                      Telefone {getSortIcon("phone")}
+                    </th>
+                    <th onClick={() => requestSort("endereco")}>
+                      Endereço {getSortIcon("endereco")}
+                    </th>
+                    <th>Ações</th>
                   </tr>
+                </thead>
+                <tbody>
+                  {itemsToDisplay.map((cliente) => (
+                    <tr key={cliente.id}>
+                      <td>{cliente.name}</td>
+                      <td>{cliente.phone}</td>
+                      <td>{cliente.endereco}</td>
+                      <td className="buttons-actions">
+                        <button
+                          className="controle-clientes-edit-button"
+                          onClick={() => {
+                            setClienteEditando(cliente);
+                            setIsEditModalOpen(true);
+                          }}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="controle-clientes-remove-button"
+                          onClick={() => handleRemoveCliente(cliente)}
+                        >
+                          Remover
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <div className="pagination">
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handlePageChange(index + 1)}
+                    className={currentPage === index + 1 ? "active" : ""}
+                  >
+                    {index + 1}
+                  </button>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            </>
           )}
 
           {isModalOpen && (
