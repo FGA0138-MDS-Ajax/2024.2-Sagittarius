@@ -12,6 +12,8 @@ import { CSVLink } from "react-csv";
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF4560', '#00E396', '#775DD0', '#FEB019', '#FF4560'];
 
+const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#FFC300"];
+
 function ViewDashboard() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [clients, setClients] = useState([]);
@@ -19,6 +21,12 @@ function ViewDashboard() {
   const [products, setProducts] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setStartDate(today);
+    setEndDate(today);
+  }, []);
 
   useEffect(() => {
     fetchClients();
@@ -53,17 +61,22 @@ function ViewDashboard() {
     }
   };
 
+  const parseOrderDate = (number) => {
+    const datePart = number.split('-')[0];
+    return new Date(`${datePart.slice(4, 8)}-${datePart.slice(2, 4)}-${datePart.slice(0, 2)}`);
+  };
+
   const filterOrdersByDate = (orders, startDate, endDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
     return orders.filter(order => {
-      const orderDate = new Date(order.date);
+      const orderDate = parseOrderDate(order.number);
       return orderDate >= start && orderDate <= end;
     });
   };
 
   const calculateTotalSales = (filteredOrders) => {
-    return filteredOrders.reduce((total, order) => total + order.total, 0).toFixed(2);
+    return filteredOrders.reduce((total, order) => total + order.products.reduce((sum, product) => sum + (product.price * product.quantidade), 0), 0).toFixed(2);
   };
 
   const calculateTotalOrders = (filteredOrders) => {
@@ -78,7 +91,14 @@ function ViewDashboard() {
   const totalSales = calculateTotalSales(filteredOrders);
   const totalOrders = calculateTotalOrders(filteredOrders);
 
-  const ordersData = filteredOrders.map(order => ({ name: order.name, total: order.total }));
+  
+
+  const sortedOrders = [...filteredOrders].sort((a, b) => (b.total || 0) - (a.total || 0));
+
+const ordersData = sortedOrders.map(order => ({
+  name: order.name,
+  total: order.total || 0
+}));
   const productsData = products.map((product, index) => ({ name: product.name, quantidade: product.qtd, color: COLORS[index % COLORS.length] }));
 
   const exportData = () => {
@@ -93,6 +113,17 @@ function ViewDashboard() {
       ...products.map(product => [product.name, product.qtd])
     ];
     return csvData;
+  };
+  const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip">
+          <p><strong>Cliente:</strong> {payload[0].payload.name}</p>
+          <p><strong>Total:</strong> R$ {payload[0].value.toFixed(2)}</p>
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
@@ -181,7 +212,7 @@ function ViewDashboard() {
 
           <div className='dashboard-grid'>
 
-            <div className="dashboard-card">
+            {/* <div className="dashboard-card">
                   <h2>Clientes</h2>
                   <table className="dashboard-table">
                     <thead>
@@ -203,17 +234,40 @@ function ViewDashboard() {
                   </table>
                 </div>
 
-            <div className="dashboard-card">
-              <h2>Encomendas</h2>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={ordersData}>
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="total" fill="#F3821B" />
-                  </BarChart>
-                </ResponsiveContainer>
-            </div>
+                <div className="dashboard-card">
+  <h2>Encomendas</h2>
+  <ResponsiveContainer width="100%" height={300}>
+    <BarChart data={ordersData}>
+      <XAxis dataKey="name" />
+      <YAxis />
+      <Tooltip content={<CustomTooltip />} />
+      <Bar dataKey="total" fill="#8884d8">
+        {ordersData.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+        ))}
+      </Bar>
+    </BarChart>
+  </ResponsiveContainer>
+  <table className="dashboard-table">
+    <thead>
+      <tr>
+        <th>Nome do Cliente</th>
+        <th>Data</th>
+        <th>Valor Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {orders.slice(0, 5).map(order => (
+        <tr key={order.id} className="hover-row">
+          <td>{order.name}</td>
+          <td>{new Date(order.date).toLocaleDateString()}</td>
+          <td>R$ {(order.total || 0).toFixed(2)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div> */}
+
 
           </div>
             <div className="dashboard-section">

@@ -76,19 +76,19 @@
 
 /***** TABELAS *****/
 .dashboard-table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
-  
+
 .dashboard-table th, .dashboard-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
+  border: 1px solid #ddd;
+  padding: 8px;
 }
-  
+
 .dashboard-table th {
-    background-color: #F3821B;
-    color: white;
+  background-color: #f2f2f2;
+  text-align: left;
 }
 
 /***** FILTRO *****/
@@ -156,6 +156,11 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: relative;
   min-height: 120px;
+}
+
+.dashboard-card-counter .card-content .card-subtitle {
+  font-size: 1.2em; /* Aumenta o tamanho da fonte do subtítulo */
+  color: #000000;
 }
 
 .card-content {
