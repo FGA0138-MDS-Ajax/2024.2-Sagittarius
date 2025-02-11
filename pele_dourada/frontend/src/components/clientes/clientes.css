@@ -54,25 +54,10 @@
   cursor: pointer;
   border-radius: 5px;
   font-size: 15px;
-  margin-right: 30px;
 }
 
 .controle-clientes-button:hover {
   background-color: #f15b1b;
-}
-
-.controle-clientes-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #F3821B;
-  color: white;
-}
-
-.controle-clientes-table th,
-.controle-clientes-table td {
-  border: 1px solid #CED4DA;
-  padding: 15px;
-  text-align: center;
 }
 
 .modal-overlay {
@@ -147,4 +132,21 @@
   padding: 20px;
   margin-left: 270px; /* Largura da sidebar expandida */
   transition: margin-left 0.4s ease;
+}
+
+.buttons-actions{
+  display: flex;
+  justify-content: space-evenly;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+
+.controle-clientes-edit-button{
+  margin-left: 10px;
+  background-color: rgb(136, 136, 233);
+}
+
+.controle-clientes-remove-button{
+  margin-right: 10px;
 }

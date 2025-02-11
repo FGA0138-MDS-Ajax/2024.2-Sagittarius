@@ -61,25 +61,6 @@
   margin-bottom: 20px;
 }
 
-.controle-estoque-button {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: #F3821B;
-  color: white;
-  border: none;
-  padding: 10px 25px;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 15px;
-  position: relative;
-  margin-right: 30px;
-}
-
-.controle-estoque-add-button a {
-  text-decoration: none;
-}
-
 .controle-estoque-button:hover {
   background-color: #f15b1b;
 }
@@ -94,33 +75,6 @@
 
 .controle-estoque-subtitle {
   font-size: 20px;
-}
-
-/* Estilos para a Tabela */
-.controle-estoque-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.controle-estoque-table th {
-  border: 1px solid #CED4DA;
-  background-color: #F3821B;
-  padding: 15px;
-  color: white;
-}
-
-.controle-estoque-table td {
-  border: 1px solid #ddd;
-  text-align: center;
-  padding: 10px;
-}
-
-.controle-estoque-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.controle-estoque-table tr:hover {
-  background-color: #f1f1f1;
 }
 
 .modal-overlay {
@@ -173,6 +127,14 @@
   color: white; /* Texto em branco para contrastar com o fundo colorido */
 }
 
+
+.controle-estoque-acoes {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+
 .controle-estoque-action-buttons {
   display: flex;
   gap: 10px;
@@ -181,6 +143,10 @@
 
 .controle-estoque-edit-button,
 .controle-estoque-remove-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
@@ -236,6 +202,7 @@
 .app-container .main-content {
   margin-left: 270px; /* Largura da sidebar expandida */
 }
+
 
 /* Mantém o estilo do contêiner da quantidade */
 .quantidade-container {
@@ -293,14 +260,16 @@
 }
 
 .editar-produto-field {
-  margin-left: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 25px;
   width: 100%; /* Garante que os campos ocupem o espaço necessário */
 }
 
 .editar-produto-label {
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   text-transform: capitalize;
 }
 
@@ -311,7 +280,6 @@
   border: 1px solid #ccc;
   display: block;
   width: 80%; /* Reduz a largura para melhor aparência */
-  margin-top: 10px;
 }
 
 .editar-produto-button {
@@ -331,8 +299,8 @@
 
 .div-editar-produto-button {
   display: flex;
-  flex-direction: column; /* Garante que os botões fiquem empilhados */
-  gap: 15px; /* Espaçamento entre os botões */
+  justify-content: space-around; /* Garante que os botões fiquem empilhados */
+  gap: 30px; /* Espaçamento entre os botões */
   align-items: center;
   width: 100%;
   margin-top: 20px;

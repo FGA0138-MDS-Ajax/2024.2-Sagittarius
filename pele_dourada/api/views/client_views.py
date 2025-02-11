@@ -47,8 +47,8 @@ class UpdateClientView(APIView):
         responses={200: openapi.Response('Cliente atualizado com sucesso')},
         manual_parameters=[
             openapi.Parameter('name', openapi.IN_QUERY, description="Nome do cliente", type=openapi.TYPE_STRING),
-            openapi.Parameter('number', openapi.IN_QUERY, description="Número do cliente", type=openapi.TYPE_NUMBER),
-            openapi.Parameter('endereco', openapi.IN_QUERY, description="Endereço do cliente", type=openapi.TYPE_INTEGER),
+            openapi.Parameter('number', openapi.IN_QUERY, description="Número do cliente", type=openapi.TYPE_STRING),
+            openapi.Parameter('endereco', openapi.IN_QUERY, description="Endereço do cliente", type=openapi.TYPE_STRING),
         ],
     )
     def put(self, request):
@@ -56,12 +56,12 @@ class UpdateClientView(APIView):
         number = request.data.get("number")
         endereco = request.data.get("endereco")
 
-        if not name or not number or not endereco:
+        if not name:
             return Response({
-                'error': 'Por favor, insira todos os campos',
+                'error': 'Por favor, insira o nome do cliente',
             }, status=status.HTTP_400_BAD_REQUEST)
-        
-        client = get_client(Client(name, number, endereco))
+
+        client = get_client(name)
 
         if not client:
             return Response({

@@ -1,0 +1,76 @@
+/***** DROPDOWN *****/
+select{
+    background-color: white;
+}
+
+/***** TÍTULOS DAS TELAS *****/
+h1 {
+    font-family: 'Roboto Mono', sans-serif;
+    font-weight: 700;
+}
+
+/***** INPUT GERAL *****/
+input {
+    padding: 10px 10px 10px 10px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/***** TABELA *****/
+table th {
+    font-family: 'Roboto Mono', sans-serif;
+    font-weight: 700;
+    height: 30px;
+    border: 1px solid #CED4DA;
+    background-color: #F3821B;
+    padding: 15px;
+    color: white;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+  
+table th {
+    border: 1px solid #CED4DA;
+    background-color: #F3821B;
+    padding: 15px;
+    color: white;
+}
+  
+table td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 10px;
+}
+  
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+  
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/***** BUTTON *****/
+
+button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #F3821B;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+button a {
+    text-decoration: none;
+}

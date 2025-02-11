@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import InputMask from 'react-input-mask';
 import './add_cliente.css';
+import { FaUserPlus } from 'react-icons/fa';
 
 function AdicionarCliente() {
   const [nome, setNome] = useState('');
@@ -33,11 +35,14 @@ function AdicionarCliente() {
 
   return (
     <div className="adicionar-cliente-container">
-      <h2>Adicionar Cliente</h2>
+      <div className='adicionar-cliente-title'>
+        <h2>Dados do Cliente</h2>
+      </div>
       <form onSubmit={handleSubmit} className="adicionar-cliente-form">
         <div className="adicionar-cliente-field">
           <label htmlFor="nome">Nome</label>
           <input
+            placeholder='Nome do cliente'
             type="text"
             id="nome"
             value={nome}
@@ -47,7 +52,9 @@ function AdicionarCliente() {
         </div>
         <div className="adicionar-cliente-field">
           <label htmlFor="telefone">Telefone</label>
-          <input
+          <InputMask
+            placeholder='(__) _____-____'
+            mask="(99) 99999-9999"
             type="tel"
             id="telefone"
             value={telefone}
@@ -58,6 +65,7 @@ function AdicionarCliente() {
         <div className="adicionar-cliente-field">
           <label htmlFor="endereco">Endereço</label>
           <input
+            placeholder='Endereço do cliente'
             type="text"
             id="endereco"
             value={endereco}
@@ -66,7 +74,9 @@ function AdicionarCliente() {
           />
         </div>
         {erro && <div className="erro-message">{erro}</div>}
-        <button type="submit" className="adicionar-cliente-button">Adicionar Cliente</button>
+        <button type="submit" className="adicionar-cliente-button">
+          <FaUserPlus className="icon-button" /> Adicionar Cliente
+      </button>
       </form>
     </div>
   );

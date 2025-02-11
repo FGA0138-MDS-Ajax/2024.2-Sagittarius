@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './adicionar_produto.css';
+import { FaBoxOpen } from "react-icons/fa";
 
 function AdicionarProduto() {
   const [nome, setNome] = useState('');
@@ -10,7 +11,6 @@ function AdicionarProduto() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
     if (!nome || !preco || !quantidade) {
       alert('Por favor, preencha todos os campos.');
       return;
@@ -21,7 +21,6 @@ function AdicionarProduto() {
       price: Number(preco),  
       qtd: parseInt(quantidade),  
     };
-    
 
     try {
       const response = await axios.post('http://localhost:8000/api/product/register/', productData, {
@@ -42,6 +41,21 @@ function AdicionarProduto() {
     setNome('');
     setPreco('');
     setQuantidade('');
+  };
+
+  // Função para evitar valores negativos
+  const handlePrecoChange = (e) => {
+    const value = e.target.value;
+    if (value >= 0) {
+      setPreco(value);
+    }
+  };
+
+  const handleQuantidadeChange = (e) => {
+    const value = e.target.value;
+    if (value >= 0) {
+      setQuantidade(value);
+    }
   };
 
   return (
@@ -66,10 +80,11 @@ function AdicionarProduto() {
             type="number"
             id="preco"
             value={preco}
-            onChange={(e) => setPreco(e.target.value)}
+            onChange={handlePrecoChange} // Validação para preço
             placeholder="Preço do produto"
             required
             className="adicionar-produto-input"
+            min="0" // Impede números negativos
           />
         </div>
 
@@ -79,15 +94,19 @@ function AdicionarProduto() {
             type="number"
             id="quantidade"
             value={quantidade}
-            onChange={(e) => setQuantidade(e.target.value)}
+            onChange={handleQuantidadeChange} // Validação para quantidade
             placeholder="Quantidade disponível"
             required
             className="adicionar-produto-input"
+            min="0" // Impede números negativos
           />
         </div>
 
         <div className='div-adicionar-produto-button'>
-          <button type="submit" className="adicionar-produto-button">Adicionar Produto</button>
+          <button type="submit" className="adicionar-produto-button">
+            <FaBoxOpen />
+            Adicionar Produto
+          </button>
         </div>
       </form>
     </div>

@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./vendas.css";
+import { MdOutlinePointOfSale } from "react-icons/md";
+import { GiChickenOven } from "react-icons/gi";
+import Sidebar from '../../components/sidebar/sidebar';
 
 const VendasPage = () => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const [vendas, setVendas] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -12,13 +16,12 @@ const VendasPage = () => {
     produtos: [],
   });
   const [produtosEstoque, setProdutosEstoque] = useState([]);
-  const [produtoSelecionado, setProdutoSelecionado] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" });
 
   const fetchVendas = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/"); // espernado api
-      setVendas(response.data.vendas);
+      const response = await axios.get("http://localhost:8000/api/order/list/");
+      setVendas(response.data.orders);
     } catch (error) {
       console.error("Erro ao buscar vendas", error);
     }
@@ -26,7 +29,7 @@ const VendasPage = () => {
 
   const fetchProdutosEstoque = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/products");
+      const response = await axios.get("http://localhost:8000/api/products/");
       setProdutosEstoque(response.data.products);
     } catch (error) {
       console.error("Erro ao buscar produtos", error);
@@ -100,8 +103,19 @@ const VendasPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8000/api/", formData); // esperando api
-      if (response.status === 200) {
+      const response = await axios.post("http://localhost:8000/api/order/register/", {
+        name: formData.nomeCliente,
+        tipe: formData.tipoVenda,
+        payment: formData.metodoPagamento,
+        products: formData.produtos.map((produto) => ({
+          id: produto.id,
+          name: produto.name,
+          price: produto.price,
+          quantidade: produto.quantidade,
+        })),
+      });
+
+      if (response.status === 201) {
         for (const produto of formData.produtos) {
           const produtoEstoque = produtosEstoque.find(
             (p) => p.id === produto.id
@@ -162,146 +176,164 @@ const VendasPage = () => {
   });
 
   return (
-    <div className="vendas-page">
-      <h1 className="vendas-title">Vendas e Encomendas</h1>
-      <button onClick={openModal} className="vendas-button">
-        Nova Venda/Encomenda
-      </button>
+    <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
+      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      <main className="main-content">
+        <div className="vendas-page" id="vendas-page">
+          <div className="vendas-title" id="vendas-title">
+              <h1>Vendas e Encomendas</h1>
+          </div>
+          <div className="vendas-add-button" id="vendas-add-button">
+              <button className="vendas-button" id="vendas-button" onClick={() => setIsModalOpen(true)}>
+              <GiChickenOven />
+              Nova Venda / Encomenda</button>
+          </div>
 
-      <table className="vendas-table">
-        <thead>
-          <tr>
-            <th onClick={() => requestSort("nomeCliente")}>
-              Nome do Cliente {getSortIcon("nomeCliente")}
-            </th>
-            <th onClick={() => requestSort("tipoVenda")}>
-              Tipo {getSortIcon("tipoVenda")}
-            </th>
-            <th onClick={() => requestSort("metodoPagamento")}>
-              Método de Pagamento {getSortIcon("metodoPagamento")}
-            </th>
-            <th>Produtos</th>
-            <th onClick={() => requestSort("valorVenda")}>
-              Valor Total {getSortIcon("valorVenda")}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedVendas.map((venda) => (
-            <tr key={venda.id}>
-              <td>{venda.nomeCliente}</td>
-              <td>{venda.tipoVenda}</td>
-              <td>{venda.metodoPagamento}</td>
-              <td>
-                {venda.produtos.map((produto) => (
-                  <div key={produto.id}>{produto.name}</div>
-                ))}
-              </td>
-              <td>R${venda.valorVenda.toFixed(2)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
 
-      {isModalOpen && (
-        <div className="vendas-modal-overlay">
-          <div className="vendas-modal-content">
-            <button className="vendas-close-modal" onClick={closeModal}>
-              &times;
-            </button>
-            <div className="vendas-modal-body">
-              <div className="vendas-form-container">
-                <form className="vendas-form" onSubmit={handleSubmit}>
-                  <label>Nome do Cliente</label>
-                  <input
-                    type="text"
-                    name="nomeCliente"
-                    value={formData.nomeCliente}
-                    onChange={handleChange}
-                    className="vendas-input"
-                  />
-                  <label>Método de Pagamento</label>
-                  <select
-                    name="metodoPagamento"
-                    value={formData.metodoPagamento}
-                    onChange={handleChange}
-                    className="vendas-input"
-                  >
-                    <option value="">Selecione uma opção</option>
-                    <option value="credito">Cartão de Crédito</option>
-                    <option value="debito">Cartão de Débito</option>
-                    <option value="pix">Dinheiro</option>
-                    <option value="dinheiro">PIX</option>
-                    <option value="vale_refeicao">Vale Refeição</option>
-                  </select>
-                  <label>Tipo de Venda</label>
-                  <select
-                    name="tipoVenda"
-                    value={formData.tipoVenda}
-                    onChange={handleChange}
-                    className="vendas-input"
-                  >
-                    <option value="">Selecione o tipo de venda</option>
-                    <option value="venda">Venda</option>
-                    <option value="encomenda">Encomenda</option>
-                  </select>
-                  <h3>Produtos</h3>
-                  {produtosEstoque.map((produto) => (
-                    <div key={produto.id}>
-                      <span>{produto.name}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoverProduto(produto.id)}
-                        className="vendas-button"
-                      >
-                        -
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleAdicionarProduto(produto.id)}
-                        className="vendas-button"
-                      >
-                        +
-                      </button>
-                    </div>
-                  ))}
-                  <button type="submit" className="vendas-button-finalizar">
-                    Finalizar Venda
-                  </button>
-                </form>
-              </div>
-              <div className="nota-fiscal-container">
-                <h3>Nota Fiscal</h3>
-                <table className="nota-fiscal-table">
-                  <thead>
-                    <tr>
-                      <th>Produto</th>
-                      <th>Quantidade</th>
-                      <th>Preço</th>
-                      <th>Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {formData.produtos.map((produto) => (
-                      <tr key={produto.id}>
-                        <td>{produto.name}</td>
-                        <td>{produto.quantidade}</td>
-                        <td>R${produto.price.toFixed(2)}</td>
-                        <td>
-                          R${(produto.price * produto.quantidade).toFixed(2)}
-                        </td>
-                      </tr>
+          <table className="vendas-table">
+            <thead>
+              <tr>
+                <th onClick={() => requestSort("nomeCliente")}>
+                  Nome do Cliente {getSortIcon("nomeCliente")}
+                </th>
+                <th onClick={() => requestSort("tipoVenda")}>
+                  Tipo {getSortIcon("tipoVenda")}
+                </th>
+                <th onClick={() => requestSort("metodoPagamento")}>
+                  Método de Pagamento {getSortIcon("metodoPagamento")}
+                </th>
+                <th>Produtos</th>
+                <th onClick={() => requestSort("valorVenda")}>
+                  Valor Total {getSortIcon("valorVenda")}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedVendas.map((venda) => (
+                <tr key={venda.id}>
+                  <td>{venda.name}</td>
+                  <td>{venda.tipe}</td>
+                  <td>{venda.payment}</td>
+                  <td>
+                    {venda.products.map((produto) => (
+                      <div key={produto.id}>{produto.name}</div>
                     ))}
-                  </tbody>
-                </table>
-                <div className="total-container">
-                  <h4>Total: R${calcularTotalVenda()}</h4>
+                  </td>
+                  <td>R${venda.total_price.toFixed(2)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {isModalOpen && (
+            <div className="vendas-modal-overlay">
+              <div className="vendas-modal-content">
+                <button className="vendas-close-modal" onClick={closeModal}>
+                  &times;
+                </button>
+                <div className="vendas-modal-body">
+                  <div className="vendas-form-container">
+                    <form className="vendas-form" onSubmit={handleSubmit}>
+                      <label>Nome do Cliente</label>
+                      <input
+                        placeholder="Nome do cliente"
+                        type="text"
+                        name="nomeCliente"
+                        value={formData.nomeCliente}
+                        onChange={handleChange}
+                        className="vendas-input"
+                      />
+                      <label>Método de Pagamento</label>
+                      <select
+                        name="metodoPagamento"
+                        value={formData.metodoPagamento}
+                        onChange={handleChange}
+                        className="vendas-input"
+                      >
+                        <option value="">Selecione uma opção</option>
+                        <option value="credito">Cartão de Crédito</option>
+                        <option value="debito">Cartão de Débito</option>
+                        <option value="pix">Dinheiro</option>
+                        <option value="dinheiro">PIX</option>
+                        <option value="vale_refeicao">Vale Refeição</option>
+                      </select>
+                      <label>Tipo de Venda</label>
+                      <select
+                        name="tipoVenda"
+                        value={formData.tipoVenda}
+                        onChange={handleChange}
+                        className="vendas-input"
+                      >
+                        <option value="">Selecione o tipo de venda</option>
+                        <option value="venda">Venda</option>
+                        <option value="encomenda">Encomenda</option>
+                      </select>
+                      <div className="vendas-div-titulo-botoes-mais-menos">
+                        <h3>Produtos</h3>
+                        {produtosEstoque.map((produto) => (
+                          <div className="vendas-div-botao-mais-menos" key={produto.id}>
+                            <div className="vendas-div-espacamento-botao-mais-menos">
+                              <button
+                                type="button"
+                                onClick={() => handleRemoverProduto(produto.id)}
+                                className="vendas-botao-mais-menos"
+                              >
+                                -
+                              </button>
+                              <span>{produto.name}</span>
+                              <button
+                                type="button"
+                                onClick={() => handleAdicionarProduto(produto.id)}
+                                className="vendas-botao-mais-menos"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="vendas-total-finalizar">
+                        <button type="submit" className="vendas-button-finalizar">
+                          <MdOutlinePointOfSale />
+                          Finalizar Venda
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <div className="nota-fiscal-container">
+                    <h3>Nota Fiscal</h3>
+                    <table className="nota-fiscal-table">
+                      <thead>
+                        <tr>
+                          <th>Produto</th>
+                          <th>Quantidade</th>
+                          <th>Preço</th>
+                          <th>Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {formData.produtos.map((produto) => (
+                          <tr key={produto.id}>
+                            <td>{produto.name}</td>
+                            <td>{produto.quantidade}</td>
+                            <td>R${produto.price.toFixed(2)}</td>
+                            <td>
+                              R${(produto.price * produto.quantidade).toFixed(2)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div className="total-container">
+                      <h4>Total: R${calcularTotalVenda()}</h4>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </main>
     </div>
   );
 };

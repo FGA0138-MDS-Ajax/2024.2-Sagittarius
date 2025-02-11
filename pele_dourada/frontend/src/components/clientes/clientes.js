@@ -3,6 +3,7 @@ import axios from "axios";
 import "./clientes.css";
 import AdicionarCliente from "./add_cliente";
 import Sidebar from "../sidebar/sidebar";
+import { ImUserPlus } from "react-icons/im";
 
 function ControleClientes() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -50,9 +51,12 @@ function ControleClientes() {
   };
 
   const clientesFiltrados = clientes
-    .filter((cliente) =>
-      cliente.name.toLowerCase().includes(busca.toLowerCase())
-    )
+    .filter((cliente) => {
+      if (typeof cliente.name !== 'string') {
+        return false;
+      }
+      return cliente.name.toLowerCase().includes(busca.toLowerCase());
+    })
     .sort((a, b) => {
       if (a[sortConfig.key] < b[sortConfig.key]) {
         return sortConfig.direction === "asc" ? -1 : 1;
@@ -63,21 +67,25 @@ function ControleClientes() {
       return 0;
     });
 
-  const handleEditCliente = async (cliente) => {
-    try {
-      const response = await axios.post("http://localhost:8000/api/client/update/", cliente); // esperando api
-      alert(response.data);
-      setIsEditModalOpen(false);
-      setClienteEditando(null);
-      const updatedClientes = clientes.map((c) =>
-        c.name === cliente.name ? { ...c, ...cliente } : c
-      );
-      setClientes(updatedClientes);
-    } catch (error) {
-      console.error("Erro ao atualizar cliente:", error);
-      alert("Erro ao atualizar o cliente");
-    }
-  };
+    const handleEditCliente = async (cliente) => {
+      try {
+        const response = await axios.post("http://localhost:8000/api/client/update/", {
+          name: cliente.name,
+          number: cliente.number,
+          endereco: cliente.endereco
+        });
+        alert(response.data);
+        setIsEditModalOpen(false);
+        setClienteEditando(null);
+        const updatedClientes = clientes.map((c) =>
+          c.name === cliente.name ? { ...c, ...cliente } : c
+        );
+        setClientes(updatedClientes);
+      } catch (error) {
+        console.error("Erro ao atualizar cliente:", error.response ? error.response.data : error.message);
+        alert("Erro ao atualizar o cliente");
+      }
+    };
 
   const handleRemoveCliente = async (cliente) => {
     try {
@@ -122,6 +130,7 @@ function ControleClientes() {
                 id="controle-clientes-button"
                 onClick={() => setIsModalOpen(true)}
               >
+                <ImUserPlus />
                 Adicionar Cliente
               </button>
             </div>
@@ -151,7 +160,7 @@ function ControleClientes() {
                     <td>{cliente.name}</td>
                     <td>{cliente.phone}</td>
                     <td>{cliente.address}</td>
-                    <td>
+                    <td className="buttons-actions">
                       <button
                         className="controle-clientes-edit-button"
                         onClick={() => {

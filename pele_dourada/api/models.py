@@ -193,20 +193,20 @@ def update_user(username, new_username=None, new_pwd=None):
     user_collection.update_one({'username' : username}, update)
     return
 
-def update_client(name, new_name=None, new_phone=None, new_address=None):
-    update = {'$set': {}}
-    if new_name is not None:
-        update['$set']['name'] = new_name
-    if new_phone is not None:
-        update['$set']['phone'] = new_phone
-    if new_address is not None:
-        update['$set']['address'] = new_address
-    result = client_collection.update_one({'name': name}, update)
-    if result.modified_count > 0:
-        print(f"Cliente {name} atualizado com sucesso!")
-    else:
-        print(f"Nenhuma atualização feita para o cliente {name}.")
-    return
+def update_client(name, new_phone=None, new_address=None):
+    client = client_collection.find_one({"name": name})
+    if not client:
+        return None
+
+    update_fields = {}
+    if new_phone:
+        update_fields["phone"] = new_phone
+    if new_address:
+        update_fields["address"] = new_address
+
+    if update_fields:
+        client_collection.update_one({"name": name}, {"$set": update_fields})
+    return client
 
 def update_product(name, new_name=None, new_price=None, new_qtd=None):
     update = {

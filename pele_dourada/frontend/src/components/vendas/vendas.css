@@ -1,56 +1,54 @@
 /* Página de Vendas */
-.vendas-page {
-  font-family: Arial, sans-serif;
+.main-content {
+  flex: 1; /* Faz o conteúdo principal ocupar o restante do espaço */
   padding: 20px;
-  background-color: #f9f9f9;
+  transition: margin-left 0.4s ease;
+}
+
+.vendas-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 10px 0 10px;
 }
 
 .vendas-title {
-  text-align: center;
-  font-size: 2rem;
-  color: #333;
+  padding-left: 20px;
+  width: 100%;
+  font-size: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #CED4DA;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.vendas-add-button {
+  display: flex;
+  justify-content: right;
+  width: 100%;
+  margin-left: 50px;
 }
 
 .vendas-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   background-color: #F3821B;
   color: white;
   border: none;
-  padding: 2px 4px;
-  margin: 10px 0;
+  padding: 10px 25px;
   cursor: pointer;
-  font-size: 1rem;
   border-radius: 5px;
-  margin: 4px 2px;
+  font-size: 15px;
+  position: relative;
+  margin-right: 30px;
 }
 
 .vendas-button:hover {
-  background-color: #F3821B;
+  background-color: #f15b1b;
 }
 
 .vendas-table {
-  width: 100%;
-  border-collapse: collapse;
   margin-top: 20px;
-}
-
-.vendas-table th,
-.vendas-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
-}
-
-.vendas-table th {
-  background-color: #F3821B;
-  color: white;
-}
-
-.vendas-table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.vendas-table tr:hover {
-  background-color: #ddd;
 }
 
 /* Modal */
@@ -124,23 +122,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.nota-fiscal-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.nota-fiscal-table th,
-.nota-fiscal-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-.nota-fiscal-table th {
-  background-color: #F3821B;
-  color: white;
-}
-
 .total-container {
   margin-top: 10px;
   font-weight: bold;
@@ -159,4 +140,47 @@
   border-radius: 5px; 
   font-size: 15px; 
   cursor: pointer; 
+}
+
+.vendas-div-titulo-botoes-mais-menos{
+  display: flex;
+  flex-direction: column;
+}
+
+.vendas-div-botao-mais-menos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vendas-div-espacamento-botao-mais-menos{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.vendas-botao-mais-menos { 
+  border: none;
+  display: flex;
+  align-items: center;
+  background-color: #F3821B;
+  color: white;
+  padding: 5px 15px;
+  cursor: pointer;
+  border-radius: 100%;
+  aspect-ratio: 1/1;
+  font-size: 20px;
+}
+
+.vendas-botao-mais-menos:hover, .vendas-button-finalizar:hover{
+  background-color: #f15b1b;
+}
+
+.vendas-total-finalizar {
+  display: flex; 
+  align-items: flex-end;
+  justify-content: space-around;
+  width: 50%;
 }
