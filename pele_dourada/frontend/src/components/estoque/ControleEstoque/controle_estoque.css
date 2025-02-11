@@ -99,7 +99,9 @@
   position: relative;
   box-shadow: 0 4px 8px rgba(59, 59, 59, 0.925);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center; /* Centraliza o texto */
 }
 
 .close-modal {
@@ -117,6 +119,30 @@
 
 .close-modal:hover {
   color: #ff0000; /* Altere a cor ao passar o mouse */
+}
+
+.div-editar-produto-button {
+  display: flex;
+  justify-content: space-around; /* Garante que os botões fiquem empilhados */
+  gap: 30px; /* Espaçamento entre os botões */
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.editar-produto-button {
+  padding: 12px;
+  background-color: #F3821B;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 80%; /* Para manter alinhamento com os campos */
+  text-align: center;
+}
+
+.editar-produto-button:hover {
+  background-color: #f15b1b;
 }
 
 .quantidade-container {
