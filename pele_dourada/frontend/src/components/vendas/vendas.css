@@ -48,16 +48,11 @@
 }
 
 .vendas-add-button {
-  display: flex;
-  justify-content: right;
-  width: 100%;
-  margin-left: 50px; 
+  margin-bottom: 20px;
+  padding-right: 30px;
 }
 
 .vendas-button {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   background-color: #F3821B;
   color: white;
   border: none;
@@ -65,8 +60,6 @@
   cursor: pointer;
   border-radius: 5px;
   font-size: 15px;
-  position: relative;
-  margin-right: 30px;
 }
 
 .vendas-button:hover {
@@ -74,8 +67,49 @@
 }
 
 .vendas-table {
-  margin-top: 20px;
+  margin-top: 0px;
 }
+
+.controle-vendas-acoes {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  text-align: center;
+}
+
+.controle-venda-edit-button,
+.controle-venda-remove-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.controle-venda-edit-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.controle-venda-edit-button:hover {
+  background-color: #0056b3;
+}
+
+.controle-venda-remove-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.controle-venda-remove-button:hover {
+  background-color: #a71d2a;
+}
+
+
 
 /* Modal */
 .vendas-modal-overlay {
@@ -99,6 +133,22 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
 }
+
+.vendas-modal-confirmacao-content {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  width: 50%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(59, 59, 59, 0.925);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center; /* Centraliza o texto */
+}
+
+
 
 .vendas-close-modal {
   position: absolute;
@@ -156,17 +206,31 @@
   font-size: 1.2rem;
 }
 
-.vendas-button-finalizar {
-  position: absolute; 
-  bottom: 30px; 
-  right: 30px; 
-  padding: 10px 20px; 
-  background-color: #F3821B; 
-  color: white; 
+.div-editar-produto-button {
+  display: flex;
+  justify-content: space-around; /* Garante que os botões fiquem empilhados */
+  gap: 30px; /* Espaçamento entre os botões */
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.editar-produto-button {
+  padding: 12px;
+  background-color: #F3821B;
+  color: white;
   border: none;
-  border-radius: 5px; 
-  font-size: 15px; 
-  cursor: pointer; 
+  border-radius: 5px;
+  cursor: pointer;
+  width: 80%; /* Para manter alinhamento com os campos */
+  text-align: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.editar-produto-button:hover {
+  background-color: #f15b1b;
 }
 
 .vendas-div-titulo-botoes-mais-menos{

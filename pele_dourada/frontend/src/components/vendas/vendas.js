@@ -3,6 +3,7 @@ import axios from "axios";
 import "./vendas.css";
 import { MdOutlinePointOfSale } from "react-icons/md";
 import { GiChickenOven } from "react-icons/gi";
+import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import Sidebar from '../../components/sidebar/sidebar';
 
 const VendasPage = () => {
@@ -27,15 +28,20 @@ const VendasPage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [selectedVenda, setSelectedVenda] = useState(null);
+  const [vendaEditando, setVendaEditando] = useState(null);
+  const [vendaRemovendo, setVendaRemovendo] = useState(null);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const openEditModal = (venda) => {
     setSelectedVenda(venda);
+    setVendaEditando({...venda});
     setIsEditModalOpen(true);
   };
 
   const closeEditModal = () => {
     setIsEditModalOpen(false);
     setSelectedVenda(null);
+    setVendaEditando(null);
   };
 
   const openRemoveModal = (venda) => {
@@ -95,9 +101,18 @@ const VendasPage = () => {
     setIsModalOpen(false); // Fecha o modal
     setErrorMessage(""); // Reseta a mensagem de erro
   };
+  
+  // const handleEditChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setSelectedVenda((prevState) => ({
+  //     ...prevState,
+  //     [name]: value,
+  //   }));
+  // };
+
   const handleEditChange = (e) => {
     const { name, value } = e.target;
-    setSelectedVenda((prevState) => ({
+    setVendaEditando((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -398,9 +413,20 @@ const VendasPage = () => {
                   </td>
                   <td>R${calcularTotalVendaPorProdutos(venda.products)}</td>
                   <td>
-                    <button onClick={() => openEditModal(venda)}>Editar</button>
-                  
-                    <button onClick={() => openRemoveModal(venda)}>Remover</button>
+                    <div className='controle-vendas-acoes'>
+                      <button
+                        className='controle-venda-edit-button'
+                        onClick={() => openEditModal(venda)} // Passa a venda para a função
+                      >
+                        <FaPencilAlt className="icon-button" /> Editar
+                      </button>
+                      <button
+                        className='controle-venda-remove-button'
+                        onClick={() => openRemoveModal(venda)} // Passa a venda para a função
+                      >
+                        <FaTimes className="icon-button" /> Remover
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -554,8 +580,8 @@ const VendasPage = () => {
                       <input
                         placeholder="Nome do cliente"
                         type="text"
-                        name="nomeCliente"
-                        value={selectedVenda.nomeCliente}
+                        name=/*"nomeCliente"*/"name"
+                        value={vendaEditando.name} //selectedVenda.nomeCliente
                         onChange={handleEditChange}
                         className="vendas-input"
                       />
@@ -598,17 +624,17 @@ const VendasPage = () => {
 
           {isRemoveModalOpen && (
             <div className="vendas-modal-overlay">
-              <div className="vendas-modal-content">
+              <div className="vendas-modal-confirmacao-content">
                 <button className="vendas-close-modal" onClick={closeRemoveModal}>
                   &times;
                 </button>
                 <div className="vendas-modal-body">
                   <h3>Tem certeza que deseja remover esta venda?</h3>
-                  <div className="vendas-total-finalizar">
-                    <button onClick={handleRemoveVenda} className="vendas-button-finalizar">
+                  <div className="div-editar-produto-button">
+                    <button onClick={handleRemoveVenda} className="editar-produto-button">
                       Remover
                     </button>
-                    <button onClick={closeRemoveModal} className="vendas-button-finalizar">
+                    <button onClick={closeRemoveModal} className="editar-produto-button">
                       Cancelar
                     </button>
                   </div>
