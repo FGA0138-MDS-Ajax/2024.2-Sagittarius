@@ -131,7 +131,10 @@ const VendasPage = () => {
 
   const handleRemoveVenda = async () => {
     try {
-      await axios.delete(`http://localhost:8000/api/order/delete/${selectedVenda.id}/`);
+      await axios.delete("http://localhost:8000/api/order/delete/", {
+        data: { number: selectedVenda.number }, // Enviando no corpo
+      });
+  
       fetchVendas();
       closeRemoveModal();
     } catch (error) {
