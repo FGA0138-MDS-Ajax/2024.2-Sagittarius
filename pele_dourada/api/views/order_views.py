@@ -23,17 +23,17 @@ class RegisterOrderView(APIView):
 
     def post(self, request):
         name = request.data.get("name")
-        tipe = request.data.get("tipe")
+        type = request.data.get("type")
         payment = request.data.get("payment")
         products = request.data.get("products")
 
-        if not name or not products or not tipe or not payment:
+        if not name or not products or not type or not payment:
             return Response({
                 'error': 'Por favor, insira todos os campos',
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
-        new_order = Order(products, name, tipe, payment)
+        new_order = Order(products, name, type, payment)
 
         try:
             insert_order(new_order)
@@ -64,7 +64,7 @@ class DeleteOrderView(APIView):
 
         if not number:
             return Response({
-                'error': 'Por favor, insira o ID do pedido',
+                'error': 'Por favor, insira o número do pedido',
             }, status=status.HTTP_400_BAD_REQUEST
             )
 

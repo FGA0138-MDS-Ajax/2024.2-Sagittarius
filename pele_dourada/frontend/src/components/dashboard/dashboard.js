@@ -102,18 +102,42 @@ const ordersData = sortedOrders.map(order => ({
   const productsData = products.map((product, index) => ({ name: product.name, quantidade: product.qtd, color: COLORS[index % COLORS.length] }));
 
   const exportData = () => {
-    const csvData = [
-      ["Nome do Cliente", "Telefone", "Endereço"],
-      ...clients.map(client => [client.name, client.phone, client.endereco]),
-      [],
-      ["Produto", "Quantidade", "Preço Total"],
-      ...filteredOrders.flatMap(order => order.products.map(product => [product.name, product.quantidade, product.price * product.quantidade])),
-      [],
-      ["Produto", "Quantidade em Estoque"],
-      ...products.map(product => [product.name, product.qtd])
-    ];
-    return csvData;
-  };
+  const filteredOrders = filterOrdersByDate(orders, startDate, endDate);
+  const totalSales = calculateTotalSales(filteredOrders);
+  const totalOrders = calculateTotalOrders(filteredOrders);
+  const totalStock = calculateTotalStock();
+
+  const csvData = [
+    ["Relatório de Vendas - Período:", `${startDate} até ${endDate}`],
+    [],
+    ["Clientes Cadastrados"],
+    ["Nome", "Telefone", "Endereço"],
+    ...clients.map(client => [client.name, client.phone, client.endereco]),
+    [],
+    ["Resumo de Vendas"],
+    ["Faturamento Total", "Número de Pedidos", "Itens no Estoque"],
+    [`R$ ${totalSales}`, totalOrders, totalStock],
+    [],
+    ["Detalhamento de Pedidos"],
+    ["Nome do Cliente", "Data do Pedido", "Produto", "Quantidade", "Preço Unitário", "Total do Pedido"],
+    ...filteredOrders.flatMap(order => 
+      order.products.map(product => [
+        order.name, 
+        new Date(order.date).toLocaleDateString(), 
+        product.name, 
+        product.quantidade, 
+        `R$ ${product.price.toFixed(2)}`,
+        `R$ ${(product.price * product.quantidade).toFixed(2)}`
+      ])
+    ),
+    [],
+    ["Resumo de Produtos em Estoque"],
+    ["Produto", "Quantidade Disponível"],
+    ...products.map(product => [product.name, product.qtd])
+  ];
+
+  return csvData;
+};
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (

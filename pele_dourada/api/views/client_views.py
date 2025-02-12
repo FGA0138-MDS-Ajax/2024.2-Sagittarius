@@ -32,13 +32,12 @@ class RegisterClientView(APIView):
             )
         
         new_client = Client(name, phone, address)
-        print(new_client.to_dict())
 
         try:
             insert_client(new_client)
         except Exception as e:
             return Response({
-                'error': 'Erro ao registrar cliente',
+                'error': 'Cliente já registrado',
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         
@@ -59,6 +58,7 @@ class UpdateClientView(APIView):
         ],
     )
     def put(self, request):
+        client_id = request.data.get("id")
         name = request.data.get("name")
         number = request.data.get("number")
         endereco = request.data.get("endereco")
@@ -68,7 +68,7 @@ class UpdateClientView(APIView):
                 'error': 'Por favor, insira o nome do cliente',
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        client = get_client(name)
+        client = get_client_by_id(client_id)
 
         if not client:
             return Response({
@@ -76,7 +76,7 @@ class UpdateClientView(APIView):
             }, status=status.HTTP_404_NOT_FOUND)
         
         try:
-            update_client(name, new_phone=number, new_address=endereco)
+            update_client(client_id, new_name=name, new_phone=number, new_address=endereco)
         except Exception as e:
             return Response({
                 'error': 'Erro ao atualizar cliente',
@@ -88,15 +88,14 @@ class UpdateClientView(APIView):
 
 
 class DeleteClientView(APIView):
-    def delete(self, request): 
-        phone = request.data.get("phone")
-        if not phone:
+    def delete(self, request):
+        client_id = request.data.get("id") 
+        if not client_id:
             return Response({
-                'error': 'Por favor, insira o nome do cliente',
+                'error': 'ID do cliente não enviado',
             }, status=status.HTTP_400_BAD_REQUEST)
         
-        client = get_client(phone)
-        print(client)
+        client = get_client_by_id(client_id)
 
         if not client:
             return Response({
@@ -104,7 +103,7 @@ class DeleteClientView(APIView):
             }, status=status.HTTP_404_NOT_FOUND)
         
         try:
-            delete_client(client['phone'])
+            delete_client(client_id)
         except Exception as e:
             print(e)
             return Response({
@@ -122,6 +121,7 @@ class GetClientsView(APIView):
         clients_list = get_all_clients()
         for client in clients_list:
             clients.append({
+                'id': str(client['_id']),
                 'name': client['name'],
                 'phone': client['phone'],
                 'endereco': client['address'],

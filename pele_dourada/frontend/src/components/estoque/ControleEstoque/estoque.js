@@ -73,8 +73,8 @@ function ControleEstoque() {
   const handleEditProduct = async (produto) => {
     try {
       await axios.put('http://localhost:8000/api/product/update/', {
-        oldName: produtoEditando.oldName,
-        newName: produtoEditando.name,
+        id: produtoEditando.id,
+        name: produtoEditando.name,
         price: produtoEditando.price,
         qtd: produtoEditando.qtd
       });
@@ -96,13 +96,12 @@ function ControleEstoque() {
   const handleRemoveProduct = async () => {
     try {
       await axios.delete('http://localhost:8000/api/product/delete/', {
-        data: { name: produtoRemovendo.name }
+        data: { id: produtoRemovendo.id }
       });
 
-      setProdutos(produtos.filter((p) => p.name !== produtoRemovendo.name));
+      setProdutos(produtos.filter((produto) => produto.id !== produtoRemovendo.id));
       setIsConfirmModalOpen(false);
       setProdutoRemovendo(null);
-      
     } catch (error) {
       console.error("Erro ao deletar produto:", error);
       alert('Erro ao deletar o produto');

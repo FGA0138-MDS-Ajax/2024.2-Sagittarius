@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 
+from bson import ObjectId
 from dotenv import find_dotenv, load_dotenv
 from pymongo import MongoClient
 
@@ -44,10 +45,10 @@ class Product():
                 'qtd' : self.qtd}
     
 class Order(PedidoIDGenerator):
-    def __init__(self, products, name, tipe, payment):
+    def __init__(self, products, name, type, payment):
         self.number = self.gerar_codigo_pedido()
         self.name = name
-        self.tipe = tipe
+        self.type = type
         self.payment = payment
         self.products = products
         self.confirm = False
@@ -60,7 +61,7 @@ class Order(PedidoIDGenerator):
         return order_price
     
     def to_dict(self):
-        return{'tipe' : self.tipe,
+        return{'tipe' : self.type,
                'number' : self.number,
                'name' : self.name,
                'total' : self.total_price(),
@@ -84,6 +85,12 @@ class Billing():
     def __init__(self, orders):
         self.orders = orders
         self.date = datetime.today()
+
+    def date_to_int(self):
+        date_string = self.date.strftime('%Y%m%d')
+        date_string = date_string.replace('-', '')
+        date_string = date_string[:8]
+        return int(date_string)
     
     def total_billing(self):
         billing_price = 0
@@ -92,7 +99,7 @@ class Billing():
         return billing_price
     
     def to_dict(self):
-        return {'date' : self.date,
+        return {'date' : self.date_to_int(),
                 'orders' : self.orders,
                 'total' : self.total_billing()}
 
@@ -118,6 +125,7 @@ def insert_client(doc):
         print(f"Cliente {doc.phone} inserido com sucesso!")
     else:
         print(f"Cliente {doc.phone} já existe!")
+        raise Exception("Cliente já existe")
     return
 
 def insert_order(doc):
@@ -140,14 +148,20 @@ def insert_billing(doc):
 def get_user(username):
     return user_collection.find_one({'username' : username})
 
-def get_client(name):
-    return client_collection.find_one({'name': name})
+def get_client(phone):
+    return client_collection.find_one({'phone' : phone})
+
+def get_client_by_id(client_id):
+    return client_collection.find_one(ObjectId(client_id))
 
 def get_all_clients():
     return list(client_collection.find())
 
 def get_product(name):
     return stock_collection.find_one({'name' : name})
+
+def get_product_by_id(product_id):
+    return stock_collection.find_one(ObjectId(product_id))
 
 def get_all_products():
     return list(stock_collection.find())
@@ -165,9 +179,6 @@ def get_all_billing():
     return list(billing_collection.find())
 
 def get_billing_date_interval(data_inicial, data_final):
-    data_inicial = datetime.strptime(data_inicial, '%Y-%m-%d')
-    # data_final = datetime.strptime(data_final, '%Y-%m-%d')
-
     faturamento = db.billing.find({
         'date': {
             '$gte': data_inicial,
@@ -182,7 +193,7 @@ def get_billing_date_interval(data_inicial, data_final):
     return faturamento
 
 # atualizar documentos
-def update_user(username, new_username=None, new_pwd=None):
+def update_user(user_id, new_username=None, new_pwd=None):
     update = {
         '$set': {}
     }
@@ -190,25 +201,30 @@ def update_user(username, new_username=None, new_pwd=None):
         update['$set']['username'] = new_username
     if new_pwd is not None:
         update['$set']['password'] = new_pwd
-    user_collection.update_one({'username' : username}, update)
+    user_collection.update_one({'_id': user_id}, update)
     return
 
-def update_client(name, new_phone=None, new_address=None):
-    client = client_collection.find_one({"name": name})
+def update_client(client_id, new_name=None, new_phone=None, new_address=None):
+    client = get_client_by_id(client_id)
+
     if not client:
         return None
 
-    update_fields = {}
+    update_fields = {
+        '$set': {}
+    }
     if new_phone:
-        update_fields["phone"] = new_phone
+        update_fields['$set']["phone"] = new_phone
     if new_address:
-        update_fields["address"] = new_address
+        update_fields['$set']["address"] = new_address
+    if new_name:
+        update_fields['$set']["name"] = new_name
 
     if update_fields:
-        client_collection.update_one({"name": name}, {"$set": update_fields})
+        client_collection.update_one({"_id": ObjectId(client_id)}, update_fields)
     return client
 
-def update_product(name, new_name=None, new_price=None, new_qtd=None):
+def update_product(product_id, new_name=None, new_price=None, new_qtd=None):
     update = {
         '$set': {}
     }
@@ -218,7 +234,7 @@ def update_product(name, new_name=None, new_price=None, new_qtd=None):
         update['$set']['price'] = new_price
     if new_qtd is not None:
         update['$set']['qtd'] = new_qtd
-    stock_collection.update_one({'name' : name}, update)
+    stock_collection.update_one({'_id' : ObjectId(product_id)}, update)
     return
 
 def update_order(number, index=None, new_product=None, new_price=None, new_qtd=None, new_name=None, new_tipe=None, new_payment=None, new_confirm=None):
@@ -249,24 +265,24 @@ def delete_user(username):
     user_collection.delete_one({'username' : username})
     return
 
-def delete_client(phone):
-    result = client_collection.delete_one({'phone': phone})
+def delete_client(client_id):
+    result = client_collection.delete_one({'_id': client_id})
     if result.deleted_count > 0:
-        print(f"Cliente {phone} deletado com sucesso!")
+        print(f"Cliente {client_id} deletado com sucesso!")
     else:
-        print(f"Cliente {phone} não encontrado.")
+        print(f"Cliente {client_id} não encontrado.")
     return
 
-def delete_product(name):
-    stock_collection.delete_one({'name' : name})
+def delete_product(product_id):
+    stock_collection.delete_one({'_id' : ObjectId(product_id)})
     return
 
-def decrease_product_qtd(name):
-    product = get_product(name)
+def decrease_product_qtd(product_id):
+    product = get_product_by_id(product_id)
     if product['qtd'] == 1:
-        delete_product(name)
+        delete_product(product_id)
     else:
-        update_product(name, new_qtd=product['qtd']-1)
+        update_product(product_id, new_qtd=product['qtd']-1)
 
 def delete_order(number):
     order_collection.delete_one({'number' : number})

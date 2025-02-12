@@ -51,8 +51,8 @@ class GetBillingView(APIView):
         operation_description="Retorna um faturamento",
         responses={200: openapi.Response('Faturamento retornado com sucesso')},
         manual_parameters=[
-            openapi.Parameter('data_inicial', openapi.IN_QUERY, description="Data inicial do intervalo no formato", type=openapi.TYPE_STRING),
-            openapi.Parameter('data_final', openapi.IN_QUERY, description="Data final do intervalo", type=openapi.TYPE_STRING),
+            openapi.Parameter('data_inicial', openapi.IN_QUERY, description="Data inicial do intervalo no formato 'Ano-Mês-Dia", type=openapi.TYPE_STRING),
+            openapi.Parameter('data_final', openapi.IN_QUERY, description="Data final do intervalo no formato 'Ano-Mês-Dia", type=openapi.TYPE_STRING),
         ],
     )
 
