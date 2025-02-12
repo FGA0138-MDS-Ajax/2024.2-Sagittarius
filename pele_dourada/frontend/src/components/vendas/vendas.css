@@ -313,12 +313,22 @@
   background-color: #f15b1b;
 }
 
+.vendas-button-finalizar {
+  position: absolute; 
+  bottom: 30px; 
+  right: 30px; 
+  padding: 10px 20px; 
+  background-color: #F3821B; 
+  color: white; 
+}
+
 .vendas-total-finalizar {
   display: flex; 
   align-items: flex-end;
   justify-content: space-around;
   width: 50%;
 }
+
 
 .pagination {
   display: flex;
