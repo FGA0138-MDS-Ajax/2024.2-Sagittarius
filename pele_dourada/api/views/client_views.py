@@ -37,7 +37,7 @@ class RegisterClientView(APIView):
             insert_client(new_client)
         except Exception as e:
             return Response({
-                'error': 'Erro ao registrar cliente',
+                'error': 'Cliente já registrado',
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
         
@@ -68,7 +68,7 @@ class UpdateClientView(APIView):
                 'error': 'Por favor, insira o nome do cliente',
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        client = get_client(client_id)
+        client = get_client_by_id(client_id)
 
         if not client:
             return Response({
@@ -95,8 +95,7 @@ class DeleteClientView(APIView):
                 'error': 'ID do cliente não enviado',
             }, status=status.HTTP_400_BAD_REQUEST)
         
-        client = get_client(client_id)
-        print(client)
+        client = get_client_by_id(client_id)
 
         if not client:
             return Response({

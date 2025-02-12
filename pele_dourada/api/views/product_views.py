@@ -36,7 +36,7 @@ class RegisterProductView(APIView):
 
         if product:
             try:
-                update_product(name, new_qtd=qtd+product['qtd'])
+                update_product(product['_id'], new_qtd=qtd+product['qtd'])
 
                 return Response({
                     'Produto atualizado com sucesso',
@@ -68,7 +68,7 @@ class UpdateProductView(APIView):
         operation_description="Atualiza um produto",
         responses={200: openapi.Response('Produto atualizado com sucesso')},
         manual_parameters=[
-            openapi.Parameter('product_id', openapi.IN_QUERY, description="ID do produto", type=openapi.TYPE_STRING),
+            openapi.Parameter('id', openapi.IN_QUERY, description="ID do produto", type=openapi.TYPE_STRING),
             openapi.Parameter('name', openapi.IN_QUERY, description="Novo nome do produto", type=openapi.TYPE_STRING),
             openapi.Parameter('price', openapi.IN_QUERY, description="Preço do produto", type=openapi.TYPE_NUMBER),
             openapi.Parameter('qtd', openapi.IN_QUERY, description="Quantidade do produto", type=openapi.TYPE_INTEGER),
@@ -86,9 +86,7 @@ class UpdateProductView(APIView):
                 'error': 'Por favor, insira todos os campos',
             }, status=status.HTTP_400_BAD_REQUEST)
         
-        product = get_product(product_id)  # Busca o produto pelo nome antigo
-
-        print(product)
+        product = get_product_by_id(product_id)  # Busca o produto pelo nome antigo
 
         if not product:
             return Response({
@@ -114,7 +112,7 @@ class DeleteProductView(APIView):
         operation_description="Deleta um produto",
         responses={200: openapi.Response('Produto deletado com sucesso')},
         manual_parameters=[
-            openapi.Parameter('name', openapi.IN_QUERY, description="Nome do produto", type=openapi.TYPE_STRING),
+            openapi.Parameter('id', openapi.IN_QUERY, description="ID do produto", type=openapi.TYPE_STRING),
         ],
     )
 
@@ -126,7 +124,7 @@ class DeleteProductView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
-        product = get_product(product_id)
+        product = get_product_by_id(product_id)
         print(product)
 
         if not product:
@@ -136,7 +134,7 @@ class DeleteProductView(APIView):
             )
         
         try:
-            decrease_product_qtd(product_id)
+            decrease_product_qtd(product['_id'])
         except Exception as e:
             print(e)
             return Response({
