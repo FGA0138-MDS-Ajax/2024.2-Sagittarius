@@ -171,12 +171,13 @@
   gap: 20px;
 }
 
-.vendas--confirmacao-modal-body {
+.vendas-confirmacao-modal-body {
   display: flex;
   flex-direction: column;  /* Stack elements vertically */
   align-items: center;    /* Center horizontally */
-  gap: 20px;            /* Spacing between elements */
-  width: 100%; 
+  gap: 15px;            /* Spacing between elements */
+  width: 100%;
+  margin-top: 10px; 
 }
 
 .vendas-form-container {
@@ -316,7 +317,7 @@
 .vendas-button-finalizar {
   position: absolute; 
   bottom: 30px; 
-  right: 30px; 
+  right: 40px; 
   padding: 10px 20px; 
   background-color: #F3821B; 
   color: white; 
