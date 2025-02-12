@@ -35,6 +35,8 @@ class RegisterOrderView(APIView):
 
         new_order = Order(products, name, type, payment)
 
+        print(new_order.to_dict())
+
         try:
             insert_order(new_order)
         except Exception as e:
