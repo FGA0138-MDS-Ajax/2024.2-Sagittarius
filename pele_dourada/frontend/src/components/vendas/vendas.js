@@ -111,6 +111,10 @@ const VendasPage = () => {
       );
 
       if (produtoJaAdicionado) {
+        if (produtoJaAdicionado.quantidade + 1 > produto.qtd) {
+          setErrorMessage(`Quantidade insuficiente de ${produto.name} no estoque.`);
+          return;
+        }
         setFormData((prevState) => ({
           ...prevState,
           produtos: prevState.produtos.map((p) =>
@@ -118,6 +122,10 @@ const VendasPage = () => {
           ),
         }));
       } else {
+        if (produto.qtd < 1) {
+          setErrorMessage(`Quantidade insuficiente de ${produto.name} no estoque.`);
+          return;
+        }
         setFormData((prevState) => ({
           ...prevState,
           produtos: [...prevState.produtos, { ...produto, quantidade: 1 }],
@@ -140,7 +148,6 @@ const VendasPage = () => {
         .filter((produto) => produto !== null && produto.quantidade > 0),
     }));
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -166,14 +173,24 @@ const VendasPage = () => {
       });
   
       if (response.status === 201) {
+        // Atualiza o estoque após a venda
+        await Promise.all(formData.produtos.map(async (produto) => {
+          await axios.put("http://localhost:8000/api/product/update/", {
+            id:produto.id,
+            name: produto.name,
+            price:produto.price,
+            qtd: produto.qtd - produto.quantidade,
+            
+          });
+        }));
         fetchVendas();
+        fetchProdutosEstoque();
         closeModal();
       }
     } catch (error) {
       console.error("Erro ao realizar venda/encomenda", error);
     }
   };
-  
 
   const calcularTotalVenda = () => {
     return formData.produtos
@@ -191,9 +208,14 @@ const VendasPage = () => {
       .toFixed(2);
   };
 
-  const capitalize = (str) => {
-    return str.replace(/\b\w/g, (char) => char.toUpperCase());
+  const capitalize = (text) => {
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   };
+  
 
   const requestSort = (key) => {
     let direction = "asc";

@@ -251,7 +251,7 @@ function ViewDashboard() {
                   <th>Endereço</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className='tabelas-dashboard-uppercase'>
                 {clients.slice(-5).reverse().map(client => (
                   <tr key={client.id || client.phone}>
                     <td>{client.name}</td>
@@ -265,7 +265,7 @@ function ViewDashboard() {
 
           <div className="dashboard-card">
             <h2>Últimos Pedidos</h2>
-            <table className="dashboard-table">
+            <table className="dashboard-table tabelas-dashboard-uppercase">
               <thead>
                 <tr>
                   <th>Nome do Cliente</th>
