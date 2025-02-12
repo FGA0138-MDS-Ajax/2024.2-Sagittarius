@@ -117,12 +117,17 @@
 }
 
 .editar-cliente-button {
+  padding: 12px;
   background-color: #F3821B;
   color: white;
-  padding: 10px 20px;
   border: none;
-  cursor: pointer;
   border-radius: 5px;
+  cursor: pointer;
+  width: 80%; /* Para manter alinhamento com os campos */
+  text-align: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: 900;
 }
 
 .editar-cliente-button:hover {
