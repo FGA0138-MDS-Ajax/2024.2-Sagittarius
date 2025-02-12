@@ -6,6 +6,7 @@ import Sidebar from "../sidebar/sidebar";
 import { ImUserPlus } from "react-icons/im";
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 import { BsFillBoxSeamFill } from "react-icons/bs";
+import InputMask from 'react-input-mask';
 
 function ControleClientes() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -21,6 +22,8 @@ function ControleClientes() {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(15); // Limite de 15 itens por página
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [clienteRemovendo, setClienteRemovendo] = useState(null);
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -73,7 +76,7 @@ function ControleClientes() {
 
   const handleEditCliente = async (cliente) => {
     try {
-      const response = await axios.put(`http://localhost:8000/api/client/update/`, {
+      const response = await axios.put("http://localhost:8000/api/client/update/", {
         id: cliente.id,
         name: cliente.name,
         phone: cliente.phone,
@@ -92,12 +95,14 @@ function ControleClientes() {
     }
   };
 
-  const handleRemoveCliente = async (cliente) => {
+  const handleRemoveCliente = async () => {
     try {
-      await axios.delete(`http://localhost:8000/api/client/delete/`, {
-        data: { id: cliente.id },
+      await axios.delete("http://localhost:8000/api/client/delete/", {
+        data: { id: clienteRemovendo.id },
       });
-      setClientes(clientes.filter((c) => c.id !== cliente.id));
+      setClientes(clientes.filter((c) => c.id !== clienteRemovendo.id));
+      setIsConfirmModalOpen(false);
+      setClienteRemovendo(null);
     } catch (error) {
       console.error("Erro ao deletar cliente:", error);
       alert("Erro ao deletar o cliente");
@@ -190,7 +195,10 @@ function ControleClientes() {
                         </button>
                         <button
                           className="controle-clientes-remove-button"
-                          onClick={() => handleRemoveCliente(cliente)}
+                          onClick={() => {
+                            setClienteRemovendo(cliente);
+                            setIsConfirmModalOpen(true);
+                          }}
                         >
                           <FaTimes className="icon-button" />
                           Remover
@@ -276,9 +284,11 @@ function ControleClientes() {
                     >
                       Telefone
                     </label>
-                    <input
+                    <InputMask 
                       id="edit-phone"
                       type="tel"
+                      placeholder='(__) _____-____'
+                      mask="(99) 99999-9999"
                       className="editar-cliente-input"
                       value={clienteEditando.phone}
                       onChange={(e) =>
@@ -326,6 +336,24 @@ function ControleClientes() {
               </div>
             </div>
           )}
+
+          {isConfirmModalOpen && (
+            <div className="modal-overlay" onClick={() => setIsConfirmModalOpen(false)}>
+              <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <h2>Confirmar Remoção</h2>
+                <p>Tem certeza que deseja remover o cliente "{clienteRemovendo?.name}"?</p>
+                <div className="div-editar-cliente-button">
+                  <button onClick={handleRemoveCliente} className="editar-cliente-button">
+                    Confirmar
+                  </button>
+                  <button onClick={() => setIsConfirmModalOpen(false)} className="editar-cliente-button">
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
         </div>
       </main>
     </div>
