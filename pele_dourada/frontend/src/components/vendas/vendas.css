@@ -302,3 +302,15 @@
   color: blue;
   text-decoration: underline;
 }
+
+.error-message {
+  color: #fff;
+  background-color: #ff4d4d;
+  padding: 10px;
+  transform: translateX(30px);
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: bold;
+  width: 90%;
+}

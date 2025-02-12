@@ -107,6 +107,15 @@
   border: 1px solid #ccc;
 }
 
+.div-editar-cliente-button{
+  display: flex;
+  justify-content: space-around; /* Garante que os botões fiquem empilhados */
+  gap: 30px; /* Espaçamento entre os botões */
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
 .editar-cliente-button {
   background-color: #F3821B;
   color: white;

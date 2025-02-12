@@ -25,6 +25,7 @@ const VendasPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10); // Limite de 10 itens por página
   const [searchTerm, setSearchTerm] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const fetchVendas = async () => {
     try {
@@ -69,7 +70,10 @@ const VendasPage = () => {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setIsModalOpen(false); // Fecha o modal
+    setErrorMessage(""); // Reseta a mensagem de erro
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -137,12 +141,20 @@ const VendasPage = () => {
     }));
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const nomeCliente = formData.nomeCliente || "Cliente sem nome";
+  
+    if (!formData.nomeCliente || !formData.metodoPagamento || !formData.tipoVenda || formData.produtos.length === 0) {
+      setErrorMessage("Preencha todos os campos antes de finalizar a venda.");
+      return;
+    }
+  
+    setErrorMessage(""); // Limpa erro ao tentar submeter corretamente
+  
     try {
       const response = await axios.post("http://localhost:8000/api/order/register/", {
-        name: nomeCliente,
+        name: formData.nomeCliente,
         tipe: formData.tipoVenda,
         payment: formData.metodoPagamento,
         products: formData.produtos.map((produto) => ({
@@ -154,34 +166,9 @@ const VendasPage = () => {
       });
   
       if (response.status === 201) {
-        for (const produto of formData.produtos) {
-            const produtoEstoque = produtosEstoque.find(
-                (p) => p.name === produto.name  // Buscar pelo nome
-            );
-    
-            if (produtoEstoque) {
-                const novaQtd = produtoEstoque.qtd - produto.quantidade;
-    
-                // Verifica se há estoque suficiente antes de atualizar
-                if (novaQtd < 0) {
-                    alert(`Estoque insuficiente para o produto: ${produto.name}`);
-                    return; // Interrompe o loop e não permite a atualização
-                }
-    
-                await axios.put(
-                  `http://localhost:8000/api/product/update/`,
-                  {
-                      oldName: produtoEstoque.name, // Nome antigo
-                      newName: produtoEstoque.name, // Nome novo (mesmo nome)
-                      qtd: novaQtd, // Atualiza a quantidade no estoque
-                      price: produtoEstoque.price // Mantém o preço original
-                    }
-                );
-            }
-        }
         fetchVendas();
         closeModal();
-    }
+      }
     } catch (error) {
       console.error("Erro ao realizar venda/encomenda", error);
     }
@@ -271,6 +258,9 @@ const VendasPage = () => {
     );
   });
 
+  
+
+
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
@@ -357,6 +347,7 @@ const VendasPage = () => {
           {isModalOpen && (
             <div className="vendas-modal-overlay">
               <div className="vendas-modal-content">
+                {errorMessage && <div className="error-message">{errorMessage}</div>}
                 <button className="vendas-close-modal" onClick={closeModal}>
                   &times;
                 </button>
@@ -434,6 +425,8 @@ const VendasPage = () => {
                         ))}
                       </div>
                       <div className="vendas-total-finalizar">
+                        
+
                         <button type="submit" className="vendas-button-finalizar">
                           <MdOutlinePointOfSale />
                           Finalizar Venda

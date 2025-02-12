@@ -13,6 +13,8 @@ function ControleClientes() {
   const [busca, setBusca] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [clienteRemovendo, setClienteRemovendo] = useState(null);
   const [clienteEditando, setClienteEditando] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [sortConfig, setSortConfig] = useState({
@@ -21,6 +23,7 @@ function ControleClientes() {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(15); // Limite de 15 itens por página
+
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -91,6 +94,7 @@ function ControleClientes() {
     }
   };
 
+
   const handleRemoveCliente = async (cliente) => {
     try {
       await axios.delete(`http://localhost:8000/api/client/delete/${cliente.id}/`);
@@ -98,6 +102,14 @@ function ControleClientes() {
     } catch (error) {
       console.error("Erro ao deletar cliente:", error);
       alert("Erro ao deletar o cliente");
+    }
+  };
+
+  const confirmarRemocao = async () => {
+    if (clienteRemovendo) {
+      await handleRemoveCliente(clienteRemovendo);
+      setIsConfirmModalOpen(false);
+      setClienteRemovendo(null);
     }
   };
 
@@ -187,7 +199,10 @@ function ControleClientes() {
                         </button>
                         <button
                           className="controle-clientes-remove-button"
-                          onClick={() => handleRemoveCliente(cliente)}
+                          onClick={() => {
+                            setClienteRemovendo(cliente);
+                            setIsConfirmModalOpen(true);
+                          }}
                         >
                           <FaTimes className="icon-button" />
                           Remover
@@ -311,12 +326,31 @@ function ControleClientes() {
                       Salvar
                     </button>
                   </div>
+
+                  <div className="div-editar-cliente-button">
+                    <button
+                      onClick={() => setIsEditModalOpen(false)}
+                      className="editar-cliente-button"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+
                 </form>
+              </div>
+            </div>
+          )}
+
+          {isConfirmModalOpen && (
+            <div className="modal-overlay" onClick={() => setIsConfirmModalOpen(false)}>
+              <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <h2>Confirmar Remoção</h2>
+                <p>Tem certeza que deseja remover o cliente "{clienteRemovendo?.name}"?</p>
                 <div className="div-editar-cliente-button">
-                  <button
-                    onClick={() => setIsEditModalOpen(false)}
-                    className="editar-cliente-button"
-                  >
+                  <button onClick={confirmarRemocao} className="editar-cliente-button">
+                    Confirmar
+                  </button>
+                  <button onClick={() => setIsConfirmModalOpen(false)} className="editar-cliente-button">
                     Cancelar
                   </button>
                 </div>
