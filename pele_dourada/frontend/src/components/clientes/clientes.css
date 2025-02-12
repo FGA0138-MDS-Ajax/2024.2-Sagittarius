@@ -1,3 +1,7 @@
+.app-container {
+  height: 100vh;
+}
+
 .controle-clientes-page {
   display: flex;
   flex-direction: column;
@@ -153,7 +157,6 @@
 .buttons-actions{
   display: flex;
   justify-content: space-evenly;
-  width: 100%;
 }
 
 
@@ -232,4 +235,24 @@
 .pagination button.active {
   background-color: #f15b1b; /* Cor do botão ativo */
   font-weight: bold;
+}
+
+/***** TABELA *****/
+
+.controle-clientes-table th:nth-child(4),
+.controle-clientes-table td:nth-child(4) {
+  width: 20%;
+  min-width: 150px; /* Evita que fique muito pequeno */
+}
+
+.controle-clientes-table {
+  width: 100%;
+  table-layout: fixed; /* Mantém as colunas com tamanho fixo */
+}
+
+.controle-clientes-table th, .controle-clientes-table td {
+  width: 25%; /* Como há 4 colunas, cada uma recebe 25% */
+  white-space: nowrap; /* Evita quebra de texto */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adiciona "..." quando o conteúdo for grande */
 }

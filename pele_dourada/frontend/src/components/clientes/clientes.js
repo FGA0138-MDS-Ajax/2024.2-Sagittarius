@@ -190,27 +190,29 @@ function ControleClientes() {
                       <td>{cliente.name}</td>
                       <td>{cliente.phone}</td>
                       <td>{cliente.endereco}</td>
-                      <td className="buttons-actions">
-                        <button
-                          className="controle-clientes-edit-button"
-                          onClick={() => {
-                            setClienteEditando(cliente);
-                            setIsEditModalOpen(true);
-                          }}
-                        >
-                          <FaPencilAlt className="icon-button"/> 
-                          Editar
-                        </button>
-                        <button
-                          className="controle-clientes-remove-button"
-                          onClick={() => {
-                            setClienteRemovendo(cliente);
-                            setIsConfirmModalOpen(true);
-                          }}
-                        >
-                          <FaTimes className="icon-button" />
-                          Remover
-                        </button>
+                      <td>
+                        <div className="buttons-actions">
+                          <button
+                            className="controle-clientes-edit-button"
+                            onClick={() => {
+                              setClienteEditando(cliente);
+                              setIsEditModalOpen(true);
+                            }}
+                          >
+                            <FaPencilAlt className="icon-button"/> 
+                            Editar
+                          </button>
+                          <button
+                            className="controle-clientes-remove-button"
+                            onClick={() => {
+                              setClienteRemovendo(cliente);
+                              setIsConfirmModalOpen(true);
+                            }}
+                          >
+                            <FaTimes className="icon-button" />
+                            Remover
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
