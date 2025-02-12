@@ -17,6 +17,7 @@
 .controle-clientes-search {
   margin-bottom: 15px;
   position: relative;
+  padding-left: 15px;
 }
 
 .controle-clientes-search::before {
@@ -24,8 +25,8 @@
   font-family: 'Font Awesome 6 Free'; /* Certifique-se de que o Font Awesome está carregado */
   font-weight: 900;
   position: absolute;
-  left: 10px; /* Distância do lado esquerdo do input */
-  top: 47%; /* Centraliza verticalmente */
+  left: 25px; /* Distância do lado esquerdo do input */
+  top: 45%; /* Centraliza verticalmente */
   transform: translateY(-50%); /* Ajusta o posicionamento para o centro */
   font-size: 14px;
   color: #ccc;
@@ -44,6 +45,7 @@
 
 .controle-clientes-add-button {
   margin-bottom: 20px;
+  padding-right: 30px;
 }
 
 .controle-clientes-button {
@@ -137,16 +139,54 @@
 .buttons-actions{
   display: flex;
   justify-content: space-evenly;
-  box-sizing: border-box;
   width: 100%;
 }
 
 
-.controle-clientes-edit-button{
+/* .controle-clientes-edit-button{
   margin-left: 10px;
   background-color: rgb(27, 27, 158);
 }
 
 .controle-clientes-remove-button{
   margin-right: 10px;
+} */
+
+
+.controle-estoque-action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.controle-clientes-edit-button,
+.controle-clientes-remove-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.controle-clientes-edit-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.controle-clientes-edit-button:hover {
+  background-color: #0056b3;
+}
+
+.controle-clientes-remove-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.controle-clientes-remove-button:hover {
+  background-color: #a71d2a;
 }

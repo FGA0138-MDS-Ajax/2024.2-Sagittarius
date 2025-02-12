@@ -4,6 +4,8 @@ import "./clientes.css";
 import AdicionarCliente from "./add_cliente";
 import Sidebar from "../sidebar/sidebar";
 import { ImUserPlus } from "react-icons/im";
+import { FaPencilAlt, FaTimes } from 'react-icons/fa';
+import { BsFillBoxSeamFill } from "react-icons/bs";
 
 function ControleClientes() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -180,12 +182,14 @@ function ControleClientes() {
                             setIsEditModalOpen(true);
                           }}
                         >
+                          <FaPencilAlt className="icon-button"/> 
                           Editar
                         </button>
                         <button
                           className="controle-clientes-remove-button"
                           onClick={() => handleRemoveCliente(cliente)}
                         >
+                          <FaTimes className="icon-button" />
                           Remover
                         </button>
                       </td>

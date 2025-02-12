@@ -29,6 +29,7 @@
 .controle-estoque-search {
   margin-bottom: 15px;
   position: relative;
+  padding-left: 15px;
 }
 
 .controle-estoque-search::before {
@@ -36,9 +37,9 @@
   font-family: 'Font Awesome 6 Free'; /* Certifique-se de que o Font Awesome está carregado */
   font-weight: 900;
   position: absolute;
-  left: 10px; /* Distância do lado esquerdo do input */
+  left: 25px; /* Distância do lado esquerdo do input */
   top: 50%; /* Centraliza verticalmente */
-  transform: translateY(-50%); /* Ajusta o posicionamento para o centro */
+  transform: translateY(-65%); /* Ajusta o posicionamento para o centro */
   font-size: 14px;
   color: #ccc;
   pointer-events: none; /* Evita que o ícone interfira no clique */
@@ -59,6 +60,7 @@
 
 .controle-estoque-add-button {
   margin-bottom: 20px;
+  margin-right: 30px;
 }
 
 .controle-estoque-button:hover {

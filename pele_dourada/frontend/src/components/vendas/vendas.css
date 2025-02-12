@@ -21,11 +21,37 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 }
 
+.div-header-widgets {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.vendas-search {
+  text-align: center;
+  position: left;
+  justify-content: left;
+  padding-left: 15px;
+}
+
+
+.vendas-search-input {
+  content: '\f002'; /* Código Unicode do ícone de lupa no Font Awesome */
+  padding: 10px 10px 10px 35px; /* Adiciona espaçamento para acomodar o ícone */
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  left: 10px; /* Distância do lado esquerdo do input */
+  top: 50%; /* Centraliza verticalmente */
+  /* box-sizing: border-box; */
+}
+
 .vendas-add-button {
   display: flex;
   justify-content: right;
   width: 100%;
-  margin-left: 50px;
+  margin-left: 50px; 
 }
 
 .vendas-button {
@@ -148,7 +174,7 @@
   flex-direction: column;
 }
 
-.vendas-div-botao-mais-menos {
+/* .vendas-div-botao-mais-menos {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -160,7 +186,43 @@
   justify-content: space-evenly;
   width: 100%;
   margin-top: 8px;
+  
+} */
+
+/* teste */
+
+.vendas-div-espacamento-botao-mais-menos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  margin-top: 8px;
 }
+
+/* .vendas-botao-mais-menos {
+  position: absolute;
+  width: 32px; 
+  height: 32px; 
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+.vendas-botao-mais-menos:first-of-type { 
+  left: 0; /* Fixando o botão "-" à esquerda */
+}
+
+.vendas-botao-mais-menos:last-of-type { 
+  right: 0; /* Fixando o botão "+" à direita */
+}
+
+.vendas-div-espacamento-botao-mais-menos span {
+  flex-grow: 1;
+  text-align: center;
+}
+/* fim teste */
 
 .vendas-botao-mais-menos { 
   border: none;
@@ -239,17 +301,4 @@
   cursor: pointer;
   color: blue;
   text-decoration: underline;
-}
-
-.vendas-search {
-  margin:0;
-  text-align: center;
-}
-
-.vendas-search-input {
-  width: 80%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
 }

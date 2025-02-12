@@ -4,6 +4,8 @@ import "./vendas.css";
 import { MdOutlinePointOfSale } from "react-icons/md";
 import { GiChickenOven } from "react-icons/gi";
 import Sidebar from '../../components/sidebar/sidebar';
+import { FaPencilAlt, FaTimes } from 'react-icons/fa';
+import { BsFillBoxSeamFill } from "react-icons/bs";
 
 const VendasPage = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -277,21 +279,22 @@ const VendasPage = () => {
           <div className="vendas-title" id="vendas-title">
             <h1>Vendas e Encomendas</h1>
           </div>
-          <div className="vendas-add-button" id="vendas-add-button">
-            <button className="vendas-button" id="vendas-button" onClick={openModal}>
-              <GiChickenOven />
-              Nova Venda / Encomenda
-            </button>
-          </div>
-
-          <div className="vendas-search">
-            <input
-              type="text"
-              placeholder="Buscar vendas..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-              className="vendas-search-input"
-            />
+          <div className='div-header-widgets'>
+            <div className="vendas-search">
+              <input
+                type="text"
+                placeholder="Buscar vendas..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="vendas-search-input"
+                />
+            </div>
+            <div className="vendas-add-button" id="vendas-add-button">
+              <button className="vendas-button" id="vendas-button" onClick={openModal}>
+                <GiChickenOven />
+                Nova Venda / Encomenda
+              </button>
+            </div>
           </div>
 
           <table className="vendas-table">
