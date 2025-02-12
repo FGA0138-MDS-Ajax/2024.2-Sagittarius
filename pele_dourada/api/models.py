@@ -206,7 +206,7 @@ def update_user(user_id, new_username=None, new_pwd=None):
     return
 
 def update_client(client_id, new_name=None, new_phone=None, new_address=None):
-    client = get_client_by_id(client_id)
+    client = get_client_by_id(ObjectId(client_id))
 
     if not client:
         return None
@@ -221,7 +221,7 @@ def update_client(client_id, new_name=None, new_phone=None, new_address=None):
     if new_name:
         update_fields['$set']["name"] = new_name
 
-    if update_fields:
+    if update_fields['$set']:
         client_collection.update_one({"_id": ObjectId(client_id)}, update_fields)
     return client
 
@@ -267,7 +267,7 @@ def delete_user(username):
     return
 
 def delete_client(client_id):
-    result = client_collection.delete_one({'_id': client_id})
+    result = client_collection.delete_one({'_id': ObjectId(client_id)})
     if result.deleted_count > 0:
         print(f"Cliente {client_id} deletado com sucesso!")
     else:

@@ -10,9 +10,14 @@ import EstoqueIcon from '../../assets/icons/dashboard-estoque-icon.svg';
 import ClientesIcon from '../../assets/icons/dashboard-clientes-icon.svg';
 import { CSVLink } from "react-csv";
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF4560', '#00E396', '#775DD0', '#FEB019', '#FF4560'];
+const COLORS = [
+  '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', 
+  '#FF4560', '#00E396', '#775DD0', '#FEB019', '#FF4560',
+  '#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300', 
+  '#FF6600', '#33FF66', '#FF0066', '#00FFCC', '#FF3366'
+];
 
-const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#FFC300"];
+// const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#FFC300"];
 
 function ViewDashboard() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -91,53 +96,53 @@ function ViewDashboard() {
   const totalSales = calculateTotalSales(filteredOrders);
   const totalOrders = calculateTotalOrders(filteredOrders);
 
-  
-
   const sortedOrders = [...filteredOrders].sort((a, b) => (b.total || 0) - (a.total || 0));
 
-const ordersData = sortedOrders.map(order => ({
-  name: order.name,
-  total: order.total || 0
-}));
+  // const ordersData = sortedOrders.map(order => ({
+  //   name: order.name,
+  //   total: order.products.reduce((sum, product) => sum + (product.price * product.quantidade), 0)
+  // }));
+
   const productsData = products.map((product, index) => ({ name: product.name, quantidade: product.qtd, color: COLORS[index % COLORS.length] }));
 
   const exportData = () => {
-  const filteredOrders = filterOrdersByDate(orders, startDate, endDate);
-  const totalSales = calculateTotalSales(filteredOrders);
-  const totalOrders = calculateTotalOrders(filteredOrders);
-  const totalStock = calculateTotalStock();
+    const filteredOrders = filterOrdersByDate(orders, startDate, endDate);
+    const totalSales = calculateTotalSales(filteredOrders);
+    const totalOrders = calculateTotalOrders(filteredOrders);
+    const totalStock = calculateTotalStock();
 
-  const csvData = [
-    ["Relatório de Vendas - Período:", `${startDate} até ${endDate}`],
-    [],
-    ["Clientes Cadastrados"],
-    ["Nome", "Telefone", "Endereço"],
-    ...clients.map(client => [client.name, client.phone, client.endereco]),
-    [],
-    ["Resumo de Vendas"],
-    ["Faturamento Total", "Número de Pedidos", "Itens no Estoque"],
-    [`R$ ${totalSales}`, totalOrders, totalStock],
-    [],
-    ["Detalhamento de Pedidos"],
-    ["Nome do Cliente", "Data do Pedido", "Produto", "Quantidade", "Preço Unitário", "Total do Pedido"],
-    ...filteredOrders.flatMap(order => 
-      order.products.map(product => [
-        order.name, 
-        new Date(order.date).toLocaleDateString(), 
-        product.name, 
-        product.quantidade, 
-        `R$ ${product.price.toFixed(2)}`,
-        `R$ ${(product.price * product.quantidade).toFixed(2)}`
-      ])
-    ),
-    [],
-    ["Resumo de Produtos em Estoque"],
-    ["Produto", "Quantidade Disponível"],
-    ...products.map(product => [product.name, product.qtd])
-  ];
+    const csvData = [
+      ["Relatório de Vendas - Período:", `${startDate} até ${endDate}`],
+      [],
+      ["Clientes Cadastrados"],
+      ["Nome", "Telefone", "Endereço"],
+      ...clients.map(client => [client.name, client.phone, client.endereco]),
+      [],
+      ["Resumo de Vendas"],
+      ["Faturamento Total", "Número de Pedidos", "Itens no Estoque"],
+      [`R$ ${totalSales}`, totalOrders, totalStock],
+      [],
+      ["Detalhamento de Pedidos"],
+      ["Nome do Cliente", "Data do Pedido", "Produto", "Quantidade", "Preço Unitário", "Total do Pedido"],
+      ...filteredOrders.flatMap(order => 
+        order.products.map(product => [
+          order.name, 
+          new Date(order.date).toLocaleDateString(), 
+          product.name, 
+          product.quantidade, 
+          `R$ ${product.price.toFixed(2)}`,
+          `R$ ${(product.price * product.quantidade).toFixed(2)}`
+        ])
+      ),
+      [],
+      ["Resumo de Produtos em Estoque"],
+      ["Produto", "Quantidade Disponível"],
+      ...products.map(product => [product.name, product.qtd])
+    ];
 
-  return csvData;
-};
+    return csvData;
+  };
+
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
@@ -236,62 +241,47 @@ const ordersData = sortedOrders.map(order => ({
 
           <div className='dashboard-grid'>
 
-            {/* <div className="dashboard-card">
-                  <h2>Clientes</h2>
-                  <table className="dashboard-table">
-                    <thead>
-                      <tr>
-                        <th>Nome</th>
-                        <th>Telefone</th>
-                        <th>Endereço</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {clients.map(client => (
-                        <tr key={client.name}>
-                          <td>{client.name}</td>
-                          <td>{client.phone}</td>
-                          <td>{client.endereco}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+          <div className="dashboard-card">
+            <h2>Últimos Clientes Cadastrados</h2>
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Telefone</th>
+                  <th>Endereço</th>
+                </tr>
+              </thead>
+              <tbody className='tabelas-dashboard-uppercase'>
+                {clients.slice(-5).reverse().map(client => (
+                  <tr key={client.id || client.phone}>
+                    <td>{client.name}</td>
+                    <td>{client.phone}</td>
+                    <td>{client.endereco}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-                <div className="dashboard-card">
-  <h2>Encomendas</h2>
-  <ResponsiveContainer width="100%" height={300}>
-    <BarChart data={ordersData}>
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip content={<CustomTooltip />} />
-      <Bar dataKey="total" fill="#8884d8">
-        {ordersData.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-        ))}
-      </Bar>
-    </BarChart>
-  </ResponsiveContainer>
-  <table className="dashboard-table">
-    <thead>
-      <tr>
-        <th>Nome do Cliente</th>
-        <th>Data</th>
-        <th>Valor Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      {orders.slice(0, 5).map(order => (
-        <tr key={order.id} className="hover-row">
-          <td>{order.name}</td>
-          <td>{new Date(order.date).toLocaleDateString()}</td>
-          <td>R$ {(order.total || 0).toFixed(2)}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div> */}
-
+          <div className="dashboard-card">
+            <h2>Últimos Pedidos</h2>
+            <table className="dashboard-table tabelas-dashboard-uppercase">
+              <thead>
+                <tr>
+                  <th>Nome do Cliente</th>
+                  <th>Valor da Venda</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedOrders.slice(-5).reverse().map(order => (
+                  <tr key={order.number}>
+                    <td>{order.name}</td>
+                    <td>R$ {order.products.reduce((sum, product) => sum + (product.price * product.quantidade), 0).toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           </div>
             <div className="dashboard-section">

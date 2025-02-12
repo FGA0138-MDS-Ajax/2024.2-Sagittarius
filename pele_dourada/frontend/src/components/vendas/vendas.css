@@ -48,16 +48,11 @@
 }
 
 .vendas-add-button {
-  display: flex;
-  justify-content: right;
-  width: 100%;
-  margin-left: 50px; 
+  margin-bottom: 20px;
+  padding-right: 30px;
 }
 
 .vendas-button {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   background-color: #F3821B;
   color: white;
   border: none;
@@ -65,8 +60,6 @@
   cursor: pointer;
   border-radius: 5px;
   font-size: 15px;
-  position: relative;
-  margin-right: 30px;
 }
 
 .vendas-button:hover {
@@ -74,8 +67,49 @@
 }
 
 .vendas-table {
-  margin-top: 20px;
+  margin-top: 0px;
 }
+
+.controle-vendas-acoes {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  text-align: center;
+}
+
+.controle-venda-edit-button,
+.controle-venda-remove-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.controle-venda-edit-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.controle-venda-edit-button:hover {
+  background-color: #0056b3;
+}
+
+.controle-venda-remove-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.controle-venda-remove-button:hover {
+  background-color: #a71d2a;
+}
+
+
 
 /* Modal */
 .vendas-modal-overlay {
@@ -100,10 +134,26 @@
   position: relative;
 }
 
+.vendas-modal-confirmacao-content {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  width: 50%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(59, 59, 59, 0.925);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center; /* Centraliza o texto */
+}
+
+
+
 .vendas-close-modal {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -10px;
+  right: -15px;
   background: none;
   border: none;
   font-size: 1.5rem;
@@ -117,8 +167,16 @@
 
 .vendas-modal-body {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: 20px;
+}
+
+.vendas--confirmacao-modal-body {
+  display: flex;
+  flex-direction: column;  /* Stack elements vertically */
+  align-items: center;    /* Center horizontally */
+  gap: 20px;            /* Spacing between elements */
+  width: 100%; 
 }
 
 .vendas-form-container {
@@ -156,17 +214,31 @@
   font-size: 1.2rem;
 }
 
-.vendas-button-finalizar {
-  position: absolute; 
-  bottom: 30px; 
-  right: 30px; 
-  padding: 10px 20px; 
-  background-color: #F3821B; 
-  color: white; 
+.div-editar-produto-button {
+  display: flex;
+  justify-content: center; /* Garante que os botões fiquem empilhados */
+  gap: 30px; /* Espaçamento entre os botões */
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.editar-produto-button {
+  padding: 12px;
+  background-color: #F3821B;
+  color: white;
   border: none;
-  border-radius: 5px; 
-  font-size: 15px; 
-  cursor: pointer; 
+  border-radius: 5px;
+  cursor: pointer;
+  width: 80%; /* Para manter alinhamento com os campos */
+  text-align: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.editar-produto-button:hover {
+  background-color: #f15b1b;
 }
 
 .vendas-div-titulo-botoes-mais-menos{
@@ -241,12 +313,22 @@
   background-color: #f15b1b;
 }
 
+.vendas-button-finalizar {
+  position: absolute; 
+  bottom: 30px; 
+  right: 30px; 
+  padding: 10px 20px; 
+  background-color: #F3821B; 
+  color: white; 
+}
+
 .vendas-total-finalizar {
   display: flex; 
   align-items: flex-end;
   justify-content: space-around;
   width: 50%;
 }
+
 
 .pagination {
   display: flex;
@@ -258,14 +340,14 @@
   padding: 8px 12px;
   margin: 0 5px;
   border: none;
-  background-color: #007bff;
+  background-color: transparent;
   color: white;
   cursor: pointer;
   border-radius: 5px;
 }
 
 .pagination button.active {
-  background-color: #0056b3;
+  background-color: #f15b1b;
 }
 
 .pagination button:disabled {
@@ -301,4 +383,16 @@
   cursor: pointer;
   color: blue;
   text-decoration: underline;
+}
+
+.error-message {
+  color: #fff;
+  background-color: #ff4d4d;
+  padding: 10px;
+  transform: translateX(30px);
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: bold;
+  width: 90%;
 }

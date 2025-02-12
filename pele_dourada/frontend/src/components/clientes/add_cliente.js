@@ -22,7 +22,9 @@ function AdicionarCliente() {
       const clienteData = { name: nome, phone: telefone, address: endereco };
       const response = await axios.post('http://localhost:8000/api/client/register/', clienteData); // esperando o endereço da api
       alert('Cliente adicionado com sucesso!');
-      
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
       setNome('');
       setTelefone('');
       setEndereco('');

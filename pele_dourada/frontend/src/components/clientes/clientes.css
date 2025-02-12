@@ -1,3 +1,7 @@
+.app-container {
+  height: 100vh;
+}
+
 .controle-clientes-page {
   display: flex;
   flex-direction: column;
@@ -107,13 +111,27 @@
   border: 1px solid #ccc;
 }
 
+.div-editar-cliente-button{
+  display: flex;
+  justify-content: space-around; /* Garante que os botões fiquem empilhados */
+  gap: 30px; /* Espaçamento entre os botões */
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
 .editar-cliente-button {
+  padding: 12px;
   background-color: #F3821B;
   color: white;
-  padding: 10px 20px;
   border: none;
-  cursor: pointer;
   border-radius: 5px;
+  cursor: pointer;
+  width: 80%; /* Para manter alinhamento com os campos */
+  text-align: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: 900;
 }
 
 .editar-cliente-button:hover {
@@ -139,7 +157,6 @@
 .buttons-actions{
   display: flex;
   justify-content: space-evenly;
-  width: 100%;
 }
 
 
@@ -189,4 +206,53 @@
 
 .controle-clientes-remove-button:hover {
   background-color: #a71d2a;
+}
+
+/***** PAGINAÇÃO *****/
+
+.pagination{
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  width: 100%;
+}
+
+.pagination button {
+  background-color: #F3821B; /* Cor padrão dos botões */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin: 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+  background-color: #e67315; /* Cor levemente mais escura ao passar o mouse */
+}
+
+.pagination button.active {
+  background-color: #f15b1b; /* Cor do botão ativo */
+  font-weight: bold;
+}
+
+/***** TABELA *****/
+
+.controle-clientes-table th:nth-child(4),
+.controle-clientes-table td:nth-child(4) {
+  width: 20%;
+  min-width: 150px; /* Evita que fique muito pequeno */
+}
+
+.controle-clientes-table {
+  width: 100%;
+  table-layout: fixed; /* Mantém as colunas com tamanho fixo */
+}
+
+.controle-clientes-table th, .controle-clientes-table td {
+  width: 25%; /* Como há 4 colunas, cada uma recebe 25% */
+  white-space: nowrap; /* Evita quebra de texto */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adiciona "..." quando o conteúdo for grande */
 }

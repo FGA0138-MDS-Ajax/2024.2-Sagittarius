@@ -328,15 +328,16 @@ function ControleEstoque() {
                       Salvar
                     </button>
                   </div>
+
+                  <div className="div-editar-produto-button">
+                    <button
+                      onClick={() => setIsEditModalOpen(false)}
+                      className="editar-produto-button"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
                 </form>
-                <div className="div-editar-produto-button">
-                  <button
-                    onClick={() => setIsEditModalOpen(false)}
-                    className="editar-produto-button"
-                  >
-                    Cancelar
-                  </button>
-                </div>
               </div>
             </div>
           )}

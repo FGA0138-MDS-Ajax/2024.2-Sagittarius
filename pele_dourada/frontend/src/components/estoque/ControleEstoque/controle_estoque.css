@@ -354,3 +354,22 @@
 th {
   cursor: pointer;
 }
+
+/***** TABELA *****/
+.controle-estoque-table th:nth-child(4),
+.controle-estoque-table td:nth-child(4) {
+  width: 20%;
+  min-width: 150px; /* Evita que fique muito pequeno */
+}
+
+.controle-estoque-table {
+  width: 100%;
+  table-layout: fixed; /* Mantém as colunas com tamanho fixo */
+}
+
+.controle-estoque-table th, .controle-estoque-table td {
+  width: 25%; /* Como há 4 colunas, cada uma recebe 25% */
+  white-space: nowrap; /* Evita quebra de texto */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adiciona "..." quando o conteúdo for grande */
+}

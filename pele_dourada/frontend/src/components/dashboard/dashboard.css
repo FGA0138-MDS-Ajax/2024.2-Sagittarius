@@ -48,6 +48,8 @@
   width: 100%;
 }
 
+
+
 .dashboard-title {
   padding-left: 20px;
   width: 100%;
@@ -56,6 +58,11 @@
   border: 1px solid #CED4DA;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 }
+
+.tabelas-dashboard-uppercase{
+  text-transform: capitalize;
+}
+
 
 .dashboard-card {
     background: white;
@@ -87,7 +94,7 @@
 }
 
 .dashboard-table th {
-  background-color: #f2f2f2;
+  background-color: #F3821B;
   text-align: left;
 }
 

@@ -109,6 +109,14 @@ function ControleClientes() {
     }
   };
 
+  const confirmarRemocao = async () => {
+    if (clienteRemovendo) {
+      await handleRemoveCliente(clienteRemovendo);
+      setIsConfirmModalOpen(false);
+      setClienteRemovendo(null);
+    }
+  };
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -182,27 +190,29 @@ function ControleClientes() {
                       <td>{cliente.name}</td>
                       <td>{cliente.phone}</td>
                       <td>{cliente.endereco}</td>
-                      <td className="buttons-actions">
-                        <button
-                          className="controle-clientes-edit-button"
-                          onClick={() => {
-                            setClienteEditando(cliente);
-                            setIsEditModalOpen(true);
-                          }}
-                        >
-                          <FaPencilAlt className="icon-button"/> 
-                          Editar
-                        </button>
-                        <button
-                          className="controle-clientes-remove-button"
-                          onClick={() => {
-                            setClienteRemovendo(cliente);
-                            setIsConfirmModalOpen(true);
-                          }}
-                        >
-                          <FaTimes className="icon-button" />
-                          Remover
-                        </button>
+                      <td>
+                        <div className="buttons-actions">
+                          <button
+                            className="controle-clientes-edit-button"
+                            onClick={() => {
+                              setClienteEditando(cliente);
+                              setIsEditModalOpen(true);
+                            }}
+                          >
+                            <FaPencilAlt className="icon-button"/> 
+                            Editar
+                          </button>
+                          <button
+                            className="controle-clientes-remove-button"
+                            onClick={() => {
+                              setClienteRemovendo(cliente);
+                              setIsConfirmModalOpen(true);
+                            }}
+                          >
+                            <FaTimes className="icon-button" />
+                            Remover
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -210,16 +220,23 @@ function ControleClientes() {
               </table>
 
               <div className="pagination">
-                {Array.from({ length: totalPages }).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handlePageChange(index + 1)}
-                    className={currentPage === index + 1 ? "active" : ""}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-              </div>
+                {Array.from({ length: totalPages }).map((_, index) => {
+                  if (index < 3 || index === totalPages - 1) {
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => handlePageChange(index + 1)}
+                        className={currentPage === index + 1 ? "active" : ""}
+                      >
+                        {index + 1}
+                      </button>
+                    );
+                  } else if (index === 3) {
+                    return <span key="ellipsis">...</span>;
+                  }
+                  return null;
+                })}
+            </div>
             </>
           )}
 
@@ -324,12 +341,31 @@ function ControleClientes() {
                       Salvar
                     </button>
                   </div>
+
+                  <div className="div-editar-cliente-button">
+                    <button
+                      onClick={() => setIsEditModalOpen(false)}
+                      className="editar-cliente-button"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+
                 </form>
+              </div>
+            </div>
+          )}
+
+          {isConfirmModalOpen && (
+            <div className="modal-overlay" onClick={() => setIsConfirmModalOpen(false)}>
+              <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <h2>Confirmar Remoção</h2>
+                <p>Tem certeza que deseja remover o cliente "{clienteRemovendo?.name}"?</p>
                 <div className="div-editar-cliente-button">
-                  <button
-                    onClick={() => setIsEditModalOpen(false)}
-                    className="editar-cliente-button"
-                  >
+                  <button onClick={confirmarRemocao} className="editar-cliente-button">
+                    Confirmar
+                  </button>
+                  <button onClick={() => setIsConfirmModalOpen(false)} className="editar-cliente-button">
                     Cancelar
                   </button>
                 </div>
