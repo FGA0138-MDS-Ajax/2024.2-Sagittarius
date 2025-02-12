@@ -628,14 +628,11 @@ const VendasPage = () => {
                 <button className="vendas-close-modal" onClick={closeRemoveModal}>
                   &times;
                 </button>
-                <div className="vendas-modal-body">
+                <div className="vendas-confirmacao-modal-body">
                   <h3>Tem certeza que deseja remover esta venda?</h3>
                   <div className="div-editar-produto-button">
                     <button onClick={handleRemoveVenda} className="editar-produto-button">
                       Remover
-                    </button>
-                    <button onClick={closeRemoveModal} className="editar-produto-button">
-                      Cancelar
                     </button>
                   </div>
                 </div>

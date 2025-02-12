@@ -152,8 +152,8 @@
 
 .vendas-close-modal {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -10px;
+  right: -15px;
   background: none;
   border: none;
   font-size: 1.5rem;
@@ -167,8 +167,16 @@
 
 .vendas-modal-body {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: 20px;
+}
+
+.vendas--confirmacao-modal-body {
+  display: flex;
+  flex-direction: column;  /* Stack elements vertically */
+  align-items: center;    /* Center horizontally */
+  gap: 20px;            /* Spacing between elements */
+  width: 100%; 
 }
 
 .vendas-form-container {
@@ -208,7 +216,7 @@
 
 .div-editar-produto-button {
   display: flex;
-  justify-content: space-around; /* Garante que os botões fiquem empilhados */
+  justify-content: center; /* Garante que os botões fiquem empilhados */
   gap: 30px; /* Espaçamento entre os botões */
   align-items: center;
   width: 100%;
