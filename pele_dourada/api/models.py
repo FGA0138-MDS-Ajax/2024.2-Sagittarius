@@ -132,7 +132,8 @@ def insert_order(doc):
     if(get_order(doc.number) == None):
         order_collection.insert_one(doc.to_dict())
         return
-    return print('produto ja existe')
+    order_collection.insert_one(doc.to_dict())  
+    return print('Pedido ja existe')
 
 def insert_user(doc):
     if(get_user(doc.username) == None):
