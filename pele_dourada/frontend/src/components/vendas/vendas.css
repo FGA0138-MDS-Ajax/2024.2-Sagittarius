@@ -330,11 +330,12 @@
   width: 50%;
 }
 
-
+/***** PAGINAÇÃO *****/
 .pagination {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  gap: 10px;
 }
 
 .pagination button {
@@ -342,13 +343,14 @@
   margin: 0 5px;
   border: none;
   background-color: transparent;
-  color: white;
+  color: #f15b1b;
   cursor: pointer;
   border-radius: 5px;
 }
 
 .pagination button.active {
   background-color: #f15b1b;
+  color: #ffffff;
 }
 
 .pagination button:disabled {
