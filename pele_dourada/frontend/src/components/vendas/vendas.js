@@ -155,7 +155,7 @@ const VendasPage = () => {
     try {
       const response = await axios.post("http://localhost:8000/api/order/register/", {
         name: formData.nomeCliente,
-        tipe: formData.tipoVenda,
+        type: formData.tipoVenda,
         payment: formData.metodoPagamento,
         products: formData.produtos.map((produto) => ({
           id: produto.id,
@@ -258,9 +258,6 @@ const VendasPage = () => {
     );
   });
 
-  
-
-
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
@@ -270,7 +267,7 @@ const VendasPage = () => {
             <h1>Vendas e Encomendas</h1>
           </div>
           <div className='div-header-widgets'>
-            <div className="vendas-search">
+            <div className="controle-estoque-search">
               <input
                 type="text"
                 placeholder="Buscar vendas..."
