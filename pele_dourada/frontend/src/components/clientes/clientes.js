@@ -218,16 +218,23 @@ function ControleClientes() {
               </table>
 
               <div className="pagination">
-                {Array.from({ length: totalPages }).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handlePageChange(index + 1)}
-                    className={currentPage === index + 1 ? "active" : ""}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-              </div>
+                {Array.from({ length: totalPages }).map((_, index) => {
+                  if (index < 3 || index === totalPages - 1) {
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => handlePageChange(index + 1)}
+                        className={currentPage === index + 1 ? "active" : ""}
+                      >
+                        {index + 1}
+                      </button>
+                    );
+                  } else if (index === 3) {
+                    return <span key="ellipsis">...</span>;
+                  }
+                  return null;
+                })}
+            </div>
             </>
           )}
 

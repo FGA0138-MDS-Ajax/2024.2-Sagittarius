@@ -204,3 +204,32 @@
 .controle-clientes-remove-button:hover {
   background-color: #a71d2a;
 }
+
+/***** PAGINAÇÃO *****/
+
+.pagination{
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  width: 100%;
+}
+
+.pagination button {
+  background-color: #F3821B; /* Cor padrão dos botões */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin: 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+  background-color: #e67315; /* Cor levemente mais escura ao passar o mouse */
+}
+
+.pagination button.active {
+  background-color: #f15b1b; /* Cor do botão ativo */
+  font-weight: bold;
+}
