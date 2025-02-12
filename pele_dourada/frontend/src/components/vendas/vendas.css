@@ -330,14 +330,14 @@
   padding: 8px 12px;
   margin: 0 5px;
   border: none;
-  background-color: #007bff;
+  background-color: transparent;
   color: white;
   cursor: pointer;
   border-radius: 5px;
 }
 
 .pagination button.active {
-  background-color: #0056b3;
+  background-color: #f15b1b;
 }
 
 .pagination button:disabled {
