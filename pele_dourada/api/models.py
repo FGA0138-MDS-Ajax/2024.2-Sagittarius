@@ -125,6 +125,7 @@ def insert_client(doc):
         print(f"Cliente {doc.phone} inserido com sucesso!")
     else:
         print(f"Cliente {doc.phone} já existe!")
+        raise Exception("Cliente já existe")
     return
 
 def insert_order(doc):
@@ -144,16 +145,22 @@ def insert_billing(doc):
     return
 
 # ler documentos
-def get_user(user_id):
-    return user_collection.find_one(ObjectId(user_id))
+def get_user(username):
+    return user_collection.find_one({'username' : username})
 
-def get_client(client_id):
+def get_client(phone):
+    return client_collection.find_one({'phone' : phone})
+
+def get_client_by_id(client_id):
     return client_collection.find_one(ObjectId(client_id))
 
 def get_all_clients():
     return list(client_collection.find())
 
-def get_product(product_id):
+def get_product(name):
+    return stock_collection.find_one({'name' : name})
+
+def get_product_by_id(product_id):
     return stock_collection.find_one(ObjectId(product_id))
 
 def get_all_products():
@@ -198,7 +205,7 @@ def update_user(user_id, new_username=None, new_pwd=None):
     return
 
 def update_client(client_id, new_name=None, new_phone=None, new_address=None):
-    client = get_client(client_id)
+    client = get_client_by_id(client_id)
 
     if not client:
         return None
@@ -271,7 +278,7 @@ def delete_product(product_id):
     return
 
 def decrease_product_qtd(product_id):
-    product = get_product(product_id)
+    product = get_product_by_id(product_id)
     if product['qtd'] == 1:
         delete_product(product_id)
     else:

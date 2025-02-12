@@ -73,7 +73,8 @@ function ControleClientes() {
 
   const handleEditCliente = async (cliente) => {
     try {
-      const response = await axios.put(`http://localhost:8000/api/client/update/${cliente.id}/`, {
+      const response = await axios.put(`http://localhost:8000/api/client/update/`, {
+        id: cliente.id,
         name: cliente.name,
         phone: cliente.phone,
         endereco: cliente.endereco
@@ -93,7 +94,9 @@ function ControleClientes() {
 
   const handleRemoveCliente = async (cliente) => {
     try {
-      await axios.delete(`http://localhost:8000/api/client/delete/${cliente.id}/`);
+      await axios.delete(`http://localhost:8000/api/client/delete/`, {
+        data: { id: cliente.id },
+      });
       setClientes(clientes.filter((c) => c.id !== cliente.id));
     } catch (error) {
       console.error("Erro ao deletar cliente:", error);
