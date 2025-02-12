@@ -144,7 +144,7 @@ class UpdatePasswordView(APIView):
     )
 
     def put(self, request):
-        user = request.user
+        user_id = request.user.id
         username = request.data.get("username")
         old_password = request.data.get("password")
         new_password = request.data.get("confirmPassword")
@@ -163,7 +163,7 @@ class UpdatePasswordView(APIView):
 
         hash_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
         try:
-            update_user(username, new_pwd=hash_password)
+            update_user(user_id=user_id, new_pwd=hash_password)
         except Exception as e:
             print(e)
             return Response({

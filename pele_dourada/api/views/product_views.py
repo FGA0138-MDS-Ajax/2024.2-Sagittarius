@@ -68,25 +68,27 @@ class UpdateProductView(APIView):
         operation_description="Atualiza um produto",
         responses={200: openapi.Response('Produto atualizado com sucesso')},
         manual_parameters=[
-            openapi.Parameter('name', openapi.IN_QUERY, description="Nome do produto", type=openapi.TYPE_STRING),
-            openapi.Parameter('new_name', openapi.IN_QUERY, description="Novo nome do produto", type=openapi.TYPE_STRING),
+            openapi.Parameter('product_id', openapi.IN_QUERY, description="ID do produto", type=openapi.TYPE_STRING),
+            openapi.Parameter('name', openapi.IN_QUERY, description="Novo nome do produto", type=openapi.TYPE_STRING),
             openapi.Parameter('price', openapi.IN_QUERY, description="Preço do produto", type=openapi.TYPE_NUMBER),
             openapi.Parameter('qtd', openapi.IN_QUERY, description="Quantidade do produto", type=openapi.TYPE_INTEGER),
         ],
     )
     
     def put(self, request):
-        old_name = request.data.get("oldName")
-        new_name = request.data.get("newName") 
+        product_id = request.data.get("id")
+        new_name = request.data.get("name") 
         new_price = request.data.get("price")
         new_qtd = request.data.get("qtd")
 
-        if not old_name or new_name is None or new_price is None or new_qtd is None:
+        if not product_id or new_name is None or new_price is None or new_qtd is None:
             return Response({
                 'error': 'Por favor, insira todos os campos',
             }, status=status.HTTP_400_BAD_REQUEST)
         
-        product = get_product(old_name)  # Busca o produto pelo nome antigo
+        product = get_product(product_id)  # Busca o produto pelo nome antigo
+
+        print(product)
 
         if not product:
             return Response({
@@ -94,7 +96,7 @@ class UpdateProductView(APIView):
             }, status=status.HTTP_404_NOT_FOUND)
         
         try:
-            update_product(product['name'], new_name=new_name, new_price=new_price, new_qtd=new_qtd)  # Atualizando também a quantidade
+            update_product(product_id, new_name=new_name, new_price=new_price, new_qtd=new_qtd)  # Atualizando também a quantidade
         except Exception as e:
             return Response({
                 'error': 'Erro ao atualizar produto',
@@ -117,16 +119,15 @@ class DeleteProductView(APIView):
     )
 
     def delete(self, request):
-        name = request.data.get("name")
-        if not name:
+        product_id = request.data.get("id")
+        if not product_id:
             return Response({
                 'error': 'Por favor, insira o nome do produto',
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
-        product = Product(name, 0, 0)
-
-        product = get_product(product.name)
+        product = get_product(product_id)
+        print(product)
 
         if not product:
             return Response({
@@ -135,7 +136,7 @@ class DeleteProductView(APIView):
             )
         
         try:
-            decrease_product_qtd(product['name'])
+            decrease_product_qtd(product_id)
         except Exception as e:
             print(e)
             return Response({
