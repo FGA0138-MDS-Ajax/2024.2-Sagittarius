@@ -4,8 +4,6 @@ import "./vendas.css";
 import { MdOutlinePointOfSale } from "react-icons/md";
 import { GiChickenOven } from "react-icons/gi";
 import Sidebar from '../../components/sidebar/sidebar';
-import { FaPencilAlt, FaTimes } from 'react-icons/fa';
-import { BsFillBoxSeamFill } from "react-icons/bs";
 
 const VendasPage = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -26,6 +24,29 @@ const VendasPage = () => {
   const [itemsPerPage] = useState(10); // Limite de 10 itens por página
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
+  const [selectedVenda, setSelectedVenda] = useState(null);
+
+  const openEditModal = (venda) => {
+    setSelectedVenda(venda);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setSelectedVenda(null);
+  };
+
+  const openRemoveModal = (venda) => {
+    setSelectedVenda(venda);
+    setIsRemoveModalOpen(true);
+  };
+
+  const closeRemoveModal = () => {
+    setIsRemoveModalOpen(false);
+    setSelectedVenda(null);
+  };
 
   const fetchVendas = async () => {
     try {
@@ -73,6 +94,34 @@ const VendasPage = () => {
   const closeModal = () => {
     setIsModalOpen(false); // Fecha o modal
     setErrorMessage(""); // Reseta a mensagem de erro
+  };
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedVenda((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:8000/api/order/update/${selectedVenda.id}/`, selectedVenda);
+      fetchVendas();
+      closeEditModal();
+    } catch (error) {
+      console.error("Erro ao editar venda", error);
+    }
+  };
+
+  const handleRemoveVenda = async () => {
+    try {
+      await axios.delete(`http://localhost:8000/api/order/delete/${selectedVenda.id}/`);
+      fetchVendas();
+      closeRemoveModal();
+    } catch (error) {
+      console.error("Erro ao remover venda", error);
+    }
   };
 
   const handleChange = (e) => {
@@ -322,6 +371,8 @@ const VendasPage = () => {
                 <th onClick={() => requestSort("valorVenda")}>
                   Valor Total {getSortIcon("valorVenda")}
                 </th>
+                <th>Ações</th>
+                
               </tr>
             </thead>
             <tbody>
@@ -346,6 +397,11 @@ const VendasPage = () => {
                     )}
                   </td>
                   <td>R${calcularTotalVendaPorProdutos(venda.products)}</td>
+                  <td>
+                    <button onClick={() => openEditModal(venda)}>Editar</button>
+                  
+                    <button onClick={() => openRemoveModal(venda)}>Remover</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -480,6 +536,81 @@ const VendasPage = () => {
                     <div className="total-container">
                       <h4>Total: R${calcularTotalVenda()}</h4>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+           {isEditModalOpen && (
+            <div className="vendas-modal-overlay">
+              <div className="vendas-modal-content">
+                <button className="vendas-close-modal" onClick={closeEditModal}>
+                  &times;
+                </button>
+                <div className="vendas-modal-body">
+                  <div className="vendas-form-container">
+                    <form className="vendas-form" onSubmit={handleEditSubmit}>
+                      <label>Nome do Cliente</label>
+                      <input
+                        placeholder="Nome do cliente"
+                        type="text"
+                        name="nomeCliente"
+                        value={selectedVenda.nomeCliente}
+                        onChange={handleEditChange}
+                        className="vendas-input"
+                      />
+                      <label>Método de Pagamento</label>
+                      <select
+                        name="metodoPagamento"
+                        value={selectedVenda.metodoPagamento}
+                        onChange={handleEditChange}
+                        className="vendas-input"
+                      >
+                        <option value="">Selecione uma opção</option>
+                        <option value="credito">Cartão de Crédito</option>
+                        <option value="debito">Cartão de Débito</option>
+                        <option value="pix">Dinheiro</option>
+                        <option value="dinheiro">PIX</option>
+                      </select>
+                      <label>Tipo de Venda</label>
+                      <select
+                        name="tipoVenda"
+                        value={selectedVenda.tipoVenda}
+                        onChange={handleEditChange}
+                        className="vendas-input"
+                      >
+                        <option value="">Selecione o tipo de venda</option>
+                        <option value="venda">Venda</option>
+                        <option value="encomenda">Encomenda</option>
+                      </select>
+                      <div className="vendas-total-finalizar">
+                        <button type="submit" className="vendas-button-finalizar">
+                          <MdOutlinePointOfSale />
+                          Salvar Alterações
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isRemoveModalOpen && (
+            <div className="vendas-modal-overlay">
+              <div className="vendas-modal-content">
+                <button className="vendas-close-modal" onClick={closeRemoveModal}>
+                  &times;
+                </button>
+                <div className="vendas-modal-body">
+                  <h3>Tem certeza que deseja remover esta venda?</h3>
+                  <div className="vendas-total-finalizar">
+                    <button onClick={handleRemoveVenda} className="vendas-button-finalizar">
+                      Remover
+                    </button>
+                    <button onClick={closeRemoveModal} className="vendas-button-finalizar">
+                      Cancelar
+                    </button>
                   </div>
                 </div>
               </div>
