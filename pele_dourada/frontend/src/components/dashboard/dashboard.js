@@ -10,8 +10,10 @@ import EstoqueIcon from '../../assets/icons/dashboard-estoque-icon.svg';
 import ClientesIcon from '../../assets/icons/dashboard-clientes-icon.svg';
 import { CSVLink } from "react-csv";
 import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import  {ptBR}  from 'date-fns/locale';
+import { registerLocale } from "react-datepicker";
 import DatePicker from "react-datepicker";
+registerLocale("pt-BR", ptBR);
 
 const COLORS = [
   '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF4560', '#00E396', '#775DD0', '#FEB019', '#FF4560', '#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300', '#FF6600', '#33FF66', '#FF0066', '#00FFCC', '#FF3366'];
@@ -21,9 +23,9 @@ function ViewDashboard() {
   const [clients, setClients] = useState([]);
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  
   
 
   useEffect(() => {
@@ -198,28 +200,83 @@ function ViewDashboard() {
         <div className="dashboard-contents" id="dashboard-contents">
           <div className="dashboard-filters">
             
-          <div className='dashboard-datepickers'>
-                <label className="dashboard-label">
-                    Data de Início:
-                    <DatePicker 
-                        selected={startDate} 
-                        onChange={(date) => setStartDate(date)}
-                        dateFormat="dd/MM/yyyy"
-                        locale={ptBR}
-                        placeholderText="DD/MM/AAAA"
-                    />
-                </label>
-                <label className="dashboard-label">
-                    Data de Término:
-                    <DatePicker 
-                        selected={endDate} 
-                        onChange={(date) => setEndDate(date)}
-                        dateFormat="dd/MM/yyyy"
-                        locale={ptBR}
-                        placeholderText="DD/MM/AAAA"
-                    />
-                </label>
+          <div className="dashboard-datepickers">
+      <label className="dashboard-label">
+        Data de Início:
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
+          dateFormat="dd/MM/yyyy"
+          locale="pt-BR"
+          placeholderText="DD/MM/AAAA"
+          className="date-picker-input"
+          calendarClassName="react-datepicker__month-container"
+          renderCustomHeader={({
+            date,
+            decreaseMonth,
+            increaseMonth,
+            prevMonthButtonDisabled,
+            nextMonthButtonDisabled
+          }) => (
+            <div className="custom-header">
+              <button
+                onClick={decreaseMonth}
+                disabled={prevMonthButtonDisabled}
+                className="custom-button"
+              >
+                Mês Anterior
+              </button>
+              <span>{date.toLocaleString("pt-BR", { month: "long", year: "numeric" })}</span>
+              <button
+                onClick={increaseMonth}
+                disabled={nextMonthButtonDisabled}
+                className="custom-button"
+              >
+                Próximo Mês
+              </button>
             </div>
+          )}
+        />
+      </label>
+
+      <label className="dashboard-label">
+        Data de Término:
+        <DatePicker
+          selected={endDate}
+          onChange={(date) => setEndDate(date)}
+          dateFormat="dd/MM/yyyy"
+          locale="pt-BR"
+          placeholderText="DD/MM/AAAA"
+          className="date-picker-input"
+          calendarClassName="react-datepicker__month-container"
+          renderCustomHeader={({
+            date,
+            decreaseMonth,
+            increaseMonth,
+            prevMonthButtonDisabled,
+            nextMonthButtonDisabled
+          }) => (
+            <div className="custom-header">
+              <button
+                onClick={decreaseMonth}
+                disabled={prevMonthButtonDisabled}
+                className="custom-button"
+              >
+                Mês Anterior
+              </button>
+              <span>{date.toLocaleString("pt-BR", { month: "long", year: "numeric" })}</span>
+              <button
+                onClick={increaseMonth}
+                disabled={nextMonthButtonDisabled}
+                className="custom-button"
+              >
+                Próximo Mês
+              </button>
+            </div>
+          )}
+        />
+      </label>
+    </div>
 
                 <div className='dashboard-div-button-export'>
                   <CSVLink data={exportData()} filename={"dashboard-data.csv"} className="dashboard-button-export" id="exportar-csv">

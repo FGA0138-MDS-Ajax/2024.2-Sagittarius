@@ -105,8 +105,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
-    width: 100%;
+    margin-bottom: 20px;
 }
 
 .dashboard-datepickers {
@@ -135,9 +134,9 @@
   text-decoration: underline;
 }
 
-.dashboard-label{
-  display: flex;
-  flex-direction: column;
+.dashboard-label {
+  display: block; /* Faz o label ocupar a largura total */
+  margin-bottom: 5px; /* Espaçamento abaixo do label */
 }
 
 .dashboard-filters input {
@@ -223,4 +222,113 @@
   background-color: #FF0000;
   color: white;
 }
+
+.react-datepicker__month-container {
+  width: 300px; /* Ajusta a largura para que o calendário fique mais compacto */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.501);
+  background-color: #fff;
+  padding: 0px;
+  border: 1px solid #e0e0e0;
+}
+
+.react-datepicker__header {
+  background-color: #ffffff; /* Cor de fundo mais viva para o cabeçalho */
+  padding: 10px;
+  border-radius: 6px;
+  color: #000000; /* Texto branco para contraste */
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.react-datepicker__day-names {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.react-datepicker__day-name {
+  width: 30px;
+  text-align: center;
+  font-weight: bold;
+  color: #666;
+  font-size: 14px;
+}
+
+.react-datepicker__week {
+  display: flex;
+  justify-content: space-between;
+}
+
+.react-datepicker__day {
+  width: 38px;
+  height: 38px;
+  text-align: center;
+  border-radius: 50%;
+  cursor: pointer;
+  line-height: 38px;
+  font-size: 14px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--highlighted {
+  background-color: #F3821B;
+  color: #fff;
+}
+
+.react-datepicker{
+  background-color:transparent;
+
+}
+
+.react-datepicker__day:hover {
+  background-color: #f2f2f2;
+}
+
+.react-datepicker__navigation {
+  display: flex;
+  justify-content: space-between; /* Distribui os botões com o máximo de espaço entre eles */
+  align-items: center; /* Alinha os itens verticalmente */
+  padding: 5px;
+  position: relative; /* Se necessário, use posicionamento para ajustar a posição */
+}
+
+/* Alinhar os botões no centro horizontalmente */
+.react-datepicker__navigation-prev,
+.react-datepicker__navigation-next {
+  padding: 8px 12px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 0 5px; /* Espaçamento entre os botões */
+}
+
+/* Alinhar os botões ao centro da navegação */
+.react-datepicker__navigation-prev {
+  margin-right: auto; /* Coloca o botão "anterior" à esquerda */
+}
+
+.react-datepicker__navigation-next {
+  margin-left: auto; /* Coloca o botão "próximo" à direita */
+}
+
+/* Ajuste do hover para os botões */
+.react-datepicker__navigation-prev:hover,
+.react-datepicker__navigation-next:hover {
+  background-color: #e2e5e9;
+}
+
+/* Personalize os ícones */
+.react-datepicker__navigation-icon--previous::before {
+  content: "←"; /* Altere o conteúdo conforme necessário */
+}
+
+.react-datepicker__navigation-icon--next::before {
+  content: "→"; /* Altere o conteúdo conforme necessário */
+}
+
 
