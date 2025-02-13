@@ -96,7 +96,7 @@ function ControleEstoque() {
       );
       setProdutos(updatedProdutos);
       setSuccessMessage('Produto editado com sucesso!');
-      setTimeout(() => setSuccessMessage(''), 3000); // Limpa a mensagem após 3 segundos
+      setTimeout(() => setSuccessMessage(''), 2000); 
     } catch (error) {
       console.error("Erro ao atualizar produto:", error);
       alert('Erro ao atualizar o produto');
@@ -117,6 +117,13 @@ function ControleEstoque() {
       alert('Erro ao deletar o produto');
     }
   };
+
+  const produtosPorPagina = 12;
+  const produtosNaPaginaAtual = produtosFiltrados.slice(
+    (currentPage - 1) * produtosPorPagina, // Índice inicial
+    currentPage * produtosPorPagina        // Índice final
+  );
+  
 
   const formatCurrency = (value) => {
     if (!value) return "R$ 0,00";
@@ -188,7 +195,7 @@ function ControleEstoque() {
           </div>
 
           {successMessage && (
-            <div className="success-message">
+            <div className="success-message-estoque-edit">
               {successMessage}
             </div>
           )}
@@ -212,7 +219,7 @@ function ControleEstoque() {
                 </tr>
               </thead>
               <tbody>
-                {produtosFiltrados.map((produto) => (
+              {produtosNaPaginaAtual.map((produto) => (
                   <tr key={produto.id}>
                     <td>{produto.name}</td>
                     <td>R$ {produto.price.toFixed(2)}</td>

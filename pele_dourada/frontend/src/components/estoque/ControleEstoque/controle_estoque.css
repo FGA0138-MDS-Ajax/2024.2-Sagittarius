@@ -120,6 +120,14 @@
   transition: color 0.3s;
 }
 
+.success-message-estoque-edit{
+  color: green;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 10px;
+}
+
 .close-modal:hover {
   color: #ff0000; /* Altere a cor ao passar o mouse */
 }

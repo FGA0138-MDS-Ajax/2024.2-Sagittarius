@@ -63,7 +63,11 @@ const VendasPage = () => {
   const fetchVendas = async () => {
     try {
       const response = await axios.get("http://localhost:8000/api/orders/");
-      setVendas(response.data.orders);
+      const vendasComValor = response.data.orders.map(venda => ({
+        ...venda,
+        valorVenda: calcularTotalVendaPorProdutos(venda.products)
+      }));
+      setVendas(vendasComValor);
     } catch (error) {
       console.error("Erro ao buscar vendas", error);
     }
@@ -319,8 +323,8 @@ const VendasPage = () => {
 
   const sortedVendas = [...vendas].sort((a, b) => {
     if (sortConfig.key) {
-      const aValue = a[sortConfig.key];
-      const bValue = b[sortConfig.key];
+      const aValue = sortConfig.key === "valorVenda" ? parseFloat(a[sortConfig.key]) : a[sortConfig.key];
+      const bValue = sortConfig.key === "valorVenda" ? parseFloat(b[sortConfig.key]) : b[sortConfig.key];
       if (aValue < bValue) {
         return sortConfig.direction === "asc" ? -1 : 1;
       }

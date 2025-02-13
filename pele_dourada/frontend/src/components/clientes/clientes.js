@@ -23,7 +23,7 @@ function ControleClientes() {
     direction: "asc",
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(15); // Limite de 15 itens por página
+  const [itemsPerPage] = useState(12); // Limite de 15 itens por página
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [clienteRemovendo, setClienteRemovendo] = useState(null);
 
@@ -41,6 +41,8 @@ function ControleClientes() {
 
     fetchClientes();
   }, []);
+
+  
 
   const handleBuscaChange = (e) => setBusca(e.target.value);
 
