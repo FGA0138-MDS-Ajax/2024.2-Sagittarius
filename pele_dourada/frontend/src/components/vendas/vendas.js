@@ -192,6 +192,9 @@ const VendasPage = () => {
           setErrorMessage(
             `Quantidade insuficiente de ${produto.name} no estoque.`
           );
+          setTimeout(() => {
+            setErrorMessage('');
+          }, 2000);
           return;
         }
         setFormData((prevState) => ({
@@ -559,34 +562,34 @@ const VendasPage = () => {
                         <option value="encomenda">Encomenda</option>
                       </select>
                       <div className="vendas-div-titulo-botoes-mais-menos">
-                        <h3>Produtos</h3>
-                        {produtosEstoque.map((produto) => (
-                          <div
-                            className="vendas-div-botao-mais-menos"
-                            key={produto.id}
-                          >
-                            <div className="vendas-div-espacamento-botao-mais-menos">
-                              <button
-                                type="button"
-                                onClick={() => handleRemoverProduto(produto.id)}
-                                className="vendas-botao-mais-menos"
-                              >
-                                -
-                              </button>
-                              <span>{capitalize(produto.name)}</span>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  handleAdicionarProduto(produto.id)
-                                }
-                                className="vendas-botao-mais-menos"
-                              >
-                                +
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+  <h3>Produtos</h3>
+  <div className="vendas-produtos-grid">
+    {produtosEstoque.map((produto) => (
+      <div
+        className="vendas-div-botao-mais-menos"
+        key={produto.id}
+      >
+        <div className="vendas-div-espacamento-botao-mais-menos">
+          <button
+            type="button"
+            onClick={() => handleRemoverProduto(produto.id)}
+            className="vendas-botao-mais-menos"
+          >
+            -
+          </button>
+          <span>{capitalize(produto.name)}</span>
+          <button
+            type="button"
+            onClick={() => handleAdicionarProduto(produto.id)}
+            className="vendas-botao-mais-menos"
+          >
+            +
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
 
                       <div className="vendas-total-finalizar">
                         <button
@@ -633,7 +636,7 @@ const VendasPage = () => {
             </div>
           )}
 
-{isEditModalOpen && vendaEditando && (
+{isEditModalOpen &&(
   <div className="vendas-modal-overlay">
     <div className="vendas-modal-content">
       {errorMessage && <div className="error-message">{errorMessage}</div>}
@@ -690,29 +693,34 @@ const VendasPage = () => {
               <option value="encomenda">Encomenda</option>
             </select>
             <div className="vendas-div-titulo-botoes-mais-menos">
-              <h3>Produtos</h3>
-              {produtosEstoque.map((produto) => (
-                <div className="vendas-div-botao-mais-menos" key={produto.id}>
-                  <div className="vendas-div-espacamento-botao-mais-menos">
-                    <button
-                      type="button"
-                      onClick={() => handleRemoverProduto(produto.id)}
-                      className="vendas-botao-mais-menos"
-                    >
-                      -
-                    </button>
-                    <span>{capitalize(produto.name)}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleAdicionarProduto(produto.id)}
-                      className="vendas-botao-mais-menos"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+  <h3>Produtos</h3>
+  <div className="vendas-produtos-grid">
+    {produtosEstoque.map((produto) => (
+      <div
+        className="vendas-div-botao-mais-menos"
+        key={produto.id}
+      >
+        <div className="vendas-div-espacamento-botao-mais-menos">
+          <button
+            type="button"
+            onClick={() => handleRemoverProduto(produto.id)}
+            className="vendas-botao-mais-menos"
+          >
+            -
+          </button>
+          <span>{capitalize(produto.name)}</span>
+          <button
+            type="button"
+            onClick={() => handleAdicionarProduto(produto.id)}
+            className="vendas-botao-mais-menos"
+          >
+            +
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
             <div className="vendas-total-finalizar">
               <button type="submit" className="vendas-button-finalizar">
                 <MdOutlinePointOfSale />
