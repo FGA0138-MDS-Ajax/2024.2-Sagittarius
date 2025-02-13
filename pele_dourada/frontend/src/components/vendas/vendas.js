@@ -37,12 +37,10 @@ const VendasPage = () => {
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [selectedVenda, setSelectedVenda] = useState(null);
   const [vendaEditando, setVendaEditando] = useState(null);
-  const [vendaRemovendo, setVendaRemovendo] = useState(null);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const openEditModal = (venda) => {
     setSelectedVenda(venda);
-    setVendaEditando({...venda});
+    setVendaEditando({ ...venda });
     setIsEditModalOpen(true);
   };
 
@@ -109,14 +107,6 @@ const VendasPage = () => {
     setIsModalOpen(false); // Fecha o modal
     setErrorMessage(""); // Reseta a mensagem de erro
   };
-  
-  // const handleEditChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setSelectedVenda((prevState) => ({
-  //     ...prevState,
-  //     [name]: value,
-  //   }));
-  // };
 
   const handleEditChange = (e) => {
     const { name, value } = e.target;
@@ -129,11 +119,19 @@ const VendasPage = () => {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8000/api/order/update/${selectedVenda.id}/`, selectedVenda);
+      await axios.put("http://localhost:8000/api/order/update/", {
+        number: vendaEditando.id,
+        new_name: formData.name,
+        new_payment: formData.metodoPagamento,
+        new_tipe: formData.tipoVenda,
+        new_product: formData.produtos.map((produto) => produto.name),
+        new_price: formData.produtos.map((produto) => produto.price),
+        new_qtd: formData.produtos.map((produto) => produto.quantidade),
+      });
       fetchVendas();
-      closeEditModal();
+      closeModal();
     } catch (error) {
-      console.error("Erro ao editar venda", error);
+      console.error("Erro ao atualizar a venda", error);
     }
   };
 
@@ -142,7 +140,7 @@ const VendasPage = () => {
       await axios.delete("http://localhost:8000/api/order/delete/", {
         data: { number: selectedVenda.number }, // Enviando no corpo
       });
-  
+
       fetchVendas();
       closeRemoveModal();
     } catch (error) {
@@ -187,7 +185,9 @@ const VendasPage = () => {
 
       if (produtoJaAdicionado) {
         if (produtoJaAdicionado.quantidade + 1 > produto.qtd) {
-          setErrorMessage(`Quantidade insuficiente de ${produto.name} no estoque.`);
+          setErrorMessage(
+            `Quantidade insuficiente de ${produto.name} no estoque.`
+          );
           return;
         }
         setFormData((prevState) => ({
@@ -198,7 +198,9 @@ const VendasPage = () => {
         }));
       } else {
         if (produto.qtd < 1) {
-          setErrorMessage(`Quantidade insuficiente de ${produto.name} no estoque.`);
+          setErrorMessage(
+            `Quantidade insuficiente de ${produto.name} no estoque.`
+          );
           return;
         }
         setFormData((prevState) => ({
@@ -226,38 +228,47 @@ const VendasPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if (!formData.nomeCliente || !formData.metodoPagamento || !formData.tipoVenda || formData.produtos.length === 0) {
+
+    if (
+      !formData.nomeCliente ||
+      !formData.metodoPagamento ||
+      !formData.tipoVenda ||
+      formData.produtos.length === 0
+    ) {
       setErrorMessage("Preencha todos os campos antes de finalizar a venda.");
       return;
     }
-  
+
     setErrorMessage(""); // Limpa erro ao tentar submeter corretamente
-  
+
     try {
-      const response = await axios.post("http://localhost:8000/api/order/register/", {
-        name: formData.nomeCliente,
-        type: formData.tipoVenda,
-        payment: formData.metodoPagamento,
-        products: formData.produtos.map((produto) => ({
-          id: produto.id,
-          name: produto.name,
-          price: produto.price,
-          quantidade: produto.quantidade,
-        })),
-      });
-  
+      const response = await axios.post(
+        "http://localhost:8000/api/order/register/",
+        {
+          name: formData.nomeCliente,
+          type: formData.tipoVenda,
+          payment: formData.metodoPagamento,
+          products: formData.produtos.map((produto) => ({
+            id: produto.id,
+            name: produto.name,
+            price: produto.price,
+            quantidade: produto.quantidade,
+          })),
+        }
+      );
+
       if (response.status === 201) {
         // Atualiza o estoque após a venda
-        await Promise.all(formData.produtos.map(async (produto) => {
-          await axios.put("http://localhost:8000/api/product/update/", {
-            id:produto.id,
-            name: produto.name,
-            price:produto.price,
-            qtd: produto.qtd - produto.quantidade,
-            
-          });
-        }));
+        await Promise.all(
+          formData.produtos.map(async (produto) => {
+            await axios.put("http://localhost:8000/api/product/update/", {
+              id: produto.id,
+              name: produto.name,
+              price: produto.price,
+              qtd: produto.qtd - produto.quantidade,
+            });
+          })
+        );
         fetchVendas();
         fetchProdutosEstoque();
         closeModal();
@@ -287,10 +298,9 @@ const VendasPage = () => {
     return text
       .toLowerCase()
       .split(" ")
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   };
-  
 
   const requestSort = (key) => {
     let direction = "asc";
@@ -363,7 +373,7 @@ const VendasPage = () => {
           <div className="vendas-title" id="vendas-title">
             <h1>Vendas e Encomendas</h1>
           </div>
-          <div className='div-header-widgets'>
+          <div className="div-header-widgets">
             <div className="controle-estoque-search">
               <input
                 type="text"
@@ -371,10 +381,14 @@ const VendasPage = () => {
                 value={searchTerm}
                 onChange={handleSearchChange}
                 className="vendas-search-input"
-                />
+              />
             </div>
             <div className="vendas-add-button" id="vendas-add-button">
-              <button className="vendas-button" id="vendas-button" onClick={openModal}>
+              <button
+                className="vendas-button"
+                id="vendas-button"
+                onClick={openModal}
+              >
                 <GiChickenOven />
                 Nova Venda / Encomenda
               </button>
@@ -398,7 +412,6 @@ const VendasPage = () => {
                   Valor Total {getSortIcon("valorVenda")}
                 </th>
                 <th>Ações</th>
-                
               </tr>
             </thead>
             <tbody>
@@ -435,15 +448,15 @@ const VendasPage = () => {
                   </td>
                   <td>R${calcularTotalVendaPorProdutos(venda.products)}</td>
                   <td>
-                    <div className='controle-vendas-acoes'>
+                    <div className="controle-vendas-acoes">
                       <button
-                        className='controle-venda-edit-button'
+                        className="controle-venda-edit-button"
                         onClick={() => openEditModal(venda)} // Passa a venda para a função
                       >
                         <FaPencilAlt className="icon-button" /> Editar
                       </button>
                       <button
-                        className='controle-venda-remove-button'
+                        className="controle-venda-remove-button"
                         onClick={() => openRemoveModal(venda)} // Passa a venda para a função
                       >
                         <FaTimes className="icon-button" /> Remover
@@ -486,7 +499,9 @@ const VendasPage = () => {
           {isModalOpen && (
             <div className="vendas-modal-overlay">
               <div className="vendas-modal-content">
-                {errorMessage && <div className="error-message">{errorMessage}</div>}
+                {errorMessage && (
+                  <div className="error-message">{errorMessage}</div>
+                )}
                 <button className="vendas-close-modal" onClick={closeModal}>
                   &times;
                 </button>
@@ -542,7 +557,10 @@ const VendasPage = () => {
                       <div className="vendas-div-titulo-botoes-mais-menos">
                         <h3>Produtos</h3>
                         {produtosEstoque.map((produto) => (
-                          <div className="vendas-div-botao-mais-menos" key={produto.id}>
+                          <div
+                            className="vendas-div-botao-mais-menos"
+                            key={produto.id}
+                          >
                             <div className="vendas-div-espacamento-botao-mais-menos">
                               <button
                                 type="button"
@@ -554,7 +572,9 @@ const VendasPage = () => {
                               <span>{capitalize(produto.name)}</span>
                               <button
                                 type="button"
-                                onClick={() => handleAdicionarProduto(produto.id)}
+                                onClick={() =>
+                                  handleAdicionarProduto(produto.id)
+                                }
                                 className="vendas-botao-mais-menos"
                               >
                                 +
@@ -564,9 +584,10 @@ const VendasPage = () => {
                         ))}
                       </div>
                       <div className="vendas-total-finalizar">
-                        
-
-                        <button type="submit" className="vendas-button-finalizar">
+                        <button
+                          type="submit"
+                          className="vendas-button-finalizar"
+                        >
                           <MdOutlinePointOfSale />
                           Finalizar Venda
                         </button>
@@ -591,7 +612,8 @@ const VendasPage = () => {
                             <td>{produto.quantidade}</td>
                             <td>R${produto.price.toFixed(2)}</td>
                             <td>
-                              R${(produto.price * produto.quantidade).toFixed(2)}
+                              R$
+                              {(produto.price * produto.quantidade).toFixed(2)}
                             </td>
                           </tr>
                         ))}
@@ -605,71 +627,142 @@ const VendasPage = () => {
               </div>
             </div>
           )}
-           {isEditModalOpen && (
-            <div className="vendas-modal-overlay">
-              <div className="vendas-modal-content">
-                <button className="vendas-close-modal" onClick={closeEditModal}>
-                  &times;
-                </button>
-                <div className="vendas-modal-body">
-                  <div className="vendas-form-container">
-                    <form className="vendas-form" onSubmit={handleEditSubmit}>
-                      <label>Nome do Cliente</label>
-                      <input
-                        placeholder="Nome do cliente"
-                        type="text"
-                        name=/*"nomeCliente"*/"name"
-                        value={vendaEditando.name} //selectedVenda.nomeCliente
-                        onChange={handleEditChange}
-                        className="vendas-input"
-                      />
-                      <label>Método de Pagamento</label>
-                      <select
-                        name="metodoPagamento"
-                        value={selectedVenda.metodoPagamento}
-                        onChange={handleEditChange}
-                        className="vendas-input"
-                      >
-                        <option value="">Selecione uma opção</option>
-                        <option value="credito">Cartão de Crédito</option>
-                        <option value="debito">Cartão de Débito</option>
-                        <option value="pix">Dinheiro</option>
-                        <option value="dinheiro">PIX</option>
-                      </select>
-                      <label>Tipo de Venda</label>
-                      <select
-                        name="tipoVenda"
-                        value={selectedVenda.tipoVenda}
-                        onChange={handleEditChange}
-                        className="vendas-input"
-                      >
-                        <option value="">Selecione o tipo de venda</option>
-                        <option value="venda">Venda</option>
-                        <option value="encomenda">Encomenda</option>
-                      </select>
-                      <div className="vendas-total-finalizar">
-                        <button type="submit" className="vendas-button-finalizar">
-                          <MdOutlinePointOfSale />
-                          Salvar Alterações
-                        </button>
-                      </div>
-                    </form>
+
+{isEditModalOpen && vendaEditando && (
+  <div className="vendas-modal-overlay">
+    <div className="vendas-modal-content">
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      <button className="vendas-close-modal" onClick={closeEditModal}>
+        &times;
+      </button>
+      <div className="vendas-modal-body">
+        <div className="vendas-form-container">
+          <form className="vendas-form" onSubmit={handleEditSubmit}>
+            <label>Nome do Cliente</label>
+            <input
+              placeholder="Nome do cliente"
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleEditChange}
+              className="vendas-input"
+            />
+            {filteredClientes.length > 0 && formData.name && (
+              <ul className="autocomplete-list">
+                {filteredClientes.map((cliente) => (
+                  <li
+                    key={cliente.id}
+                    onClick={() => handleSelectCliente(cliente)}
+                    className="autocomplete-item"
+                  >
+                    {cliente.name}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <label>Método de Pagamento</label>
+            <select
+              name="metodoPagamento"
+              value={formData.metodoPagamento}
+              onChange={handleEditChange}
+              className="vendas-input"
+            >
+              <option value="">Selecione uma opção</option>
+              <option value="credito">Cartão de Crédito</option>
+              <option value="debito">Cartão de Débito</option>
+              <option value="pix">PIX</option>
+              <option value="dinheiro">Dinheiro</option>
+            </select>
+            <label>Tipo de Venda</label>
+            <select
+              name="tipoVenda"
+              value={formData.tipoVenda}
+              onChange={handleEditChange}
+              className="vendas-input"
+            >
+              <option value="">Selecione o tipo de venda</option>
+              <option value="venda">Venda</option>
+              <option value="encomenda">Encomenda</option>
+            </select>
+            <div className="vendas-div-titulo-botoes-mais-menos">
+              <h3>Produtos</h3>
+              {produtosEstoque.map((produto) => (
+                <div className="vendas-div-botao-mais-menos" key={produto.id}>
+                  <div className="vendas-div-espacamento-botao-mais-menos">
+                    <button
+                      type="button"
+                      onClick={() => handleRemoverProduto(produto.id)}
+                      className="vendas-botao-mais-menos"
+                    >
+                      -
+                    </button>
+                    <span>{capitalize(produto.name)}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleAdicionarProduto(produto.id)}
+                      className="vendas-botao-mais-menos"
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
-          )}
+            <div className="vendas-total-finalizar">
+              <button type="submit" className="vendas-button-finalizar">
+                <MdOutlinePointOfSale />
+                Salvar Alterações
+              </button>
+            </div>
+          </form>
+        </div>
+        <div className="nota-fiscal-container">
+          <h3>Nota Fiscal</h3>
+          <table className="nota-fiscal-table">
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Preço</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {formData.produtos.map((produto) => (
+                <tr key={produto.id}>
+                  <td>{capitalize(produto.name)}</td>
+                  <td>{produto.quantidade}</td>
+                  <td>R${produto.price.toFixed(2)}</td>
+                  <td>R${(produto.price * produto.quantidade).toFixed(2)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="total-container">
+            <h4>Total: R${calcularTotalVenda()}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
           {isRemoveModalOpen && (
             <div className="vendas-modal-overlay">
               <div className="vendas-modal-confirmacao-content">
-                <button className="vendas-close-modal" onClick={closeRemoveModal}>
+                <button
+                  className="vendas-close-modal"
+                  onClick={closeRemoveModal}
+                >
                   &times;
                 </button>
                 <div className="vendas-confirmacao-modal-body">
                   <h3>Tem certeza que deseja remover esta venda?</h3>
                   <div className="div-editar-produto-button">
-                    <button onClick={handleRemoveVenda} className="editar-produto-button">
+                    <button
+                      onClick={handleRemoveVenda}
+                      className="editar-produto-button"
+                    >
                       Remover
                     </button>
                   </div>
