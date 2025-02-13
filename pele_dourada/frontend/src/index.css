@@ -1,3 +1,11 @@
+.pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+  }
+
 /***** DROPDOWN *****/
 select{
     background-color: white;

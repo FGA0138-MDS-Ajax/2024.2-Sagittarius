@@ -134,7 +134,7 @@ class DeleteProductView(APIView):
             )
         
         try:
-            decrease_product_qtd(product['_id'])
+            delete_product(product['_id'])
         except Exception as e:
             print(e)
             return Response({

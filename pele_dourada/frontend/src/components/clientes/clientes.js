@@ -7,6 +7,8 @@ import { ImUserPlus } from "react-icons/im";
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 import { BsFillBoxSeamFill } from "react-icons/bs";
 import InputMask from 'react-input-mask';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 function ControleClientes() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -220,23 +222,32 @@ function ControleClientes() {
               </table>
 
               <div className="pagination">
-                {Array.from({ length: totalPages }).map((_, index) => {
-                  if (index < 3 || index === totalPages - 1) {
-                    return (
-                      <button
-                        key={index}
-                        onClick={() => handlePageChange(index + 1)}
-                        className={currentPage === index + 1 ? "active" : ""}
-                      >
-                        {index + 1}
-                      </button>
-                    );
-                  } else if (index === 3) {
-                    return <span key="ellipsis">...</span>;
-                  }
-                  return null;
-                })}
-            </div>
+                <Stack spacing={2}>
+                  <Pagination
+                    count={totalPages}
+                    page={currentPage}
+                    onChange={(event, value) => handlePageChange(value)}
+                    shape="rounded"
+                    color="black"
+                    sx={{
+                      '& .MuiPaginationItem-root': {
+                        backgroundColor: 'transparent', // Cor de fundo dos itens de paginação
+                        color: '#f15b1b', // Cor do texto
+                        '&:hover': {
+                          backgroundColor: '#d1d1d1', // Cor ao passar o mouse
+                        },
+                      },
+                      '& .MuiPaginationItem-page.Mui-selected': {
+                        backgroundColor: '#f15b1b', // Cor de fundo da página selecionada
+                        color: '#fff', // Cor do texto da página selecionada
+                        '&:hover': {
+                          backgroundColor: '#f15b1b', // Cor ao passar o mouse na página selecionada
+                        },
+                      },
+                    }}
+                  />
+                </Stack>
+              </div>
             </>
           )}
 
