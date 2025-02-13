@@ -53,14 +53,16 @@ def auth_client(client, mock_db):
 def mock_order():
     """Cria um pedido fictício para testes"""
     return {
-        "name": "Cliente Teste",
+        "number": "1",
+        "name": "Matheus",
         "tipe": "Delivery",
         "payment": "Cartão",
         "products": [
             {"name": "Produto 1", "price": 100.0},
             {"name": "Produto 2", "price": 100.0}
         ],
-        "total_price": 200.0
+        "total": 200.0,
+        "confirm": True
     }
 
 
@@ -71,7 +73,7 @@ def test_create_order(mock_db, auth_client, mock_order):
     order_collection.delete_many({})
 
     response = auth_client.post("/api/order/register/", mock_order, format="json")
-    print(response.json())
+    
     assert response.status_code == 201
 
 def test_get_orders(mock_db, auth_client, mock_order):
@@ -82,7 +84,7 @@ def test_get_orders(mock_db, auth_client, mock_order):
     order_collection.insert_one(mock_order)
 
     response = auth_client.get("/api/orders/", format="json")
-    print(response.json())
+    
 
     assert response.status_code == 200
     #assert len(response.data["orders"]) == 1
@@ -107,7 +109,7 @@ def test_update_order(mock_db, auth_client, mock_order):
         "new_confirm": "Confirmado"
     }
     response = auth_client.post("/api/order/update/", updated_data, format="json")
-    print(response.json())
+    
     
     assert response.status_code == 200
     assert "Pedido atualizado com sucesso" in response.data
