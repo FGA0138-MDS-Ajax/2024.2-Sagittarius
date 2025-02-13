@@ -11,6 +11,7 @@ import ClientesIcon from '../../assets/icons/dashboard-clientes-icon.svg';
 import { CSVLink } from "react-csv";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import DatePicker from "react-datepicker";
 
 const COLORS = [
   '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF4560', '#00E396', '#775DD0', '#FEB019', '#FF4560', '#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300', '#FF6600', '#33FF66', '#FF0066', '#00FFCC', '#FF3366'];
@@ -22,6 +23,8 @@ function ViewDashboard() {
   const [products, setProducts] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+
+  
 
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
@@ -195,14 +198,26 @@ function ViewDashboard() {
         <div className="dashboard-contents" id="dashboard-contents">
           <div className="dashboard-filters">
             
-            <div className='dashboard-datepickers'>
+          <div className='dashboard-datepickers'>
                 <label className="dashboard-label">
-                  Data de Início:
-                  <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                    Data de Início:
+                    <DatePicker 
+                        selected={startDate} 
+                        onChange={(date) => setStartDate(date)}
+                        dateFormat="dd/MM/yyyy"
+                        locale={ptBR}
+                        placeholderText="DD/MM/AAAA"
+                    />
                 </label>
                 <label className="dashboard-label">
-                  Data de Término:
-                  <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                    Data de Término:
+                    <DatePicker 
+                        selected={endDate} 
+                        onChange={(date) => setEndDate(date)}
+                        dateFormat="dd/MM/yyyy"
+                        locale={ptBR}
+                        placeholderText="DD/MM/AAAA"
+                    />
                 </label>
             </div>
 

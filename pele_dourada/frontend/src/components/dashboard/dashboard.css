@@ -7,6 +7,8 @@
   background-color: #F9F9F9;
 }
 
+
+
 .dashboard-page {
   display: flex;
   flex-direction: column;
@@ -221,3 +223,4 @@
   background-color: #FF0000;
   color: white;
 }
+
