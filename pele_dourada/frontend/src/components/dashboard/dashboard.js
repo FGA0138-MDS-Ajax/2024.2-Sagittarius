@@ -105,8 +105,8 @@ function ViewDashboard() {
 
     const csvData = [
       
-      ["Período", "Clientes Cadastrados", "Telefone", "Endereço", "Faturamento Total", "Número de Pedidos", "Itens no Estoque"],
-      [`${startDate} até ${endDate}`, clients.length, "", "", `R$ ${formattedTotalSales.toFixed(2)}`, totalOrders, totalStock],
+      ["Período", "Clientes Cadastrados", "Faturamento Total", "Número de Pedidos", "Itens no Estoque"],
+      [`${startDate} até ${endDate}`, clients.length, `R$ ${formattedTotalSales.toFixed(2)}`, totalOrders, totalStock],
 
       [],
       ["Clientes", "Telefone", "Endereço"],
