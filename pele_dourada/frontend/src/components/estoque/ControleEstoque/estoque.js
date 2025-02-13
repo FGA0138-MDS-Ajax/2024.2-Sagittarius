@@ -5,6 +5,9 @@ import AdicionarProduto from '../AdicionarProduto/adicionar_produto';
 import Sidebar from '../../../components/sidebar/sidebar';
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 import { BsFillBoxSeamFill } from "react-icons/bs";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
 
 function ControleEstoque() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -35,6 +38,13 @@ function ControleEstoque() {
   }, []);
 
   const handleBuscaChange = (e) => setBusca(e.target.value);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value); // Agora o valor correto da página será passado
+  };
+
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const totalPages = Math.ceil(produtos.length / 12); // Ajuste o total de páginas com base na quantidade de produtos
 
   const sortedProdutos = [...produtos].sort((a, b) => {
     if (sortConfig.key) {
@@ -245,6 +255,34 @@ function ControleEstoque() {
               </tbody>
             </table>
           )}
+
+          <div className="pagination">
+            <Stack spacing={2}>
+            <Pagination
+              count={totalPages}
+              page={currentPage} // A página ativa será gerenciada por este valor
+              onChange={handlePageChange} // Passando a função corretamente
+              shape="rounded"
+              color="black"
+              sx={{
+                '& .MuiPaginationItem-root': {
+                  backgroundColor: 'transparent', // Cor de fundo dos itens de paginação
+                  color: '#f15b1b', // Cor do texto
+                  '&:hover': {
+                    backgroundColor: '#d1d1d1', // Cor ao passar o mouse
+                  },
+                },
+                '& .MuiPaginationItem-page.Mui-selected': {
+                  backgroundColor: '#f15b1b', // Cor de fundo da página selecionada
+                  color: '#fff', // Cor do texto da página selecionada
+                  '&:hover': {
+                    backgroundColor: '#f15b1b', // Cor ao passar o mouse na página selecionada
+                  },
+                },
+              }}
+            />
+            </Stack>
+          </div>
 
           {isModalOpen && (
             <div className={`modal-overlay ${isModalOpen ? 'open' : ''}`} onClick={() => setIsModalOpen(false)}>

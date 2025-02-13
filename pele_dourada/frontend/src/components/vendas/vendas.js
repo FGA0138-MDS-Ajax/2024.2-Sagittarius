@@ -469,31 +469,31 @@ const VendasPage = () => {
           </table>
 
           <div className="pagination">
-          <Stack spacing={2}>
-            <Pagination
-              count={totalPages}
-              page={currentPage}
-              onChange={(event, value) => handlePageChange(value)}
-              shape="rounded"
-              color="black"
-              sx={{
-                '& .MuiPaginationItem-root': {
-                  backgroundColor: 'transparent', // Cor de fundo dos itens de paginação
-                  color: '#f15b1b', // Cor do texto
-                  '&:hover': {
-                    backgroundColor: '#d1d1d1', // Cor ao passar o mouse
+            <Stack spacing={2}>
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={(event, value) => handlePageChange(value)}
+                shape="rounded"
+                color="black"
+                sx={{
+                  '& .MuiPaginationItem-root': {
+                    backgroundColor: 'transparent', // Cor de fundo dos itens de paginação
+                    color: '#f15b1b', // Cor do texto
+                    '&:hover': {
+                      backgroundColor: '#d1d1d1', // Cor ao passar o mouse
+                    },
                   },
-                },
-                '& .MuiPaginationItem-page.Mui-selected': {
-                  backgroundColor: '#f15b1b', // Cor de fundo da página selecionada
-                  color: '#fff', // Cor do texto da página selecionada
-                  '&:hover': {
-                    backgroundColor: '#f15b1b', // Cor ao passar o mouse na página selecionada
+                  '& .MuiPaginationItem-page.Mui-selected': {
+                    backgroundColor: '#f15b1b', // Cor de fundo da página selecionada
+                    color: '#fff', // Cor do texto da página selecionada
+                    '&:hover': {
+                      backgroundColor: '#f15b1b', // Cor ao passar o mouse na página selecionada
+                    },
                   },
-                },
-              }}
-            />
-          </Stack>
+                }}
+              />
+            </Stack>
           </div>
 
           {isModalOpen && (
@@ -583,6 +583,7 @@ const VendasPage = () => {
                           </div>
                         ))}
                       </div>
+
                       <div className="vendas-total-finalizar">
                         <button
                           type="submit"
