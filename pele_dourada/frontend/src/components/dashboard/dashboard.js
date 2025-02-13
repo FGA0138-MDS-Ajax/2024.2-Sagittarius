@@ -9,15 +9,11 @@ import ValorIcon from '../../assets/icons/dashboard-valor-icon.svg';
 import EstoqueIcon from '../../assets/icons/dashboard-estoque-icon.svg';
 import ClientesIcon from '../../assets/icons/dashboard-clientes-icon.svg';
 import { CSVLink } from "react-csv";
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 const COLORS = [
-  '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', 
-  '#FF4560', '#00E396', '#775DD0', '#FEB019', '#FF4560',
-  '#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300', 
-  '#FF6600', '#33FF66', '#FF0066', '#00FFCC', '#FF3366'
-];
-
-// const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#FFC300"];
+  '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF4560', '#00E396', '#775DD0', '#FEB019', '#FF4560', '#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300', '#FF6600', '#33FF66', '#FF0066', '#00FFCC', '#FF3366'];
 
 function ViewDashboard() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -98,11 +94,6 @@ function ViewDashboard() {
 
   const sortedOrders = [...filteredOrders].sort((a, b) => (b.total || 0) - (a.total || 0));
 
-  // const ordersData = sortedOrders.map(order => ({
-  //   name: order.name,
-  //   total: order.products.reduce((sum, product) => sum + (product.price * product.quantidade), 0)
-  // }));
-
   const productsData = products.map((product, index) => ({ name: product.name, quantidade: product.qtd, color: COLORS[index % COLORS.length] }));
 
   const exportData = () => {
@@ -110,50 +101,36 @@ function ViewDashboard() {
     const totalSales = calculateTotalSales(filteredOrders);
     const totalOrders = calculateTotalOrders(filteredOrders);
     const totalStock = calculateTotalStock();
+    const formattedTotalSales = Number(totalSales) || 0; 
 
     const csvData = [
-      ["Relatório de Vendas - Período:", `${startDate} até ${endDate}`],
+      
+      ["Período", "Clientes Cadastrados", "Telefone", "Endereço", "Faturamento Total", "Número de Pedidos", "Itens no Estoque"],
+      [`${startDate} até ${endDate}`, clients.length, "", "", `R$ ${formattedTotalSales.toFixed(2)}`, totalOrders, totalStock],
+
       [],
-      ["Clientes Cadastrados"],
-      ["Nome", "Telefone", "Endereço"],
+      ["Clientes", "Telefone", "Endereço"],
       ...clients.map(client => [client.name, client.phone, client.endereco]),
+
       [],
-      ["Resumo de Vendas"],
-      ["Faturamento Total", "Número de Pedidos", "Itens no Estoque"],
-      [`R$ ${totalSales}`, totalOrders, totalStock],
-      [],
-      ["Detalhamento de Pedidos"],
       ["Nome do Cliente", "Data do Pedido", "Produto", "Quantidade", "Preço Unitário", "Total do Pedido"],
-      ...filteredOrders.flatMap(order => 
-        order.products.map(product => [
-          order.name, 
-          new Date(order.date).toLocaleDateString(), 
-          product.name, 
-          product.quantidade, 
-          `R$ ${product.price.toFixed(2)}`,
-          `R$ ${(product.price * product.quantidade).toFixed(2)}`
-        ])
+      ...filteredOrders.flatMap(order =>
+        order.products.map(product => {
+          const orderDate = parseOrderDate(order.number);
+          const formattedDate = isNaN(orderDate) ? 'Data Inválida' : format(orderDate, 'dd/MM/yyyy', { locale: ptBR });
+          return [
+            order.name, formattedDate, product.name, product.quantidade, 
+            `R$ ${product.price.toFixed(2)}`, `R$ ${(product.price * product.quantidade).toFixed(2)}`
+          ];
+        })
       ),
+
       [],
-      ["Resumo de Produtos em Estoque"],
       ["Produto", "Quantidade Disponível"],
       ...products.map(product => [product.name, product.qtd])
     ];
-
     return csvData;
-  };
-
-  const CustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="custom-tooltip">
-          <p><strong>Cliente:</strong> {payload[0].payload.name}</p>
-          <p><strong>Total:</strong> R$ {payload[0].value.toFixed(2)}</p>
-        </div>
-      );
-    }
-    return null;
-  };
+};
 
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
@@ -287,10 +264,10 @@ function ViewDashboard() {
             <div className="dashboard-section">
               
               <div className="dashboard-card">
-                <h2>Produtos</h2>
-                <ResponsiveContainer width="100%" height={300}>
+                <h2>Produtos em Estoque</h2>
+                <ResponsiveContainer width="100%" height={400}>
                   <PieChart>
-                    <Pie data={productsData} dataKey="quantidade" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
+                    <Pie data={productsData} dataKey="quantidade" nameKey="name" cx="50%" cy="50%" outerRadius={150} label>
                       {productsData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
