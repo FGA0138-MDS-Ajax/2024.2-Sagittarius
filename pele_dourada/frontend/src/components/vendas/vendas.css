@@ -1,4 +1,8 @@
 /* Página de Vendas */
+.app-container {
+  height: 100vh;
+}
+
 .main-content {
   flex: 1; /* Faz o conteúdo principal ocupar o restante do espaço */
   padding: 20px;
@@ -67,8 +71,35 @@
 }
 
 .vendas-table {
-  margin-top: 0px;
+  width: 100%;
+  table-layout: fixed; /* Mantém as colunas com tamanho fixo */
 }
+
+.vendas-table th:nth-child(2),
+.vendas-table td:nth-child(2) {
+  width: 10%;
+  min-width: 150px; /* Evita que fique muito pequeno */
+}
+
+.vendas-table th:nth-child(5),
+.vendas-table td:nth-child(5) {
+  width: 15%;
+  min-width: 150px; /* Evita que fique muito pequeno */
+}
+
+.vendas-table th:nth-child(6),
+.vendas-table td:nth-child(6) {
+  width: 20%;
+  min-width: 150px; /* Evita que fique muito pequeno */
+}
+
+.vendas-table th, .vendas-table td {
+  width: 20%; /* Como há 4 colunas, cada uma recebe 25% */
+  white-space: nowrap; /* Evita quebra de texto */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adiciona "..." quando o conteúdo for grande */
+}
+
 
 .controle-vendas-acoes {
   display: flex;
@@ -147,8 +178,6 @@
   align-items: center;
   text-align: center; /* Centraliza o texto */
 }
-
-
 
 .vendas-close-modal {
   position: absolute;
@@ -331,7 +360,7 @@
 }
 
 /***** PAGINAÇÃO *****/
-.pagination {
+/* .pagination {
   display: flex;
   justify-content: center;
   margin-top: 20px;
@@ -342,21 +371,20 @@
   padding: 8px 12px;
   margin: 0 5px;
   border: none;
-  background-color: transparent;
-  color: #f15b1b;
+  background-color: black;
   cursor: pointer;
   border-radius: 5px;
 }
 
 .pagination button.active {
-  background-color: #f15b1b;
+  background-color: black;
   color: #ffffff;
 }
 
 .pagination button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
-}
+} */
 
 .autocomplete-list {
   list-style-type: none;
@@ -398,4 +426,37 @@
   margin-bottom: 15px;
   font-weight: bold;
   width: 90%;
+}
+
+.tooltip-trigger {
+  cursor: pointer; /* Indica que é interativo */
+}
+
+.tooltip-custom {
+  background-color: #333;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* Estilo personalizado para o Tooltip */
+.tooltip-inner {
+  background-color: #bdbdbd; /* Cor de fundo cinza */
+  padding: 10px; /* Espaçamento interno */
+  border-radius: 5px; /* Bordas arredondadas */
+  color: #333; /* Cor do texto */
+}
+
+/* Remover os marcadores e espaçamento da lista */
+.tooltip-inner ul {
+  list-style-type: none; /* Remover bolinhas da lista */
+  margin: 0; /* Remover margem */
+  padding: 0; /* Remover padding */
+}
+
+/* Estilizar os itens da lista */
+.tooltip-inner li {
+  padding: 5px 0; /* Espaçamento entre os itens */
+  color: #333; /* Cor do texto */
 }

@@ -5,6 +5,14 @@ import { MdOutlinePointOfSale } from "react-icons/md";
 import { GiChickenOven } from "react-icons/gi";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import Sidebar from '../../components/sidebar/sidebar';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
+const capitalize = (str) => {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
 
 const VendasPage = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -22,7 +30,7 @@ const VendasPage = () => {
   const [expandedVendas, setExpandedVendas] = useState({});
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" });
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Limite de 10 itens por página
+  const [itemsPerPage] = useState(12); // Limite de 10 itens por página
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -400,19 +408,30 @@ const VendasPage = () => {
                   <td>{capitalize(venda.tipe)}</td>
                   <td>{capitalize(venda.payment)}</td>
                   <td>
-                    {venda.products.length > 1 && !expandedVendas[venda.id] ? (
-                      <>
-                        <div>{capitalize(venda.products[0].name)} ({venda.products[0].quantidade})</div>
-                        <div className="expand-products" onClick={() => toggleExpand(venda.id)}>...</div>
-                      </>
-                    ) : (
-                      venda.products.map((produto) => (
-                        <div key={produto.id}>{capitalize(produto.name)} ({produto.quantidade})</div>
-                      ))
-                    )}
-                    {expandedVendas[venda.id] && (
-                      <div className="expand-products" onClick={() => toggleExpand(venda.id)}>Mostrar menos</div>
-                    )}
+                  {venda.products.length > 1 ? (
+                    <OverlayTrigger
+                      placement="right"
+                      overlay={
+                        <Tooltip id={`tooltip-${venda.id}`}>
+                          <ul className="list-unstyled p-0">
+                            {venda.products.map((produto) => (
+                              <li key={produto.id}>
+                                {capitalize(produto.name)} ({produto.quantidade})
+                              </li>
+                            ))}
+                          </ul>
+                        </Tooltip>
+                      }
+                    >
+                      <span data-bs-toggle="tooltip" data-bs-placement="top">
+                        {capitalize(venda.products[0].name)} ({venda.products[0].quantidade})
+                      </span>
+                    </OverlayTrigger>
+                  ) : (
+                    venda.products.map((produto) => (
+                      <div key={produto.id}>{capitalize(produto.name)} ({produto.quantidade})</div>
+                    ))
+                  )}
                   </td>
                   <td>R${calcularTotalVendaPorProdutos(venda.products)}</td>
                   <td>
@@ -437,22 +456,31 @@ const VendasPage = () => {
           </table>
 
           <div className="pagination">
-            {Array.from({ length: totalPages }).map((_, index) => {
-              if (index < 3 || index === totalPages - 1) {
-                return (
-                  <button
-                    key={index}
-                    onClick={() => handlePageChange(index + 1)}
-                    className={currentPage === index + 1 ? "active" : ""}
-                  >
-                    {index + 1}
-                  </button>
-                );
-              } else if (index === 3) {
-                return <span key="ellipsis">...</span>;
-              }
-              return null;
-            })}
+          <Stack spacing={2}>
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={(event, value) => handlePageChange(value)}
+              shape="rounded"
+              color="black"
+              sx={{
+                '& .MuiPaginationItem-root': {
+                  backgroundColor: 'transparent', // Cor de fundo dos itens de paginação
+                  color: '#f15b1b', // Cor do texto
+                  '&:hover': {
+                    backgroundColor: '#d1d1d1', // Cor ao passar o mouse
+                  },
+                },
+                '& .MuiPaginationItem-page.Mui-selected': {
+                  backgroundColor: '#f15b1b', // Cor de fundo da página selecionada
+                  color: '#fff', // Cor do texto da página selecionada
+                  '&:hover': {
+                    backgroundColor: '#f15b1b', // Cor ao passar o mouse na página selecionada
+                  },
+                },
+              }}
+            />
+          </Stack>
           </div>
 
           {isModalOpen && (
