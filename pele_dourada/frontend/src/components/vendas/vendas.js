@@ -10,6 +10,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
 const VendasPage = () => {
+
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [vendas, setVendas] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,7 +19,7 @@ const VendasPage = () => {
     metodoPagamento: "",
     tipoVenda: "",
     produtos: [],
-    valorVenda: ""
+    valorVenda: "",
   });
 
   const [produtosEstoque, setProdutosEstoque] = useState([]);
@@ -26,13 +27,18 @@ const VendasPage = () => {
   const [filteredClientes, setFilteredClientes] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" });
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(12); // Limite de 10 itens por página
+  const [itemsPerPage] = useState(12); 
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const [selectedVenda, setSelectedVenda] = useState(null);
   const [vendaEditando, setVendaEditando] = useState(null);
+  const [produtosDisponiveis, setProdutosDisponiveis] = useState(produtosEstoque);
+
+  // -------------------------------------------------------------------------------------------------
+
+  // Formatação de dados:
 
   const formatDateFromNumber = (number) => {
     const datePart = number.substring(0, 8);
@@ -42,9 +48,32 @@ const VendasPage = () => {
     return `${day}/${month}/${year}`;
   };
 
+  const capitalize = (text) => {
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  // ----------------------------------------------------------------------------------------
+
+  // Funções de abrir/fechar modais:
+
   const openEditModal = (venda) => {
     setSelectedVenda(venda);
     setVendaEditando({ ...venda });
+    setFormData({
+      nomeCliente: venda.name,
+      metodoPagamento: venda.payment,
+      tipoVenda: venda.tipe,
+      produtos: venda.products.map((produto) => ({
+        id: produto.id,
+        name: produto.name,
+        price: produto.price,
+        quantidade: produto.quantidade,
+      })),
+    });
     setIsEditModalOpen(true);
   };
 
@@ -78,13 +107,107 @@ const VendasPage = () => {
     });
     setIsModalOpen(true);
   };
+  // ----------------------------------------------------------------------------------------------
+
+  // Funções de Ordenação e Filtragem dos dados: 
+
+  const requestSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getSortIcon = (key) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === "asc" ? "▲" : "▼";
+    }
+    return "▲▼";
+  };
+
+  const sortedVendas = [...vendas].sort((a, b) => {
+    if (sortConfig.key) {
+      let aValue = a[sortConfig.key];
+      let bValue = b[sortConfig.key];
+      if (sortConfig.key === "dataVenda") {
+        aValue = new Date(
+          a.number.substring(4, 8),
+          a.number.substring(2, 4) - 1,
+          a.number.substring(0, 2)
+        );
+        bValue = new Date(
+          b.number.substring(4, 8),
+          b.number.substring(2, 4) - 1,
+          b.number.substring(0, 2)
+        );
+      } else if (sortConfig.key === "valorVenda") {
+        aValue = parseFloat(a[sortConfig.key]);
+        bValue = parseFloat(b[sortConfig.key]);
+      }
+      if (aValue < bValue) {
+        return sortConfig.direction === "asc" ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortConfig.direction === "asc" ? 1 : -1;
+      }
+    }
+    return 0;
+  });
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  let filteredVendas = sortedVendas.filter((venda) => {
+    if (!searchTerm.trim()) return true;
+    const searchTermLower = searchTerm.toLowerCase();
+    const dataVenda = formatDateFromNumber(venda.number).toLowerCase();
+    return (
+      venda.name.toLowerCase().includes(searchTermLower) ||
+      venda.tipe.toLowerCase().includes(searchTermLower) ||
+      venda.payment.toLowerCase().includes(searchTermLower) ||
+      dataVenda.includes(searchTermLower) ||
+      venda.products.some((produto) =>
+        produto.name.toLowerCase().includes(searchTermLower)
+      )
+    );
+  });
+
+  const itemsToDisplay = filteredVendas.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(filteredVendas.length / itemsPerPage);
+
+  // -----------------------------------------------------------------------------
+
+  // Funções de cálculo:
+
+  const calcularTotalVenda = () => {
+    return formData.produtos
+      .reduce((total, produto) => {
+        return total + produto.price * produto.quantidade;
+      }, 0)
+      .toFixed(2);
+  };
+
+  // ----------------------------------------------------------------------------------------------
+
+  // Funções para gerenciamento de dados:
 
   const fetchVendas = async () => {
     try {
       const response = await axios.get("http://localhost:8000/api/orders/");
       const vendasComValor = response.data.orders.map((venda) => ({
         ...venda,
-        valorVenda: venda.total, 
+        valorVenda: venda.total,
       }));
       setVendas(vendasComValor);
     } catch (error) {
@@ -116,20 +239,29 @@ const VendasPage = () => {
     fetchClientes();
   }, []);
 
+  // -----------------------------------------------------------------------------------------------
+
+  // Funções para atualização e envio de dados:
+
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.put("http://localhost:8000/api/order/update/", {
-        number: vendaEditando.id,
-        new_name: formData.name,
+        number: vendaEditando.number,
+        index: vendaEditando.id, // Enviar o id do pedido como index
+        new_name: formData.nomeCliente,
         new_payment: formData.metodoPagamento,
         new_tipe: formData.tipoVenda,
-        new_product: formData.produtos.map((produto) => produto.name),
-        new_price: formData.produtos.map((produto) => produto.price),
-        new_qtd: formData.produtos.map((produto) => produto.quantidade),
+        new_product: formData.produtos.map((produto) => ({
+          id: produto.id,
+          name: produto.name,
+          quantidade: produto.quantidade,
+        })),
+        new_price: parseFloat(calcularTotalVenda()), // Enviar o valor total da venda como número
+        new_confirm: vendaEditando.confirm,
       });
       fetchVendas();
-      closeModal();
+      closeEditModal();
     } catch (error) {
       console.error("Erro ao atualizar a venda", error);
     }
@@ -187,45 +319,57 @@ const VendasPage = () => {
     const produto = produtosEstoque.find((p) => p.id === produtoId);
 
     if (produto) {
-      const produtoJaAdicionado = formData.produtos.find(
-        (p) => p.id === produto.id
-      );
+      setFormData((prevState) => {
+        const produtoJaAdicionado = prevState.produtos.find(
+          (p) => p.id === produto.id
+        );
 
-      if (produtoJaAdicionado) {
-        if (produtoJaAdicionado.quantidade + 1 > produto.qtd) {
-          setErrorMessage(
-            `Quantidade insuficiente de ${produto.name} no estoque.`
-          );
-          setTimeout(() => {
-            setErrorMessage("");
-          }, 2000);
-          return;
-        }
-        setFormData((prevState) => ({
-          ...prevState,
-          produtos: prevState.produtos.map((p) =>
+        let novosProdutos;
+        if (produtoJaAdicionado) {
+          if (produtoJaAdicionado.quantidade + 1 > produto.qtd) {
+            setErrorMessage(
+              `Quantidade insuficiente de ${produto.name} no estoque.`
+            );
+            setTimeout(() => setErrorMessage(""), 2000);
+            return prevState;
+          }
+
+          novosProdutos = prevState.produtos.map((p) =>
             p.id === produto.id ? { ...p, quantidade: p.quantidade + 1 } : p
-          ),
-        }));
-      } else {
-        if (produto.qtd < 1) {
-          setErrorMessage(
-            `Quantidade insuficiente de ${produto.name} no estoque.`
           );
-          return;
+        } else {
+          if (produto.qtd < 1) {
+            setErrorMessage(
+              `Quantidade insuficiente de ${produto.name} no estoque.`
+            );
+            return prevState;
+          }
+
+          novosProdutos = [
+            ...prevState.produtos,
+            { ...produto, quantidade: 1 },
+          ];
         }
-        setFormData((prevState) => ({
-          ...prevState,
-          produtos: [...prevState.produtos, { ...produto, quantidade: 1 }],
-        }));
-      }
+
+        // Atualiza produtosDisponiveis
+        setProdutosDisponiveis(
+          produtosEstoque.filter(
+            (produtoEstoque) =>
+              !novosProdutos.some(
+                (produtoSelecionado) =>
+                  produtoSelecionado.id === produtoEstoque.id
+              )
+          )
+        );
+
+        return { ...prevState, produtos: novosProdutos };
+      });
     }
   };
 
   const handleRemoverProduto = (produtoId) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      produtos: prevState.produtos
+    setFormData((prevState) => {
+      let novosProdutos = prevState.produtos
         .map((produto) =>
           produto.id === produtoId
             ? produto.quantidade === 1
@@ -233,8 +377,21 @@ const VendasPage = () => {
               : { ...produto, quantidade: produto.quantidade - 1 }
             : produto
         )
-        .filter((produto) => produto !== null && produto.quantidade > 0),
-    }));
+        .filter((produto) => produto !== null && produto.quantidade > 0);
+
+      // Atualiza produtosDisponiveis
+      setProdutosDisponiveis(
+        produtosEstoque.filter(
+          (produtoEstoque) =>
+            !novosProdutos.some(
+              (produtoSelecionado) =>
+                produtoSelecionado.id === produtoEstoque.id
+            )
+        )
+      );
+
+      return { ...prevState, produtos: novosProdutos };
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -249,7 +406,7 @@ const VendasPage = () => {
       setErrorMessage("Preencha todos os campos antes de finalizar a venda.");
       return;
     }
-    setErrorMessage(""); 
+    setErrorMessage("");
 
     try {
       const response = await axios.post(
@@ -268,7 +425,7 @@ const VendasPage = () => {
       );
 
       if (response.status === 201) {
-        // Atualiza o estoque após a venda
+        
         await Promise.all(
           formData.produtos.map(async (produto) => {
             await axios.put("http://localhost:8000/api/product/update/", {
@@ -288,102 +445,17 @@ const VendasPage = () => {
     }
   };
 
-  const calcularTotalVenda = () => {
-    return formData.produtos
-      .reduce((total, produto) => {
-        return total + produto.price * produto.quantidade;
-      }, 0)
-      .toFixed(2);
-  };
+  useEffect(() => {
+    setProdutosDisponiveis(
+      produtosEstoque.filter(
+        (produtoEstoque) =>
+          !formData.produtos.some(
+            (produtoSelecionado) => produtoSelecionado.id === produtoEstoque.id
+          )
+      )
+    );
+  }, [formData.produtos, produtosEstoque]);
 
-  const capitalize = (text) => {
-    return text
-      .toLowerCase()
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
-
-  const requestSort = (key) => {
-    let direction = "asc";
-    if (sortConfig.key === key && sortConfig.direction === "asc") {
-      direction = "desc";
-    }
-    setSortConfig({ key, direction });
-  };
-  
-  const getSortIcon = (key) => {
-    if (sortConfig.key === key) {
-      return sortConfig.direction === "asc" ? "▲" : "▼";
-    }
-    return "▲▼";
-  };
-  
-  // Ordena a lista original de vendas
-const sortedVendas = [...vendas].sort((a, b) => {
-  if (sortConfig.key) {
-    let aValue = a[sortConfig.key];
-    let bValue = b[sortConfig.key];
-
-    if (sortConfig.key === "dataVenda") {
-      aValue = new Date(a.number.substring(4, 8), a.number.substring(2, 4) - 1, a.number.substring(0, 2));
-      bValue = new Date(b.number.substring(4, 8), b.number.substring(2, 4) - 1, b.number.substring(0, 2));
-    } else if (sortConfig.key === "valorVenda") {
-      aValue = parseFloat(a[sortConfig.key]);
-      bValue = parseFloat(b[sortConfig.key]);
-    }
-
-    if (aValue < bValue) {
-      return sortConfig.direction === "asc" ? -1 : 1;
-    }
-    if (aValue > bValue) {
-      return sortConfig.direction === "asc" ? 1 : -1;
-    }
-  }
-  return 0;
-});
-
-// Função para mudança de página
-const handlePageChange = (pageNumber) => {
-  setCurrentPage(pageNumber);
-};
-
-// Função para capturar a pesquisa
-const handleSearchChange = (e) => {
-  setSearchTerm(e.target.value);
-  setCurrentPage(1); // Sempre volta para a primeira página ao pesquisar
-};
-
-// Filtra as vendas se houver pesquisa
-let filteredVendas = sortedVendas.filter((venda) => {
-  if (!searchTerm.trim()) return true; // Se não houver pesquisa, retorna todos os itens
-
-  const searchTermLower = searchTerm.toLowerCase();
-  const dataVenda = formatDateFromNumber(venda.number).toLowerCase();
-  
-  return (
-    venda.name.toLowerCase().includes(searchTermLower) ||
-    venda.tipe.toLowerCase().includes(searchTermLower) ||
-    venda.payment.toLowerCase().includes(searchTermLower) ||
-    dataVenda.includes(searchTermLower) ||
-    venda.products.some((produto) =>
-      produto.name.toLowerCase().includes(searchTermLower)
-    )
-  );
-});
-
-// Aplica a paginação tanto na busca quanto na exibição normal
-const itemsToDisplay = filteredVendas.slice(
-  (currentPage - 1) * itemsPerPage,
-  currentPage * itemsPerPage
-);
-
-// Corrige a contagem total de páginas
-const totalPages = Math.ceil(filteredVendas.length / itemsPerPage);
-
-  
-
- 
 
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
@@ -397,7 +469,7 @@ const totalPages = Math.ceil(filteredVendas.length / itemsPerPage);
             <div className="controle-estoque-search">
               <input
                 type="text"
-                placeholder="Buscar vendas..."
+                placeholder="Buscar venda"
                 value={searchTerm}
                 onChange={handleSearchChange}
                 className="vendas-search-input"
@@ -410,90 +482,92 @@ const totalPages = Math.ceil(filteredVendas.length / itemsPerPage);
                 onClick={openModal}
               >
                 <GiChickenOven />
-                Nova Venda / Encomenda
+                Nova Venda | Encomenda
               </button>
             </div>
           </div>
-  
+
           <table className="vendas-table">
-  <thead>
-    <tr>
-      <th onClick={() => requestSort("dataVenda")}>
-        Data da Venda {getSortIcon("dataVenda")}
-      </th>
-      <th onClick={() => requestSort("name")}>
-        Nome do Cliente {getSortIcon("name")}
-      </th>
-      <th onClick={() => requestSort("tipe")}>
-        Tipo {getSortIcon("tipe")}
-      </th>
-      <th onClick={() => requestSort("payment")}>
-        Pagamento {getSortIcon("payment")}
-      </th>
-      <th>Produtos</th>
-      <th onClick={() => requestSort("valorVenda")}>
-        Valor Total {getSortIcon("valorVenda")}
-      </th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    {itemsToDisplay.map((venda) => (
-      <tr key={venda.id}>
-        <td>{formatDateFromNumber(venda.number)}</td>
-        <td>{capitalize(venda.name)}</td>
-        <td>{capitalize(venda.tipe)}</td>
-        <td>{capitalize(venda.payment)}</td>
-        <td>
-          {venda.products.length > 1 ? (
-            <OverlayTrigger
-              placement="right"
-              overlay={
-                <Tooltip id={`tooltip-${venda.id}`}>
-                  <ul className="list-unstyled p-0">
-                    {venda.products.map((produto) => (
-                      <li key={produto.id}>
-                        {capitalize(produto.name)} ({produto.quantidade})
-                      </li>
-                    ))}
-                  </ul>
-                </Tooltip>
-              }
-            >
-              <span data-bs-toggle="tooltip" data-bs-placement="top">
-                {capitalize(venda.products[0].name)} ({venda.products[0].quantidade})
-              </span>
-            </OverlayTrigger>
-          ) : (
-            venda.products.map((produto) => (
-              <div key={produto.id}>
-                {capitalize(produto.name)} ({produto.quantidade})
-              </div>
-            ))
-          )}
-        </td>
-        <td>R${parseFloat(venda.valorVenda).toFixed(2)}</td>
-        <td>
-          <div className="controle-vendas-acoes">
-            <button
-              className="controle-venda-edit-button"
-              onClick={() => openEditModal(venda)}
-            >
-              <FaPencilAlt className="icon-button" /> Editar
-            </button>
-            <button
-              className="controle-venda-remove-button"
-              onClick={() => openRemoveModal(venda)}
-            >
-              <FaTimes className="icon-button" /> Remover
-            </button>
-          </div>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-  
+            <thead>
+              <tr>
+                <th onClick={() => requestSort("dataVenda")}>
+                  Data da Venda {getSortIcon("dataVenda")}
+                </th>
+                <th onClick={() => requestSort("name")}>
+                  Nome do Cliente {getSortIcon("name")}
+                </th>
+                <th onClick={() => requestSort("tipe")}>
+                  Tipo {getSortIcon("tipe")}
+                </th>
+                <th onClick={() => requestSort("payment")}>
+                  Pagamento {getSortIcon("payment")}
+                </th>
+                <th>Produtos</th>
+                <th onClick={() => requestSort("valorVenda")}>
+                  Valor Total {getSortIcon("valorVenda")}
+                </th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {itemsToDisplay.map((venda) => (
+                <tr key={venda.id}>
+                  <td>{formatDateFromNumber(venda.number)}</td>
+                  <td>{capitalize(venda.name)}</td>
+                  <td>{capitalize(venda.tipe)}</td>
+                  <td>{capitalize(venda.payment)}</td>
+                  <td>
+                    {venda.products.length > 1 ? (
+                      <OverlayTrigger
+                        placement="right"
+                        overlay={
+                          <Tooltip id={`tooltip-${venda.id}`}>
+                            <ul className="list-unstyled p-0">
+                              {venda.products.map((produto) => (
+                                <li key={produto.id}>
+                                  {capitalize(produto.name)} (
+                                  {produto.quantidade})
+                                </li>
+                              ))}
+                            </ul>
+                          </Tooltip>
+                        }
+                      >
+                        <span data-bs-toggle="tooltip" data-bs-placement="top">
+                          {capitalize(venda.products[0].name)} (
+                          {venda.products[0].quantidade})
+                        </span>
+                      </OverlayTrigger>
+                    ) : (
+                      venda.products.map((produto) => (
+                        <div key={produto.id}>
+                          {capitalize(produto.name)} ({produto.quantidade})
+                        </div>
+                      ))
+                    )}
+                  </td>
+                  <td>R${parseFloat(venda.valorVenda).toFixed(2)}</td>
+                  <td>
+                    <div className="controle-vendas-acoes">
+                      <button
+                        className="controle-venda-edit-button"
+                        onClick={() => openEditModal(venda)}
+                      >
+                        <FaPencilAlt className="icon-button" /> Editar
+                      </button>
+                      <button
+                        className="controle-venda-remove-button"
+                        onClick={() => openRemoveModal(venda)}
+                      >
+                        <FaTimes className="icon-button" /> Remover
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
           <div className="pagination">
             <Stack spacing={2}>
               <Pagination
@@ -521,7 +595,7 @@ const totalPages = Math.ceil(filteredVendas.length / itemsPerPage);
               />
             </Stack>
           </div>
-  
+
           {isModalOpen && (
             <div className="vendas-modal-overlay">
               <div className="vendas-modal-content">
@@ -613,7 +687,7 @@ const totalPages = Math.ceil(filteredVendas.length / itemsPerPage);
                           ))}
                         </div>
                       </div>
-  
+
                       <div className="vendas-total-finalizar">
                         <button
                           type="submit"
@@ -643,7 +717,8 @@ const totalPages = Math.ceil(filteredVendas.length / itemsPerPage);
                             <td>{produto.quantidade}</td>
                             <td>R${produto.price.toFixed(2)}</td>
                             <td>
-                              R${(produto.price * produto.quantidade).toFixed(2)}
+                              R$
+                              {(produto.price * produto.quantidade).toFixed(2)}
                             </td>
                           </tr>
                         ))}
@@ -657,7 +732,7 @@ const totalPages = Math.ceil(filteredVendas.length / itemsPerPage);
               </div>
             </div>
           )}
-  
+
           {isEditModalOpen && (
             <div className="vendas-modal-overlay">
               <div className="vendas-modal-content">
@@ -674,12 +749,12 @@ const totalPages = Math.ceil(filteredVendas.length / itemsPerPage);
                       <input
                         placeholder="Nome do cliente"
                         type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleEditChange}
+                        name="nomeCliente"
+                        value={formData.nomeCliente}
+                        onChange={handleChange}
                         className="vendas-input"
                       />
-                      {filteredClientes.length > 0 && formData.name && (
+                      {filteredClientes.length > 0 && formData.nomeCliente && (
                         <ul className="autocomplete-list">
                           {filteredClientes.map((cliente) => (
                             <li
@@ -696,20 +771,20 @@ const totalPages = Math.ceil(filteredVendas.length / itemsPerPage);
                       <select
                         name="metodoPagamento"
                         value={formData.metodoPagamento}
-                        onChange={handleEditChange}
+                        onChange={handleChange}
                         className="vendas-input"
                       >
                         <option value="">Selecione uma opção</option>
                         <option value="credito">Cartão de Crédito</option>
                         <option value="debito">Cartão de Débito</option>
-                        <option value="pix">PIX</option>
-                        <option value="dinheiro">Dinheiro</option>
+                        <option value="pix">Dinheiro</option>
+                        <option value="dinheiro">PIX</option>
                       </select>
                       <label>Tipo de Venda</label>
                       <select
                         name="tipoVenda"
                         value={formData.tipoVenda}
-                        onChange={handleEditChange}
+                        onChange={handleChange}
                         className="vendas-input"
                       >
                         <option value="">Selecione o tipo de venda</option>
@@ -718,6 +793,7 @@ const totalPages = Math.ceil(filteredVendas.length / itemsPerPage);
                       </select>
                       <div className="vendas-div-titulo-botoes-mais-menos">
                         <h3>Produtos</h3>
+                        
                         <div className="vendas-produtos-grid">
                           {produtosEstoque.map((produto) => (
                             <div
@@ -793,7 +869,7 @@ const totalPages = Math.ceil(filteredVendas.length / itemsPerPage);
               </div>
             </div>
           )}
-  
+
           {isRemoveModalOpen && (
             <div className="vendas-modal-overlay">
               <div className="vendas-modal-confirmacao-content">

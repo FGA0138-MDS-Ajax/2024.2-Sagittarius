@@ -67,6 +67,10 @@
   background-color: #f15b1b;
 }
 
+.controle-estoque-button{
+  font-size: 16px;
+}
+
 .controle-estoque-list {
   border: 1px solid #CED4DA;
   display: flex;
