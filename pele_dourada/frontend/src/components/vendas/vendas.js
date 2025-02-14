@@ -640,8 +640,8 @@ const VendasPage = () => {
                         <option value="">Selecione uma opção</option>
                         <option value="credito">Cartão de Crédito</option>
                         <option value="debito">Cartão de Débito</option>
-                        <option value="pix">Dinheiro</option>
-                        <option value="dinheiro">PIX</option>
+                        <option value="pix">Pix</option>
+                        <option value="dinheiro">Dinheiro</option>
                       </select>
                       <label>Tipo de Venda</label>
                       <select
@@ -777,8 +777,8 @@ const VendasPage = () => {
                         <option value="">Selecione uma opção</option>
                         <option value="credito">Cartão de Crédito</option>
                         <option value="debito">Cartão de Débito</option>
-                        <option value="pix">Dinheiro</option>
-                        <option value="dinheiro">PIX</option>
+                        <option value="pix">Pix</option>
+                        <option value="dinheiro">Dinheiro</option>
                       </select>
                       <label>Tipo de Venda</label>
                       <select
