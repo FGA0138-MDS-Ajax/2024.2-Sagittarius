@@ -49,7 +49,7 @@
 
 .controle-clientes-add-button {
   margin-bottom: 20px;
-  padding-right: 30px;
+  padding-right: 0px;
 }
 
 .controle-clientes-button {
@@ -59,7 +59,7 @@
   padding: 10px 25px;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .controle-clientes-button:hover {

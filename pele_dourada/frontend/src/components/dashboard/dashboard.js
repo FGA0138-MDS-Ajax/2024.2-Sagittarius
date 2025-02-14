@@ -1,3 +1,4 @@
+import ChevronLeftSvg from "../../assets/icons/chevron_left.svg";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
@@ -14,6 +15,7 @@ import  {ptBR}  from 'date-fns/locale';
 import { registerLocale } from "react-datepicker";
 import DatePicker from "react-datepicker";
 registerLocale("pt-BR", ptBR);
+
 
 const COLORS = [
   '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF4560', '#00E396', '#775DD0', '#FEB019', '#FF4560', '#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300', '#FF6600', '#33FF66', '#FF0066', '#00FFCC', '#FF3366'];
@@ -219,21 +221,20 @@ function ViewDashboard() {
             nextMonthButtonDisabled
           }) => (
             <div className="custom-header">
-              <button
-                onClick={decreaseMonth}
-                disabled={prevMonthButtonDisabled}
-                className="custom-button"
-              >
-                Mês Anterior
+              <button className="toggler-datepickerL-toggler"  
+              onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                <span className="material-symbols-rounded">
+                  <img src={ChevronLeftSvg} alt="Chevron Left" />
+                </span>
               </button>
               <span>{date.toLocaleString("pt-BR", { month: "long", year: "numeric" })}</span>
-              <button
-                onClick={increaseMonth}
-                disabled={nextMonthButtonDisabled}
-                className="custom-button"
-              >
-                Próximo Mês
+              <button className="toggler-datepickerR-toggler"  
+              onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                <span className="material-symbols-rounded">
+                  <img src={ChevronLeftSvg} alt="Chevron Right" />
+                </span>
               </button>
+              
             </div>
           )}
         />
@@ -257,20 +258,18 @@ function ViewDashboard() {
             nextMonthButtonDisabled
           }) => (
             <div className="custom-header">
-              <button
-                onClick={decreaseMonth}
-                disabled={prevMonthButtonDisabled}
-                className="custom-button"
-              >
-                Mês Anterior
+              <button className="toggler-datepickerL-toggler"  
+              onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                <span className="material-symbols-rounded">
+                  <img src={ChevronLeftSvg} alt="Chevron Left" />
+                </span>
               </button>
               <span>{date.toLocaleString("pt-BR", { month: "long", year: "numeric" })}</span>
-              <button
-                onClick={increaseMonth}
-                disabled={nextMonthButtonDisabled}
-                className="custom-button"
-              >
-                Próximo Mês
+              <button className="toggler-datepickerR-toggler"  
+              onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                <span className="material-symbols-rounded">
+                  <img src={ChevronLeftSvg} alt="Chevron Right" />
+                </span>
               </button>
             </div>
           )}

@@ -157,7 +157,8 @@ class ListOrdersView(APIView):
                 'name': order['name'],
                 'tipe': order['tipe'],
                 'payment': order['payment'],
-                'confirm': order['confirm']
+                'confirm': order['confirm'],
+                'total': order['total']
             })
 
         return Response({

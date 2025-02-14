@@ -122,7 +122,7 @@
 
 .dashboard-button-export{
   text-decoration: none;
-  background-color: #f15b1b;
+  background-color: #F3821B;
   padding: 10px;
   border-radius: 5px;
   color:white;
@@ -130,8 +130,6 @@
 
 .dashboard-button-export:hover{
   background-color: #f15b1b;
-  border-radius: 5px;
-  text-decoration: underline;
 }
 
 .dashboard-label {
@@ -223,6 +221,7 @@
   color: white;
 }
 
+/*Calendario*/
 .react-datepicker__month-container {
   width: 300px; /* Ajusta a largura para que o calendário fique mais compacto */
   border-radius: 8px;
@@ -283,7 +282,8 @@
 }
 
 .react-datepicker__day:hover {
-  background-color: #f2f2f2;
+  background-color: #f15b1b;
+  transition: 0.4s ease;
 }
 
 .react-datepicker__navigation {
@@ -331,4 +331,48 @@
   content: "→"; /* Altere o conteúdo conforme necessário */
 }
 
+.toggler-datepickerR-toggler{
+  transform:rotate(180deg);
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  padding-bottom: 2px; 
+}
 
+.toggler-datepickerL-toggler{
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  padding-top: 15px; 
+}
+
+
+.custom-header {
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+  gap: 30px;
+  padding-bottom: 10px; 
+}
+
+.custom-header button {
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  width: 32px;
+}
+
+.custom-header button:hover{
+  background-color: #f15b1b;
+  transition: 0.4s ease;
+}
+.custom-header span {
+  font-weight: bold;
+  text-transform: capitalize; /* Para deixar a primeira letra do mês maiúscula */
+}
+
+.react-datepicker.react-datepicker__month-container span.react-datepicker__aria-live{
+  display: none;
+}
