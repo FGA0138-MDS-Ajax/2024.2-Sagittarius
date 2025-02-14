@@ -57,7 +57,7 @@ class Order(PedidoIDGenerator):
     def total_price(self):
         order_price = 0
         for products in self.products:
-            order_price += products['price']
+            order_price += products['price'] * products['quantidade']
         return order_price
     
     def to_dict(self):
