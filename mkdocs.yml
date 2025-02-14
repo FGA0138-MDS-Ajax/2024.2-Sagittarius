@@ -7,6 +7,10 @@ nav:
   - Documento de Plano de Testes: "documento-plano-testes/documento-plano-testes.md"
   - Atas de Reunião:
     - Ata 1: "atas-reuniao/ata-reuniao-1.md"
+    - Ata 2: "atas-reuniao/ata-reuniao-2.md"
+    - Ata 3: "atas-reuniao/ata-reuniao-3.md"
+    - Ata 4: "atas-reuniao/ata-reuniao-4.md"
+    - Ata 5: "atas-reuniao/ata-reuniao-5.md"
 
 theme:
   name: material
