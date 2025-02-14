@@ -205,6 +205,17 @@ def update_user(user_id, new_username=None, new_pwd=None):
     user_collection.update_one({'_id': user_id}, update)
     return
 
+def update_user_username(username, new_username=None, new_pwd=None):
+    update = {
+        '$set': {}
+    }
+    if new_username is not None:
+        update['$set']['username'] = new_username
+    if new_pwd is not None:
+        update['$set']['password'] = new_pwd
+    user_collection.update_one({'username': username}, update)
+    return
+
 def update_client(client_id, new_name=None, new_phone=None, new_address=None):
     client = get_client_by_id(ObjectId(client_id))
 
@@ -225,6 +236,27 @@ def update_client(client_id, new_name=None, new_phone=None, new_address=None):
         client_collection.update_one({"_id": ObjectId(client_id)}, update_fields)
     return client
 
+def update_client_name(name, new_name=None, new_phone=None, new_address=None):
+    client = get_client(name)
+    print(client)
+
+    if not client:
+        return None
+
+    update_fields = {
+        '$set': {}
+    }
+    if new_phone is not None:
+        update_fields['$set']["phone"] = new_phone
+    if new_address is not None:
+        update_fields['$set']["address"] = new_address
+    if new_name is not None:
+        update_fields['$set']["name"] = new_name
+
+    if update_fields['$set']:
+        client_collection.update_one({"name": name}, update_fields)
+    return client
+
 def update_product(product_id, new_name=None, new_price=None, new_qtd=None):
     update = {
         '$set': {}
@@ -236,6 +268,19 @@ def update_product(product_id, new_name=None, new_price=None, new_qtd=None):
     if new_qtd is not None:
         update['$set']['qtd'] = new_qtd
     stock_collection.update_one({'_id' : ObjectId(product_id)}, update)
+    return
+
+def update_product_name(name, new_name=None, new_price=None, new_qtd=None):
+    update = {
+        '$set': {}
+    }
+    if new_name is not None:
+        update['$set']['name'] = new_name
+    if new_price is not None:
+        update['$set']['price'] = new_price
+    if new_qtd is not None:
+        update['$set']['qtd'] = new_qtd
+    stock_collection.update_one({'name' : name}, update)
     return
 
 def update_order(number, index=None, new_product=None, new_price=None, new_qtd=None, new_name=None, new_tipe=None, new_payment=None, new_confirm=None):
@@ -274,8 +319,20 @@ def delete_client(client_id):
         print(f"Cliente {client_id} não encontrado.")
     return
 
+def delete_client_name(name):
+    result = client_collection.delete_one({'name': name})
+    if result.deleted_count > 0:
+        print(f"Cliente {name} deletado com sucesso!")
+    else:
+        print(f"Cliente {name} não encontrado.")
+    return
+
 def delete_product(product_id):
     stock_collection.delete_one({'_id' : ObjectId(product_id)})
+    return
+
+def delete_product_name(name):
+    stock_collection.delete_one({'name' : name})
     return
 
 def decrease_product_qtd(product_id):

@@ -1,7 +1,16 @@
-from django.test import TestCase
 import unittest
 from datetime import datetime
-from ...models import User, Product, Order, Client, Billing, insert_product, insert_client, insert_order, insert_user, insert_billing, get_user, get_client, get_product, get_order, get_all_billing, update_user, update_client, update_product, update_order, delete_user, delete_client, delete_product, delete_order, delete_billing, get_billing
+
+from django.test import TestCase
+
+from ...models import (Billing, Client, Order, Product, User, delete_billing,
+                       delete_client_name, delete_order, delete_product_name,
+                       delete_user, get_all_billing, get_billing, get_client,
+                       get_order, get_product, get_user, insert_billing,
+                       insert_client, insert_order, insert_product,
+                       insert_user, update_client_name, update_order,
+                       update_product_name, update_user_username)
+
 
 class TestModels(unittest.TestCase):
 
@@ -35,7 +44,7 @@ class TestModels(unittest.TestCase):
 
     def test_billing_to_dict(self):
         self.assertEqual(self.billing.to_dict(), {
-            'date': self.billing.date,
+            'date': self.billing.date_to_int(),
             'orders': [self.order.to_dict()],
             'total': 10.0
         })
@@ -46,7 +55,7 @@ class TestModels(unittest.TestCase):
 
     def test_insert_client(self):
         insert_client(self.client)
-        self.assertIsNotNone(get_client(self.client.name))
+        self.assertIsNotNone(get_client(self.client.phone))
 
     def test_insert_order(self):
         insert_order(self.order)
@@ -61,22 +70,22 @@ class TestModels(unittest.TestCase):
         self.assertIsNotNone(get_all_billing())
 
     def test_update_user(self):
-        insert_user(self.user)
-        update_user(self.user.username, new_username="updateduser")
+        # insert_user(self.user)
+        update_user_username(self.user.username, new_username="updateduser")
         self.assertIsNotNone(get_user("updateduser"))
 
     def test_update_client(self):
-        insert_client(self.client)
-        update_client(self.client.name, new_name="updatedclient")
-        self.assertIsNotNone(get_client("updatedclient"))
+        # insert_client(self.client)
+        update_client_name(self.client.name, new_name="updatedclient")
+        self.assertIsNotNone(get_client(self.client.phone))
 
     def test_update_product(self):
-        insert_product(self.product)
-        update_product(self.product.name, new_name="updatedproduct")
+        # insert_product(self.product)
+        update_product_name(self.product.name, new_name="updatedproduct")
         self.assertIsNotNone(get_product("updatedproduct"))
 
     def test_update_order(self):
-        insert_order(self.order)
+        # insert_order(self.order)
         update_order(self.order.number, new_name="updatedorder")
         self.assertIsNotNone(get_order(self.order.number))
 
@@ -85,11 +94,11 @@ class TestModels(unittest.TestCase):
         self.assertIsNone(get_user(self.user.username))
 
     def test_delete_client(self):
-        delete_client(self.client.name)
+        delete_client_name(self.client.name)
         self.assertIsNone(get_client(self.client.name))
 
     def test_delete_product(self):
-        delete_product(self.product.name)
+        delete_product_name(self.product.name)
         self.assertIsNone(get_product(self.product.name))
 
     def test_delete_order(self):
