@@ -304,6 +304,8 @@ def update_order(number, index=None, new_product=None, new_price=None, new_qtd=N
         update['$set']['tipe'] = new_tipe
     if new_payment is not None:
         update['$set']['payment'] = new_payment
+    if new_price is not None:
+        update['$set']['total'] = new_price
     if new_confirm is not None:
         update['$set']['confirm'] = new_confirm
     if new_total is not None:
