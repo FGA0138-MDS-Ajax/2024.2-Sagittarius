@@ -63,7 +63,11 @@ const VendasPage = () => {
   const fetchVendas = async () => {
     try {
       const response = await axios.get("http://localhost:8000/api/orders/");
-      setVendas(response.data.orders);
+      const vendasComValor = response.data.orders.map(venda => ({
+        ...venda,
+        valorVenda: calcularTotalVendaPorProdutos(venda.products)
+      }));
+      setVendas(vendasComValor);
     } catch (error) {
       console.error("Erro ao buscar vendas", error);
     }
@@ -188,6 +192,9 @@ const VendasPage = () => {
           setErrorMessage(
             `Quantidade insuficiente de ${produto.name} no estoque.`
           );
+          setTimeout(() => {
+            setErrorMessage('');
+          }, 2000);
           return;
         }
         setFormData((prevState) => ({
@@ -319,8 +326,8 @@ const VendasPage = () => {
 
   const sortedVendas = [...vendas].sort((a, b) => {
     if (sortConfig.key) {
-      const aValue = a[sortConfig.key];
-      const bValue = b[sortConfig.key];
+      const aValue = sortConfig.key === "valorVenda" ? parseFloat(a[sortConfig.key]) : a[sortConfig.key];
+      const bValue = sortConfig.key === "valorVenda" ? parseFloat(b[sortConfig.key]) : b[sortConfig.key];
       if (aValue < bValue) {
         return sortConfig.direction === "asc" ? -1 : 1;
       }
@@ -555,34 +562,34 @@ const VendasPage = () => {
                         <option value="encomenda">Encomenda</option>
                       </select>
                       <div className="vendas-div-titulo-botoes-mais-menos">
-                        <h3>Produtos</h3>
-                        {produtosEstoque.map((produto) => (
-                          <div
-                            className="vendas-div-botao-mais-menos"
-                            key={produto.id}
-                          >
-                            <div className="vendas-div-espacamento-botao-mais-menos">
-                              <button
-                                type="button"
-                                onClick={() => handleRemoverProduto(produto.id)}
-                                className="vendas-botao-mais-menos"
-                              >
-                                -
-                              </button>
-                              <span>{capitalize(produto.name)}</span>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  handleAdicionarProduto(produto.id)
-                                }
-                                className="vendas-botao-mais-menos"
-                              >
-                                +
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+  <h3>Produtos</h3>
+  <div className="vendas-produtos-grid">
+    {produtosEstoque.map((produto) => (
+      <div
+        className="vendas-div-botao-mais-menos"
+        key={produto.id}
+      >
+        <div className="vendas-div-espacamento-botao-mais-menos">
+          <button
+            type="button"
+            onClick={() => handleRemoverProduto(produto.id)}
+            className="vendas-botao-mais-menos"
+          >
+            -
+          </button>
+          <span>{capitalize(produto.name)}</span>
+          <button
+            type="button"
+            onClick={() => handleAdicionarProduto(produto.id)}
+            className="vendas-botao-mais-menos"
+          >
+            +
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
 
                       <div className="vendas-total-finalizar">
                         <button
@@ -629,7 +636,7 @@ const VendasPage = () => {
             </div>
           )}
 
-{isEditModalOpen && vendaEditando && (
+{isEditModalOpen &&(
   <div className="vendas-modal-overlay">
     <div className="vendas-modal-content">
       {errorMessage && <div className="error-message">{errorMessage}</div>}
@@ -686,29 +693,34 @@ const VendasPage = () => {
               <option value="encomenda">Encomenda</option>
             </select>
             <div className="vendas-div-titulo-botoes-mais-menos">
-              <h3>Produtos</h3>
-              {produtosEstoque.map((produto) => (
-                <div className="vendas-div-botao-mais-menos" key={produto.id}>
-                  <div className="vendas-div-espacamento-botao-mais-menos">
-                    <button
-                      type="button"
-                      onClick={() => handleRemoverProduto(produto.id)}
-                      className="vendas-botao-mais-menos"
-                    >
-                      -
-                    </button>
-                    <span>{capitalize(produto.name)}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleAdicionarProduto(produto.id)}
-                      className="vendas-botao-mais-menos"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+  <h3>Produtos</h3>
+  <div className="vendas-produtos-grid">
+    {produtosEstoque.map((produto) => (
+      <div
+        className="vendas-div-botao-mais-menos"
+        key={produto.id}
+      >
+        <div className="vendas-div-espacamento-botao-mais-menos">
+          <button
+            type="button"
+            onClick={() => handleRemoverProduto(produto.id)}
+            className="vendas-botao-mais-menos"
+          >
+            -
+          </button>
+          <span>{capitalize(produto.name)}</span>
+          <button
+            type="button"
+            onClick={() => handleAdicionarProduto(produto.id)}
+            className="vendas-botao-mais-menos"
+          >
+            +
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
             <div className="vendas-total-finalizar">
               <button type="submit" className="vendas-button-finalizar">
                 <MdOutlinePointOfSale />

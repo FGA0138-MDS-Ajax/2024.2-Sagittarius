@@ -22,6 +22,16 @@ function ControleEstoque() {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [successMessage, setSuccessMessage] = useState('');
 
+  const handleQtdChange = (e, setProdutoEditando) => {
+    const value = parseInt(e.target.value, 10);
+    if (value >= 0) {
+      setProdutoEditando((prev) => ({
+        ...prev,
+        qtd: value,
+      }));
+    }
+  };
+
   useEffect(() => {
     const fetchProdutos = async () => {
       try {
@@ -96,7 +106,7 @@ function ControleEstoque() {
       );
       setProdutos(updatedProdutos);
       setSuccessMessage('Produto editado com sucesso!');
-      setTimeout(() => setSuccessMessage(''), 3000); // Limpa a mensagem após 3 segundos
+      setTimeout(() => setSuccessMessage(''), 2000); 
     } catch (error) {
       console.error("Erro ao atualizar produto:", error);
       alert('Erro ao atualizar o produto');
@@ -117,6 +127,13 @@ function ControleEstoque() {
       alert('Erro ao deletar o produto');
     }
   };
+
+  const produtosPorPagina = 12;
+  const produtosNaPaginaAtual = produtosFiltrados.slice(
+    (currentPage - 1) * produtosPorPagina, // Índice inicial
+    currentPage * produtosPorPagina        // Índice final
+  );
+  
 
   const formatCurrency = (value) => {
     if (!value) return "R$ 0,00";
@@ -139,17 +156,17 @@ function ControleEstoque() {
   function EditarProduto({ produtoEditando, setProdutoEditando }) {
     return (
       <div className="editar-produto-field">
-        <label className="editar-produto-label" htmlFor="edit-price">
-          Preço
-        </label>
-        <input
-          id="edit-price"
-          type="text"
-          className="editar-produto-input"
-          value={formatCurrency(produtoEditando?.price)}
-          onChange={(e) => handlePriceChange(e, setProdutoEditando)}
-        />
-      </div>
+  <label className="editar-produto-label" htmlFor="edit-qtd">
+    Quantidade
+  </label>
+  <input
+    id="edit-qtd"
+    type="number"
+    className="editar-produto-input"
+    value={produtoEditando.qtd}
+    onChange={(e) => handleQtdChange(e, setProdutoEditando)}
+  />
+</div>
     );
   }
 
@@ -188,7 +205,7 @@ function ControleEstoque() {
           </div>
 
           {successMessage && (
-            <div className="success-message">
+            <div className="success-message-estoque-edit">
               {successMessage}
             </div>
           )}
@@ -212,7 +229,7 @@ function ControleEstoque() {
                 </tr>
               </thead>
               <tbody>
-                {produtosFiltrados.map((produto) => (
+              {produtosNaPaginaAtual.map((produto) => (
                   <tr key={produto.id}>
                     <td>{produto.name}</td>
                     <td>R$ {produto.price.toFixed(2)}</td>
@@ -295,90 +312,85 @@ function ControleEstoque() {
             </div>
           )}
 
-          {isEditModalOpen && (
-            <div className="modal-overlay" onClick={() => setIsEditModalOpen(false)}>
-              <div
-                className="modal-content editar-produto-page"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <h2 className="editar-produto-title">Editar Produto</h2>
-                <form
-                  className="editar-produto-form"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleEditProduct(produtoEditando);
-                  }}
-                >
-                  <div className="editar-produto-field">
-                    <label className="editar-produto-label" htmlFor="edit-name">
-                      Nome
-                    </label>
-                    <input
-                      id="edit-name"
-                      type="text"
-                      className="editar-produto-input"
-                      value={produtoEditando.name}
-                      onChange={(e) =>
-                        setProdutoEditando({
-                          ...produtoEditando,
-                          name: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="editar-produto-field">
-                    <label className="editar-produto-label" htmlFor="edit-price">
-                      Preço
-                    </label>
-                    <input
-                      id="edit-price"
-                      type="number"
-                      className="editar-produto-input"
-                      value={produtoEditando.price}
-                      onChange={(e) =>
-                        setProdutoEditando({
-                          ...produtoEditando,
-                          price: parseFloat(e.target.value),
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="editar-produto-field">
-                    <label className="editar-produto-label" htmlFor="edit-qtd">
-                      Quantidade
-                    </label>
-                    <input
-                      id="edit-qtd"
-                      type="number"
-                      className="editar-produto-input"
-                      value={produtoEditando.qtd}
-                      onChange={(e) =>
-                        setProdutoEditando({
-                          ...produtoEditando,
-                          qtd: parseInt(e.target.value, 10),
-                        })
-                      }
-                    />
-                  </div>
+{isEditModalOpen && (
+  <div className="modal-overlay" onClick={() => setIsEditModalOpen(false)}>
+    <div
+      className="modal-content editar-produto-page"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h2 className="editar-produto-title">Editar Produto</h2>
+      <form
+        className="editar-produto-form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleEditProduct(produtoEditando);
+        }}
+      >
+        <div className="editar-produto-field">
+          <label className="editar-produto-label" htmlFor="edit-name">
+            Nome
+          </label>
+          <input
+            id="edit-name"
+            type="text"
+            className="editar-produto-input"
+            value={produtoEditando.name}
+            onChange={(e) =>
+              setProdutoEditando({
+                ...produtoEditando,
+                name: e.target.value,
+              })
+            }
+          />
+        </div>
+        <div className="editar-produto-field">
+          <label className="editar-produto-label" htmlFor="edit-price">
+            Preço
+          </label>
+          <input
+            id="edit-price"
+            type="number"
+            className="editar-produto-input"
+            value={produtoEditando.price}
+            onChange={(e) =>
+              setProdutoEditando({
+                ...produtoEditando,
+                price: parseFloat(e.target.value),
+              })
+            }
+          />
+        </div>
+        <div className="editar-produto-field">
+          <label className="editar-produto-label" htmlFor="edit-qtd">
+            Quantidade
+          </label>
+          <input
+            id="edit-qtd"
+            type="number"
+            className="editar-produto-input"
+            value={produtoEditando.qtd}
+            onChange={(e) => handleQtdChange(e, setProdutoEditando)}
+          />
+        </div>
 
-                  <div className="div-editar-produto-button">
-                    <button type="submit" className="editar-produto-button">
-                      Salvar
-                    </button>
-                  </div>
+        <div className="div-editar-produto-button">
+          <button type="submit" className="editar-produto-button">
+            Salvar
+          </button>
+        </div>
 
-                  <div className="div-editar-produto-button">
-                    <button
-                      onClick={() => setIsEditModalOpen(false)}
-                      className="editar-produto-button"
-                    >
-                      Cancelar
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
+        <div className="div-editar-produto-button">
+          <button
+            onClick={() => setIsEditModalOpen(false)}
+            className="editar-produto-button"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
 
           {isConfirmModalOpen && (
             <div className="modal-overlay" onClick={() => setIsConfirmModalOpen(false)}>

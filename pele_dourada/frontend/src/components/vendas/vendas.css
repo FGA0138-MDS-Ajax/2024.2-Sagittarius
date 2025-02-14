@@ -274,24 +274,19 @@
 .vendas-div-titulo-botoes-mais-menos{
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
-/* .vendas-div-botao-mais-menos {
+.vendas-div-botao-mais-menos {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow-x: auto; /* Adiciona a barra de rolagem horizontal */
 }
-
-.vendas-div-espacamento-botao-mais-menos{
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  width: 100%;
-  margin-top: 8px;
-  
-} */
-
-/* teste */
 
 .vendas-div-espacamento-botao-mais-menos {
   display: flex;
@@ -300,17 +295,10 @@
   position: relative;
   width: 100%;
   margin-top: 8px;
+  min-width: 150px; /* Evita que os elementos se sobreponham ou fiquem muito pequenos */
 }
 
-/* .vendas-botao-mais-menos {
-  position: absolute;
-  width: 32px; 
-  height: 32px; 
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
+
 
 .vendas-botao-mais-menos:first-of-type { 
   left: 0; /* Fixando o botão "-" à esquerda */
@@ -341,6 +329,12 @@
 
 .vendas-botao-mais-menos:hover, .vendas-button-finalizar:hover{
   background-color: #f15b1b;
+}
+
+.vendas-produtos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Duas colunas */
+  gap: 20px; /* Espaçamento entre os itens */
 }
 
 .vendas-button-finalizar {
