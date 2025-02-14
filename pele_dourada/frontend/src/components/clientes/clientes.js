@@ -62,21 +62,29 @@ function ControleClientes() {
   };
 
   const clientesFiltrados = clientes
-    .filter((cliente) => {
-      if (typeof cliente.name !== 'string') {
-        return false;
-      }
-      return cliente.name.toLowerCase().includes(busca.toLowerCase());
-    })
-    .sort((a, b) => {
-      if (a[sortConfig.key] < b[sortConfig.key]) {
-        return sortConfig.direction === "asc" ? -1 : 1;
-      }
-      if (a[sortConfig.key] > b[sortConfig.key]) {
-        return sortConfig.direction === "asc" ? 1 : -1;
-      }
-      return 0;
-    });
+  .filter((cliente) => {
+    if (typeof cliente.name !== 'string') {
+      return false;
+    }
+    return cliente.name.toLowerCase().includes(busca.toLowerCase());
+  })
+  .sort((a, b) => {
+    let aKey = a[sortConfig.key];
+    let bKey = b[sortConfig.key];
+
+    if (typeof aKey === 'string' && typeof bKey === 'string') {
+      aKey = aKey.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      bKey = bKey.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    }
+
+    if (aKey < bKey) {
+      return sortConfig.direction === "asc" ? -1 : 1;
+    }
+    if (aKey > bKey) {
+      return sortConfig.direction === "asc" ? 1 : -1;
+    }
+    return 0;
+  });
 
   const handleEditCliente = async (cliente) => {
     try {

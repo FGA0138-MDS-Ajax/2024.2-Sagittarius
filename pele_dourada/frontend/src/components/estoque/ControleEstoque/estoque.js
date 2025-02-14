@@ -58,9 +58,14 @@ function ControleEstoque() {
 
   const sortedProdutos = [...produtos].sort((a, b) => {
     if (sortConfig.key) {
-      const aKey = a[sortConfig.key];
-      const bKey = b[sortConfig.key];
-
+      let aKey = a[sortConfig.key];
+      let bKey = b[sortConfig.key];
+  
+      if (typeof aKey === 'string' && typeof bKey === 'string') {
+        aKey = aKey.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        bKey = bKey.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      }
+  
       if (aKey < bKey) {
         return sortConfig.direction === 'asc' ? -1 : 1;
       }

@@ -175,11 +175,12 @@
 
 .vendas-modal-content {
   background: white;
-  width: 60%;
+  width: 70%;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
+  height: 90%;
 }
 
 .vendas-modal-confirmacao-content {
@@ -357,7 +358,7 @@
 .vendas-button-finalizar {
   position: absolute; 
   bottom: 30px; 
-  right: 40px; 
+  right: 50px; 
   padding: 10px 20px; 
   background-color: #F3821B; 
   color: white; 
