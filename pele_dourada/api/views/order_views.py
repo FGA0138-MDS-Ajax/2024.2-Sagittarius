@@ -105,12 +105,14 @@ class UpdateOrderView(APIView):
         number = request.data.get("number")
         index = request.data.get("index")
         new_product = request.data.get("new_product")
-        new_price = request.data.get("new_price")
-        new_qtd = request.data.get("new_qtd")
         new_name = request.data.get("new_name")
         new_tipe = request.data.get("new_tipe")
         new_payment = request.data.get("new_payment")
         new_confirm = request.data.get("new_confirm")
+
+        new_total = 0
+        for product in new_product:
+            new_total += product['price'] * product['quantidade']
 
         if not number:
             return Response({
@@ -119,8 +121,11 @@ class UpdateOrderView(APIView):
             )
 
         try:
-            update_order(number, index=index, new_product=new_product, new_price=new_price, new_qtd=new_qtd, new_name=new_name, new_tipe=new_tipe, new_payment=new_payment, new_confirm=new_confirm)
+            update_order(number, index=index, new_product=new_product, 
+                         new_name=new_name, new_tipe=new_tipe, new_payment=new_payment, 
+                         new_confirm=new_confirm, new_total=new_total)
         except Exception as e:
+            print(e)
             return Response({
                 'error': 'Erro ao atualizar pedido',
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR

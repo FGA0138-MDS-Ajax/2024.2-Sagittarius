@@ -283,17 +283,21 @@ def update_product_name(name, new_name=None, new_price=None, new_qtd=None):
     stock_collection.update_one({'name' : name}, update)
     return
 
-def update_order(number, index=None, new_product=None, new_price=None, new_qtd=None, new_name=None, new_tipe=None, new_payment=None, new_confirm=None):
+def update_order(number, index=None, new_product=None, new_price=None, new_qtd=None, new_name=None, new_tipe=None, new_payment=None, new_confirm=None, new_total=None):
     update = {
         '$set': {}
     }
-    if index is not None:
-        if new_product is not None:
-            update['$set']['products.'+str(index)+'.name'] = new_product
-        if new_price is not None:
-            update['$set']['products.'+str(index)+'.price'] = new_price
-        if new_qtd is not None:
-            update['$set']['products.'+str(index)+'.qtd'] = new_qtd        
+    # if index is not None:
+    if new_product is not None:
+        for i, product in enumerate(new_product):
+            update['$set'][f'products.{i}.name'] = product['name']
+            update['$set'][f'products.{i}.price'] = product['price']
+            update['$set'][f'products.{i}.quantidade'] = product['quantidade']
+        #     update['$set']['products.'+str(index)+'.name'] = new_product
+        # if new_price is not None:
+        #     update['$set']['products.'+str(index)+'.price'] = new_price
+        # if new_qtd is not None:
+        #     update['$set']['products.'+str(index)+'.qtd'] = new_qtd        
     if new_name is not None:
         update['$set']['name'] = new_name
     if new_tipe is not None:
@@ -302,6 +306,8 @@ def update_order(number, index=None, new_product=None, new_price=None, new_qtd=N
         update['$set']['payment'] = new_payment
     if new_confirm is not None:
         update['$set']['confirm'] = new_confirm
+    if new_total is not None:
+        update['$set']['total'] = new_total
      
     order_collection.update_one({'number': number}, update)
     return

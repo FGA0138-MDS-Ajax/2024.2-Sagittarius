@@ -255,6 +255,7 @@ const VendasPage = () => {
         new_product: formData.produtos.map((produto) => ({
           id: produto.id,
           name: produto.name,
+          price: produto.price,
           quantidade: produto.quantidade,
         })),
         new_price: parseFloat(calcularTotalVenda()), // Enviar o valor total da venda como número
