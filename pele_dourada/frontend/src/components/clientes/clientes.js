@@ -9,7 +9,8 @@ import { BsFillBoxSeamFill } from "react-icons/bs";
 import InputMask from 'react-input-mask';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ControleClientes() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -89,46 +90,73 @@ function ControleClientes() {
 
   const handleEditCliente = async (cliente) => {
     try {
-      const response = await axios.put("http://localhost:8000/api/client/update/", {
-        id: cliente.id,
-        name: cliente.name,
-        phone: cliente.phone,
-        endereco: cliente.endereco
-      });
-      alert(response.data);
-      setIsEditModalOpen(false);
-      setClienteEditando(null);
-      const updatedClientes = clientes.map((c) =>
-        c.id === cliente.id ? { ...c, ...cliente } : c
-      );
-      setClientes(updatedClientes);
+        const response = await axios.put("http://localhost:8000/api/client/update/", {
+            id: cliente.id,
+            name: cliente.name,
+            phone: cliente.phone,
+            endereco: cliente.endereco
+        });
+
+        // Removido o alert antigo
+        setIsEditModalOpen(false);
+        setClienteEditando(null);
+        const updatedClientes = clientes.map((c) =>
+            c.id === cliente.id ? { ...c, ...cliente } : c
+        );
+        setClientes(updatedClientes);
+
+        toast.success('Cliente atualizado com sucesso!', { // Toast de sucesso
+            position: 'top-right',
+            autoClose: 3000,
+            theme: 'colored',
+            transition: Bounce,
+        });
+
     } catch (error) {
-      console.error("Erro ao atualizar cliente:", error.response ? error.response.data : error.message);
-      alert("Erro ao atualizar o cliente");
+        console.error("Erro ao atualizar cliente:", error.response ? error.response.data : error.message);
+        // Removido o alert antigo
+
+        toast.error('Erro ao editar o cliente. Verifique os dados e tente novamente.', { // Toast de erro
+            position: 'top-right',
+            autoClose: 5000,
+            theme: 'colored',
+        });
     }
-  };
+};
 
   const handleRemoveCliente = async () => {
     try {
-      await axios.delete("http://localhost:8000/api/client/delete/", {
-        data: { id: clienteRemovendo.id },
-      });
-      setClientes(clientes.filter((c) => c.id !== clienteRemovendo.id));
-      setIsConfirmModalOpen(false);
-      setClienteRemovendo(null);
-    } catch (error) {
-      console.error("Erro ao deletar cliente:", error);
-      alert("Erro ao deletar o cliente");
-    }
-  };
+        await axios.delete("http://localhost:8000/api/client/delete/", {
+            data: { id: clienteRemovendo.id },
+        });
 
-  const confirmarRemocao = async () => {
-    if (clienteRemovendo) {
-      await handleRemoveCliente(clienteRemovendo);
-      setIsConfirmModalOpen(false);
-      setClienteRemovendo(null);
+        setClientes(clientes.filter((c) => c.id !== clienteRemovendo.id));
+        setIsConfirmModalOpen(false);
+        setClienteRemovendo(null);
+
+        toast.success('Cliente removido com sucesso!', {  // Toast de sucesso
+            position: 'top-right',
+            autoClose: 3000,
+            theme: 'colored',
+            transition: Bounce,
+        });
+
+    } catch (error) {
+        console.error("Erro ao deletar cliente:", error);
+
+        toast.error('Erro ao remover o cliente. Tente novamente.', { // Toast de erro
+            position: 'top-right',
+            autoClose: 5000,
+            theme: 'colored',
+        });
     }
-  };
+};
+
+const confirmarRemocao = async () => {
+  if (clienteRemovendo) {
+      await handleRemoveCliente(); // Chama a função que já tem o toast
+  }
+};
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
