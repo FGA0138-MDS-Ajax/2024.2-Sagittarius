@@ -220,7 +220,7 @@ const VendasPage = () => {
   const fetchVendas = async () => {
     try {
       const response = await axios.get("http://localhost:8000/api/orders/");
-      const vendasComValor = response.data.orders.map((venda) => ({
+      const vendasComValor = response.data.orders.reverse().map((venda) => ({
         ...venda,
         valorVenda: venda.total,
       }));
