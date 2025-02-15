@@ -9,6 +9,7 @@ import { BsFillBoxSeamFill } from "react-icons/bs";
 import InputMask from 'react-input-mask';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { ToastContainer } from 'react-toastify';
 
 function ControleClientes() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -144,6 +145,7 @@ function ControleClientes() {
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       <main className="main-content">
+        <ToastContainer />
         <div className="controle-clientes-page" id="controle-clientes-page">
           <div className="controle-clientes-title" id="controle-clientes-title">
             <h1>Controle de Clientes</h1>

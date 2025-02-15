@@ -3,6 +3,8 @@ import axios from 'axios';
 import InputMask from 'react-input-mask';
 import './add_cliente.css';
 import { FaUserPlus } from 'react-icons/fa';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function AdicionarCliente() {
   const [nome, setNome] = useState('');
@@ -21,7 +23,14 @@ function AdicionarCliente() {
     try {
       const clienteData = { name: nome, phone: telefone, address: endereco };
       const response = await axios.post('http://localhost:8000/api/client/register/', clienteData); // esperando o endereço da api
-      alert('Cliente adicionado com sucesso!');
+      
+      toast.success('Cliente adicionado com sucesso!', { // Mensagem e opções do toast
+        position: 'top-right', // Posição do toast
+        autoClose: 3000, // Tempo de exibição em milissegundos
+        theme: 'colored', // Tema do toast
+        transition: Bounce, // Transição do toast
+      });
+
       setTimeout(() => {
         window.location.reload();
       }, 1000);
@@ -31,7 +40,12 @@ function AdicionarCliente() {
       setErro('');
     } catch (error) {
       console.error('Erro ao adicionar cliente:', error);
-      setErro('Erro ao adicionar o cliente.');
+
+      toast.error('Erro ao adicionar o cliente. Verifique os dados e tente novamente.', { // Toast de erro
+        position: 'top-right',
+        autoClose: 5000,
+        theme: 'colored',
+    });
     }
   };
 
