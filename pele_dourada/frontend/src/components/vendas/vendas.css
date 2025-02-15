@@ -209,7 +209,7 @@
 }
 
 .vendas-close-modal:hover {
-  color: #333;
+  color: #ff0000;
 }
 
 .vendas-modal-body {
@@ -253,6 +253,7 @@
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 800px;
 }
 
 .total-container {
@@ -300,7 +301,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  background-color: #f9f9f9;
+  background-color: #f7f7f7;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   overflow-x: auto; /* Adiciona a barra de rolagem horizontal */
@@ -323,7 +324,7 @@
 }
 
 .vendas-botao-mais-menos:last-of-type { 
-  right: 0; /* Fixando o botão "+" à direita */
+  right: 0;
 }
 
 .vendas-div-espacamento-botao-mais-menos span {
@@ -336,24 +337,44 @@
   border: none;
   display: flex;
   align-items: center;
-  background-color: #F3821B;
+  background-color: transparent;
   color: white;
-  padding: 5px 15px;
+  padding: 0;
   cursor: pointer;
   border-radius: 100%;
-  aspect-ratio: 1/1;
-  font-size: 20px;
+  font-size: 24px;
+  color: rgb(44, 40, 40);
+  margin: 5px 10px;
+  width: 1rem;
 }
 
-.vendas-botao-mais-menos:hover, .vendas-button-finalizar:hover{
+.vendas-botao-mais-menos:hover  {
+  color: #F3821B;
+  transform: scale(1.5);
+  transition: transform 0.4s ease; 
+}
+
+.vendas-button-finalizar:hover{
+  text-decoration: underline;
   background-color: #f15b1b;
+
 }
 
 .vendas-produtos-grid {
+  padding: 12px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Duas colunas */
-  gap: 20px; /* Espaçamento entre os itens */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  justify-items: center;
+  align-items: center;
+  max-height: 500px; 
+  overflow-y: auto;
 }
+.vendas-produtos-grid > div {
+  width: 100%; 
+  height: 80px; 
+}
+
 
 .vendas-button-finalizar {
   position: absolute; 
@@ -370,33 +391,6 @@
   justify-content: space-around;
   width: 50%;
 }
-
-/***** PAGINAÇÃO *****/
-/* .pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  gap: 10px;
-}
-
-.pagination button {
-  padding: 8px 12px;
-  margin: 0 5px;
-  border: none;
-  background-color: black;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.pagination button.active {
-  background-color: black;
-  color: #ffffff;
-}
-
-.pagination button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-} */
 
 .autocomplete-list {
   list-style-type: none;

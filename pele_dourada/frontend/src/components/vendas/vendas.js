@@ -11,6 +11,21 @@ import Stack from "@mui/material/Stack";
 
 const VendasPage = () => {
 
+  const ordenarProdutosPorNome = (produtos) => {
+    return produtos.sort((a, b) => {
+      const aIsFrango = a.name.toLowerCase().startsWith("frango");
+      const bIsFrango = b.name.toLowerCase().startsWith("frango");
+  
+      if (aIsFrango && !bIsFrango) {
+        return -1;
+      }
+      if (!aIsFrango && bIsFrango) {
+        return 1;
+      }
+      return a.name.localeCompare(b.name);
+    });
+  };
+
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [vendas, setVendas] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -701,7 +716,7 @@ const VendasPage = () => {
                         onChange={handleChange}
                         className="vendas-input"
                       >
-                        <option value="">Selecione uma opção</option>
+                        <option value="">Selecione o método de pagamento</option>
                         <option value="credito">Cartão de Crédito</option>
                         <option value="debito">Cartão de Débito</option>
                         <option value="pix">Pix</option>
@@ -714,14 +729,14 @@ const VendasPage = () => {
                         onChange={handleChange}
                         className="vendas-input"
                       >
-                        <option value="">Selecione o tipo de venda</option>
+                        <option value="">Selecione o tipo da venda</option>
                         <option value="venda">Venda</option>
                         <option value="encomenda">Encomenda</option>
                       </select>
                       <div className="vendas-div-titulo-botoes-mais-menos">
                         <h3>Produtos</h3>
                         <div className="vendas-produtos-grid">
-                          {produtosEstoque.map((produto) => (
+                          {ordenarProdutosPorNome(produtosEstoque).map((produto) => (
                             <div
                               className="vendas-div-botao-mais-menos"
                               key={produto.id}
@@ -859,7 +874,7 @@ const VendasPage = () => {
                         <h3>Produtos</h3>
                         
                         <div className="vendas-produtos-grid">
-                          {produtosEstoque.map((produto) => (
+                          {ordenarProdutosPorNome(produtosEstoque).map((produto) => (
                             <div
                               className="vendas-div-botao-mais-menos"
                               key={produto.id}
