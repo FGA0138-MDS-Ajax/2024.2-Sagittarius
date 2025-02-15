@@ -306,7 +306,7 @@ function ViewDashboard() {
                   </tr>
                 </thead>
                 <tbody className='tabelas-dashboard-uppercase'>
-                  {clients.slice(-5).reverse().map(client => (
+                  {clients.slice(-8).reverse().map(client => (
                     <tr key={client.id || client.phone}>
                       <td>{client.name}</td>
                       <td>{client.phone}</td>
@@ -323,14 +323,17 @@ function ViewDashboard() {
                 <thead>
                   <tr>
                     <th>Nome do Cliente</th>
+                    <th>Tipo da Venda</th>
                     <th>Valor da Venda</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredOrders.slice(-5).reverse().map(order => (
+                  {filteredOrders.slice(-8).reverse().map(order => (
                     <tr key={order.number}>
                       <td>{order.name}</td>
-                      <td>R$ {order.products.reduce((sum, product) => sum + (product.price * product.quantidade), 0).toFixed(2)}</td>
+                      <td>{order.tipe}</td>
+                      <td>R$ {order.total.toFixed(2)
+                    }</td>
                     </tr>
                   ))}
                 </tbody>
