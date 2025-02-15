@@ -45,7 +45,7 @@
 
 .dashboard-grid {
   display: flex;
-  gap: 2%;
+  gap: 3%;
   justify-content: space-around;
   width: 100%;
 }
@@ -148,6 +148,12 @@
 .dashboard-label {
   display: block; /* Faz o label ocupar a largura total */
   margin-bottom: 5px; /* Espaçamento abaixo do label */
+  text-align: left;
+  font-weight: 500;
+}
+
+.dashboard-label:hover{
+  cursor: pointer;
 }
 
 .dashboard-filters input {
