@@ -129,8 +129,8 @@ function ControleClientes() {
     }
   };
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
   };
 
   const itemsToDisplay = clientesFiltrados.slice(
@@ -233,29 +233,32 @@ function ControleClientes() {
 
               <div className="pagination">
                 <Stack spacing={2}>
-                  <Pagination
-                    count={totalPages}
-                    page={currentPage}
-                    onChange={(event, value) => handlePageChange(value)}
-                    shape="rounded"
-                    color="black"
-                    sx={{
-                      '& .MuiPaginationItem-root': {
-                        backgroundColor: 'transparent', // Cor de fundo dos itens de paginação
-                        color: '#f15b1b', // Cor do texto
-                        '&:hover': {
-                          backgroundColor: '#d1d1d1', // Cor ao passar o mouse
-                        },
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  shape="rounded"
+                  siblingCount={1} 
+                  boundaryCount={1} 
+                  showFirstButton 
+                  showLastButton 
+                  sx={{
+                    '& .MuiPaginationItem-root': {
+                      backgroundColor: 'transparent',
+                      color: '#f15b1b',
+                      '&:hover': {
+                        backgroundColor: '#d1d1d1',
                       },
-                      '& .MuiPaginationItem-page.Mui-selected': {
-                        backgroundColor: '#f15b1b', // Cor de fundo da página selecionada
-                        color: '#fff', // Cor do texto da página selecionada
-                        '&:hover': {
-                          backgroundColor: '#f15b1b', // Cor ao passar o mouse na página selecionada
-                        },
+                    },
+                    '& .MuiPaginationItem-page.Mui-selected': {
+                      backgroundColor: '#f15b1b',
+                      color: '#fff',
+                      '&:hover': {
+                        backgroundColor: '#f15b1b',
                       },
-                    }}
-                  />
+                    },
+                  }}
+                />
                 </Stack>
               </div>
             </>

@@ -654,7 +654,10 @@ const VendasPage = () => {
                 page={currentPage}
                 onChange={(event, value) => handlePageChange(value)}
                 shape="rounded"
-                color="black"
+                siblingCount={1} 
+                boundaryCount={1} 
+                showFirstButton 
+                showLastButton 
                 sx={{
                   "& .MuiPaginationItem-root": {
                     backgroundColor: "transparent",

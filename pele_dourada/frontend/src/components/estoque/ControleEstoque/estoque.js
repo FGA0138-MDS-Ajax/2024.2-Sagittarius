@@ -274,7 +274,10 @@ function ControleEstoque() {
               page={currentPage} // A página ativa será gerenciada por este valor
               onChange={handlePageChange} // Passando a função corretamente
               shape="rounded"
-              color="black"
+              siblingCount={1} 
+              boundaryCount={1} 
+              showFirstButton 
+              showLastButton 
               sx={{
                 '& .MuiPaginationItem-root': {
                   backgroundColor: 'transparent', // Cor de fundo dos itens de paginação
