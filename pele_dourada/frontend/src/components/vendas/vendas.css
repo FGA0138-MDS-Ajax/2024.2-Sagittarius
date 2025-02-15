@@ -368,8 +368,33 @@
   justify-items: center;
   align-items: center;
   max-height: 500px; 
-  overflow-y: auto;
+  overflow-y: scroll; /* Mudança de auto para scroll */
+  scrollbar-width:auto; /* Para navegadores Firefox */
+  scrollbar-color: #f15b1b transparent; /* Cor da barra e do fundo */
+
 }
+
+/* Personalizando a barra de rolagem para o Chrome, Edge e Safari */
+.vendas-produtos-grid::-webkit-scrollbar {
+  width: 8px; /* Largura da barra */
+}
+
+.vendas-produtos-grid::-webkit-scrollbar-track {
+  background-color: transparent; /* Cor de fundo do trilho da barra */
+}
+
+.vendas-produtos-grid::-webkit-scrollbar-thumb {
+  background-color: #f15b1b; /* Cor da parte da barra que move */
+  border-radius: 10px; /* Bordas arredondadas */
+  border: 2px solid transparent; /* Espaçamento entre a barra e o trilho */
+  background-clip: content-box; /* Ajuste de padding entre a barra e o trilho */
+}
+
+.vendas-produtos-grid::-webkit-scrollbar-thumb:hover {
+  background-color: #e44a10; /* Cor mais escura ao passar o mouse */
+  cursor: pointer;
+}
+
 .vendas-produtos-grid > div {
   width: 100%; 
   height: 80px; 
