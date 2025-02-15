@@ -421,6 +421,9 @@ const VendasPage = () => {
             setErrorMessage(
               `Quantidade insuficiente de ${produto.name} no estoque.`
             );
+            setTimeout(() => {
+              setErrorMessage("");
+            }, 2000);
             return prevState;
           }
 
