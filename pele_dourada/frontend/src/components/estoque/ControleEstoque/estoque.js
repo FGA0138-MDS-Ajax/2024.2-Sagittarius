@@ -7,6 +7,9 @@ import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 import { BsFillBoxSeamFill } from "react-icons/bs";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const handleInputChange = (e) => {
   let value = e.target.value;
@@ -59,7 +62,7 @@ function ControleEstoque() {
   const handleBuscaChange = (e) => setBusca(e.target.value);
 
   const handlePageChange = (event, value) => {
-    setCurrentPage(value); // Agora o valor correto da página será passado
+    setCurrentPage(value); 
   };
 
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -106,41 +109,68 @@ function ControleEstoque() {
 
   const handleEditProduct = async (produto) => {
     try {
-      await axios.put('http://localhost:8000/api/product/update/', {
-        id: produtoEditando.id,
-        name: produtoEditando.name,
-        price: produtoEditando.price,
-        qtd: produtoEditando.qtd
-      });
+        await axios.put('http://localhost:8000/api/product/update/', {
+            id: produtoEditando.id,
+            name: produtoEditando.name,
+            price: produtoEditando.price,
+            qtd: produtoEditando.qtd
+        });
 
-      setIsEditModalOpen(false);
-      setProdutoEditando(null);
-      const updatedProdutos = produtos.map((p) =>
-        p.name === produtoEditando.oldName ? { ...p, ...produtoEditando } : p
-      );
-      setProdutos(updatedProdutos);
-      setSuccessMessage('Produto editado com sucesso!');
-      setTimeout(() => setSuccessMessage(''), 2000); 
+        setIsEditModalOpen(false);
+        setProdutoEditando(null);
+        const updatedProdutos = produtos.map((p) =>
+            p.name === produtoEditando.oldName ? { ...p, ...produtoEditando } : p
+        );
+        setProdutos(updatedProdutos);
+
+        toast.success(`${produtoEditando.name} editado com sucesso!`, { // Toast de sucesso
+            position: 'top-right',
+            autoClose: 3000,
+            theme: 'colored',
+            transition: Bounce,
+            style: { width: '100%' }
+        });
+
     } catch (error) {
-      console.error("Erro ao atualizar produto:", error);
-      alert('Erro ao atualizar o produto');
-    }
-  };
+        console.error("Erro ao atualizar produto:", error);
 
-  const handleRemoveProduct = async () => {
-    try {
+        toast.error('Erro ao editar o produto. Verifique os dados e tente novamente.', { // Toast de erro
+            position: 'top-right',
+            autoClose: 5000,
+            theme: 'colored',
+        });
+    }
+};
+
+const handleRemoveProduct = async () => {
+  try {
+      const productName = produtoRemovendo.name; // Armazena o nome *antes* de remover
+
       await axios.delete('http://localhost:8000/api/product/delete/', {
-        data: { id: produtoRemovendo.id }
+          data: { id: produtoRemovendo.id }
       });
 
       setProdutos(produtos.filter((produto) => produto.id !== produtoRemovendo.id));
       setIsConfirmModalOpen(false);
       setProdutoRemovendo(null);
-    } catch (error) {
+
+      toast.success(`${productName} removido com sucesso!`, { // Toast com nome
+          position: 'top-right',
+          autoClose: 3000,
+          theme: 'colored',
+          transition: Bounce,
+      });
+
+  } catch (error) {
       console.error("Erro ao deletar produto:", error);
-      alert('Erro ao deletar o produto');
-    }
-  };
+
+      toast.error('Erro ao deletar o produto. Tente novamente.', {
+          position: 'top-right',
+          autoClose: 5000,
+          theme: 'colored',
+      });
+  }
+};
 
   const produtosPorPagina = 12;
   const produtosNaPaginaAtual = produtosFiltrados.slice(
@@ -176,6 +206,7 @@ function ControleEstoque() {
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       <main className="main-content">
+        <ToastContainer />
         <div className="controle-estoque-page" id="controle-estoque-page">
           <div className="controle-estoque-title" id="controle-estoque-title">
             <h1>Controle de Estoque</h1>
@@ -392,11 +423,11 @@ function ControleEstoque() {
                 <h2>Confirmar Remoção</h2>
                 <p>Tem certeza que deseja remover o produto "{produtoRemovendo?.name}"?</p>
                 <div className="div-editar-produto-button">
+                  <button onClick={() => setIsConfirmModalOpen(false)} className="button-secondary">
+                    Cancelar
+                  </button>
                   <button onClick={handleRemoveProduct} className="editar-produto-button">
                     Confirmar
-                  </button>
-                  <button onClick={() => setIsConfirmModalOpen(false)} className="editar-produto-button">
-                    Cancelar
                   </button>
                 </div>
               </div>
