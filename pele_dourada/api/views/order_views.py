@@ -131,6 +131,8 @@ class UpdateOrderView(APIView):
                 'error': 'Por favor, insira o tipo do pedido',
             }, status=status.HTTP_400_BAD_REQUEST
             )
+        if not new_name:
+            new_name = 'Cliente sem nome'
 
         try:
             update_order(number, index=index, new_product=new_product, 
