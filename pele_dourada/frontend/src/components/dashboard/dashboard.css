@@ -90,6 +90,11 @@
   margin-top: 20px;
 }
 
+.dashboard-table thead th {
+  text-align: center;
+}
+
+
 .dashboard-table th, .dashboard-table td {
   border: 1px solid #ddd;
   padding: 8px;
@@ -125,12 +130,15 @@
   background-color: #F3821B;
   padding: 10px;
   border-radius: 5px;
-  color:white;
+  color: white;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
 }
 
 .dashboard-button-export:hover{
-  /* background-color: #f15b1b; */
-  text-decoration: underline;
+  background-color: #f15b1b;
 }
 
 .dashboard-label {

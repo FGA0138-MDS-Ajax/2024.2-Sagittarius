@@ -287,7 +287,7 @@ function ViewDashboard() {
             <div className='dashboard-div-button-export'>
               <CSVLink data={exportData()} filename={"dashboard-data.csv"} className="dashboard-button-export" id="exportar-csv">
                 <LuFileSpreadsheet/>
-                <span className="dashboard-button-export" id="exportar-csv">Exportar CSV</span>
+                <span id="exportar-csv">Exportar CSV</span>
               </CSVLink>
             </div>
 

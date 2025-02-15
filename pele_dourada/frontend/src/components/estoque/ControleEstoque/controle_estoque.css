@@ -367,6 +367,12 @@ th {
   cursor: pointer;
 }
 
+.button-secondary {
+  display: flex;
+  justify-content: center;
+  width: 80%;
+}
+
 /***** TABELA *****/
 .controle-estoque-table th:nth-child(4),
 .controle-estoque-table td:nth-child(4) {

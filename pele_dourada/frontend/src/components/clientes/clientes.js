@@ -172,8 +172,8 @@ const confirmarRemocao = async () => {
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      <ToastContainer />
       <main className="main-content">
-        <ToastContainer />
         <div className="controle-clientes-page" id="controle-clientes-page">
           <div className="controle-clientes-title" id="controle-clientes-title">
             <h1>Controle de Clientes</h1>

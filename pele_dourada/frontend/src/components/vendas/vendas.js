@@ -590,8 +590,8 @@ const VendasPage = () => {
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      <ToastContainer/>
       <main className="main-content">
-        <ToastContainer/>
         <div className="vendas-page" id="vendas-page">
           <div className="vendas-title" id="vendas-title">
             <h1>Vendas e Encomendas</h1>

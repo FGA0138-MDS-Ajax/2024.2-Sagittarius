@@ -204,9 +204,9 @@ const handleRemoveProduct = async () => {
 
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
+      <ToastContainer />
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       <main className="main-content">
-        <ToastContainer />
         <div className="controle-estoque-page" id="controle-estoque-page">
           <div className="controle-estoque-title" id="controle-estoque-title">
             <h1>Controle de Estoque</h1>
@@ -238,64 +238,66 @@ const handleRemoveProduct = async () => {
           {isLoading ? (
             <div>Carregando...</div>
           ) : (
-            <table className="controle-estoque-table">
-              <thead>
-                <tr>
-                  <th onClick={() => requestSort('name')}>
-                    Produto {getSortIcon('name')}
-                  </th>
-                  <th onClick={() => requestSort('price')}>
-                    Preço {getSortIcon('price')}
-                  </th>
-                  <th onClick={() => requestSort('qtd')}>
-                    Quantidade {getSortIcon('qtd')}
-                  </th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-              {produtosNaPaginaAtual.map((produto) => (
-                  <tr key={produto.id}>
-                    <td>{produto.name}</td>
-                    <td>R$ {produto.price.toFixed(2)}</td>
-                    <td>
-                      <div
-                        className={`quantidade-container ${
-                          produto.qtd > 20
-                            ? "alta"
-                            : produto.qtd > 10
-                              ? "media"
-                              : "baixa"
-                        }`}
-                      >
-                        {produto.qtd}
-                      </div>
-                    </td>
-                    <td>
-                      <div className='controle-estoque-acoes'>
-                        <button
-                          className='controle-estoque-edit-button'
-                          onClick={() => {
-                            setProdutoEditando({ ...produto, oldName: produto.name });
-                            setIsEditModalOpen(true);
-                          }}
-                        >
-                          <FaPencilAlt className="icon-button" /> Editar
-                        </button>
-                        <button
-                          className='controle-estoque-remove-button'
-                          onClick={() => {
-                            setProdutoRemovendo(produto);
-                            setIsConfirmModalOpen(true);
-                          }}>
-                          <FaTimes className="icon-button" /> Remover
-                        </button>
-                      </div>
-                    </td>
+            <div className='div-controle-estoque-table'>
+              <table className="controle-estoque-table">
+                <thead>
+                  <tr>
+                    <th onClick={() => requestSort('name')}>
+                      Produto {getSortIcon('name')}
+                    </th>
+                    <th onClick={() => requestSort('price')}>
+                      Preço {getSortIcon('price')}
+                    </th>
+                    <th onClick={() => requestSort('qtd')}>
+                      Quantidade {getSortIcon('qtd')}
+                    </th>
+                    <th>Ações</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                {produtosNaPaginaAtual.map((produto) => (
+                    <tr key={produto.id}>
+                      <td>{produto.name}</td>
+                      <td>R$ {produto.price.toFixed(2)}</td>
+                      <td>
+                        <div
+                          className={`quantidade-container ${
+                            produto.qtd > 20
+                              ? "alta"
+                              : produto.qtd > 10
+                                ? "media"
+                                : "baixa"
+                          }`}
+                        >
+                          {produto.qtd}
+                        </div>
+                      </td>
+                      <td>
+                        <div className='controle-estoque-acoes'>
+                          <button
+                            className='controle-estoque-edit-button'
+                            onClick={() => {
+                              setProdutoEditando({ ...produto, oldName: produto.name });
+                              setIsEditModalOpen(true);
+                            }}
+                          >
+                            <FaPencilAlt className="icon-button" /> Editar
+                          </button>
+                          <button
+                            className='controle-estoque-remove-button'
+                            onClick={() => {
+                              setProdutoRemovendo(produto);
+                              setIsConfirmModalOpen(true);
+                            }}>
+                            <FaTimes className="icon-button" /> Remover
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
 
           <div className="pagination">
