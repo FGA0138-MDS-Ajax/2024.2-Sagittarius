@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+import pytz
 
 from bson import ObjectId
 from dotenv import find_dotenv, load_dotenv
@@ -20,8 +21,9 @@ class PedidoIDGenerator:
     @classmethod
     def gerar_codigo_pedido(cls):
         cls.contador += 1
-        data = datetime.now().strftime('%d%m%Y')  # DiaMesAno
-        return f"{data}-{cls.contador:06d}"  # Exemplo: 20250118-000001
+        tz_brasilia = pytz.timezone('America/Sao_Paulo')  # Fuso horário de Brasília
+        data = datetime.now(tz_brasilia).strftime('%d%m%Y-%H%M%S')  # Hora de Brasília
+        return f"{data}-{cls.contador:06d}"  # Exemplo: 18022025-141234-000001
 
 # modelo de documentos.
 class User():
