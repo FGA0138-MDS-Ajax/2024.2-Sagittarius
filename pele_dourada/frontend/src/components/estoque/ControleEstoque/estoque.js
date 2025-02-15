@@ -407,7 +407,7 @@ const handleRemoveProduct = async () => {
         <div className="div-editar-produto-button">
           <button
             onClick={() => setIsEditModalOpen(false)}
-            className="editar-produto-button"
+            className="button-secondary"
           >
             Cancelar
           </button>

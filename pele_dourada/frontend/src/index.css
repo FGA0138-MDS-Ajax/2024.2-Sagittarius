@@ -83,10 +83,6 @@ button a {
     text-decoration: none;
 }
 
-button:hover {
-    background-color: #f15b1b;
-}
-
 .button-secondary {
     display: flex;
     align-items: center;

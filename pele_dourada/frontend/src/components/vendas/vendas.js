@@ -5,9 +5,11 @@ import { MdOutlinePointOfSale } from "react-icons/md";
 import { GiChickenOven } from "react-icons/gi";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import Sidebar from "../../components/sidebar/sidebar";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import { Tooltip, OverlayTrigger, Toast } from "react-bootstrap";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const VendasPage = () => {
 
@@ -260,104 +262,132 @@ const VendasPage = () => {
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-  
+
     const produtosOriginais = selectedVenda.products;
     const produtosEditados = formData.produtos;
-  
+
     try {
-      // Atualizar a venda
-      await axios.put("http://localhost:8000/api/order/update/", {
-        number: vendaEditando.number,
-        index: vendaEditando.id, // Enviar o id do pedido como index
-        new_name: formData.nomeCliente,
-        new_payment: formData.metodoPagamento,
-        new_tipe: formData.tipoVenda,
-        new_product: produtosEditados.map((produto) => ({
-          id: produto.id,
-          name: produto.name,
-          price: produto.price,
-          quantidade: produto.quantidade,
-        })),
-        new_price: parseFloat(calcularTotalVenda()), // Enviar o valor total da venda como número
-        new_confirm: vendaEditando.confirm,
-      });
-  
-      // Atualizar o estoque
-      await Promise.all(
-        produtosOriginais.map(async (produtoOriginal) => {
-          const produtoEditado = produtosEditados.find(
-            (produto) => produto.id === produtoOriginal.id
-          );
-  
-          if (!produtoEditado) {
-            // Produto removido da venda, adicionar de volta ao estoque
-            const produtoEstoque = produtosEstoque.find(
-              (produto) => produto.id === produtoOriginal.id
-            );
-            await axios.put("http://localhost:8000/api/product/update/", {
-              id: produtoOriginal.id,
-              name: produtoOriginal.name,
-              price: produtoOriginal.price,
-              qtd: produtoEstoque.qtd + produtoOriginal.quantidade,
-            });
-          } else if (produtoEditado.quantidade !== produtoOriginal.quantidade) {
-            // Produto com quantidade alterada
-            const quantidadeDiferenca =
-              produtoOriginal.quantidade - produtoEditado.quantidade;
-            const produtoEstoque = produtosEstoque.find(
-              (produto) => produto.id === produtoOriginal.id
-            );
-            await axios.put("http://localhost:8000/api/product/update/", {
-              id: produtoOriginal.id,
-              name: produtoOriginal.name,
-              price: produtoOriginal.price,
-              qtd: produtoEstoque.qtd + quantidadeDiferenca,
-            });
-          }
-        })
-      );
-  
-      await Promise.all(
-        produtosEditados.map(async (produtoEditado) => {
-          const produtoOriginal = produtosOriginais.find(
-            (produto) => produto.id === produtoEditado.id
-          );
-  
-          if (!produtoOriginal) {
-            // Produto adicionado à venda, subtrair do estoque
-            const produtoEstoque = produtosEstoque.find(
-              (produto) => produto.id === produtoEditado.id
-            );
-            await axios.put("http://localhost:8000/api/product/update/", {
-              id: produtoEditado.id,
-              name: produtoEditado.name,
-              price: produtoEditado.price,
-              qtd: produtoEstoque.qtd - produtoEditado.quantidade,
-            });
-          }
-        })
-      );
-  
-      fetchVendas();
-      fetchProdutosEstoque();
-      closeEditModal();
+        // Atualizar a venda
+        await axios.put("http://localhost:8000/api/order/update/", {
+            number: vendaEditando.number,
+            index: vendaEditando.id,
+            new_name: formData.nomeCliente,
+            new_payment: formData.metodoPagamento,
+            new_tipe: formData.tipoVenda,
+            new_product: produtosEditados.map((produto) => ({
+                id: produto.id,
+                name: produto.name,
+                price: produto.price,
+                quantidade: produto.quantidade,
+            })),
+            new_price: parseFloat(calcularTotalVenda()),
+            new_confirm: vendaEditando.confirm,
+        });
+
+        // Atualizar o estoque
+        await Promise.all(
+            produtosOriginais.map(async (produtoOriginal) => {
+                const produtoEditado = produtosEditados.find(
+                    (produto) => produto.id === produtoOriginal.id
+                );
+
+                if (!produtoEditado) {
+                    // Produto removido da venda, adicionar de volta ao estoque
+                    const produtoEstoque = produtosEstoque.find(
+                        (produto) => produto.id === produtoOriginal.id
+                    );
+                    await axios.put("http://localhost:8000/api/product/update/", {
+                        id: produtoOriginal.id,
+                        name: produtoOriginal.name,
+                        price: produtoOriginal.price,
+                        qtd: produtoEstoque.qtd + produtoOriginal.quantidade,
+                    });
+                } else if (produtoEditado.quantidade !== produtoOriginal.quantidade) {
+                    // Produto com quantidade alterada
+                    const quantidadeDiferenca =
+                        produtoOriginal.quantidade - produtoEditado.quantidade;
+                    const produtoEstoque = produtosEstoque.find(
+                        (produto) => produto.id === produtoOriginal.id
+                    );
+                    await axios.put("http://localhost:8000/api/product/update/", {
+                        id: produtoOriginal.id,
+                        name: produtoOriginal.name,
+                        price: produtoOriginal.price,
+                        qtd: produtoEstoque.qtd + quantidadeDiferenca,
+                    });
+                }
+            })
+        );
+
+        await Promise.all(
+            produtosEditados.map(async (produtoEditado) => {
+                const produtoOriginal = produtosOriginais.find(
+                    (produto) => produto.id === produtoEditado.id
+                );
+
+                if (!produtoOriginal) {
+                    // Produto adicionado à venda, subtrair do estoque
+                    const produtoEstoque = produtosEstoque.find(
+                        (produto) => produto.id === produtoEditado.id
+                    );
+                    await axios.put("http://localhost:8000/api/product/update/", {
+                        id: produtoEditado.id,
+                        name: produtoEditado.name,
+                        price: produtoEditado.price,
+                        qtd: produtoEstoque.qtd - produtoEditado.quantidade,
+                    });
+                }
+            })
+        );
+
+        toast.success("Venda editada com sucesso!", { // Toast de sucesso
+            position: 'top-right',
+            autoClose: 3000,
+            theme: 'colored',
+            transition: Bounce,
+        });
+
+        fetchVendas();
+        fetchProdutosEstoque();
+        closeEditModal();
+
     } catch (error) {
-      console.error("Erro ao atualizar a venda", error);
+        console.error("Erro ao atualizar a venda", error);
+
+        toast.error("Erro ao atualizar venda. Tente novamente.", { // Toast de erro
+            position: 'top-right',
+            autoClose: 5000,
+            theme: 'colored',
+        });
     }
-  };
+};
 
   const handleRemoveVenda = async () => {
     try {
-      await axios.delete("http://localhost:8000/api/order/delete/", {
-        data: { number: selectedVenda.number }, // Enviando no corpo
-      });
+        await axios.delete("http://localhost:8000/api/order/delete/", {
+            data: { number: selectedVenda.number },
+        });
 
-      fetchVendas();
-      closeRemoveModal();
+        fetchVendas();
+        closeRemoveModal();
+
+        toast.success("Venda removida com sucesso!", { // Toast de sucesso
+            position: 'top-right',
+            autoClose: 3000,
+            theme: 'colored',
+            transition: Bounce,
+        });
+
     } catch (error) {
-      console.error("Erro ao remover venda", error);
+        console.error("Erro ao remover venda", error);
+
+        toast.error("Erro ao remover venda. Tente novamente.", { // Toast de erro
+            position: 'top-right',
+            autoClose: 5000,
+            theme: 'colored',
+        });
     }
-  };
+};
 
   const handleEditChange = (e) => {
     const { name, value } = e.target;
@@ -477,52 +507,70 @@ const VendasPage = () => {
     e.preventDefault();
 
     if (
-      !formData.nomeCliente ||
-      !formData.metodoPagamento ||
-      !formData.tipoVenda ||
-      formData.produtos.length === 0
+        !formData.nomeCliente ||
+        !formData.metodoPagamento ||
+        !formData.tipoVenda ||
+        formData.produtos.length === 0
     ) {
-      setErrorMessage("Preencha todos os campos antes de finalizar a venda.");
-      return;
+        toast.error("Preencha todos os campos antes de finalizar a venda.", { // Toast de erro
+            position: 'top-right',
+            autoClose: 3000,
+            theme: 'colored',
+        });
+        return;
     }
-    setErrorMessage("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/order/register/",
-        {
-          name: formData.nomeCliente,
-          type: formData.tipoVenda,
-          payment: formData.metodoPagamento,
-          products: formData.produtos.map((produto) => ({
-            id: produto.id,
-            name: produto.name,
-            price: produto.price,
-            quantidade: produto.quantidade,
-          })),
-        }
-      );
-
-      if (response.status === 201) {
-        
-        await Promise.all(
-          formData.produtos.map(async (produto) => {
-            await axios.put("http://localhost:8000/api/product/update/", {
-              id: produto.id,
-              name: produto.name,
-              price: produto.price,
-              qtd: produto.qtd - produto.quantidade,
-            });
-          })
+        const response = await axios.post(
+            "http://localhost:8000/api/order/register/",
+            {
+                name: formData.nomeCliente,
+                type: formData.tipoVenda,
+                payment: formData.metodoPagamento,
+                products: formData.produtos.map((produto) => ({
+                    id: produto.id,
+                    name: produto.name,
+                    price: produto.price,
+                    quantidade: produto.quantidade,
+                })),
+            }
         );
-        fetchVendas();
-        fetchProdutosEstoque();
-        closeModal();
-      }
+
+        if (response.status === 201) {
+
+            await Promise.all(
+                formData.produtos.map(async (produto) => {
+                    await axios.put("http://localhost:8000/api/product/update/", {
+                        id: produto.id,
+                        name: produto.name,
+                        price: produto.price,
+                        qtd: produto.qtd - produto.quantidade,
+                    });
+                })
+            );
+            const tipoVenda = formData.tipoVenda.charAt(0).toUpperCase() + formData.tipoVenda.slice(1);
+            toast.success(`${tipoVenda} para ${formData.nomeCliente} realizada com sucesso!`, { // Toast com tipo de venda e o nome do cliente
+              position: 'top-right',
+              autoClose: 3500,
+              theme: 'colored',
+              transition: Bounce,
+              style: { width: '100%' }
+          });
+
+            fetchVendas();
+            fetchProdutosEstoque();
+            closeModal();
+        }
     } catch (error) {
-      console.error("Erro ao realizar venda/encomenda", error);
+        console.error("Erro ao realizar venda/encomenda", error);
+
+        toast.error(`Erro ao realizar ${formData.tipoVenda}. Tente novamente.`, {
+            position: 'top-right',
+            autoClose: 5000,
+            theme: 'colored',
+        });
     }
-  };
+};
 
   useEffect(() => {
     setProdutosDisponiveis(
@@ -540,6 +588,7 @@ const VendasPage = () => {
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       <main className="main-content">
+        <ToastContainer/>
         <div className="vendas-page" id="vendas-page">
           <div className="vendas-title" id="vendas-title">
             <h1>Vendas e Encomendas</h1>
