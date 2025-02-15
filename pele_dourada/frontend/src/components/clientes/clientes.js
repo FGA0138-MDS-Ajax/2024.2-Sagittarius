@@ -399,7 +399,7 @@ const confirmarRemocao = async () => {
                   <div className="div-editar-cliente-button">
                     <button
                       onClick={() => setIsEditModalOpen(false)}
-                      className="editar-cliente-button"
+                      className="button-secondary"
                     >
                       Cancelar
                     </button>
@@ -416,11 +416,11 @@ const confirmarRemocao = async () => {
                 <h2>Confirmar Remoção</h2>
                 <p>Tem certeza que deseja remover o cliente "{clienteRemovendo?.name}"?</p>
                 <div className="div-editar-cliente-button">
+                  <button onClick={() => setIsConfirmModalOpen(false)} className="button-secondary">
+                    Cancelar
+                  </button>
                   <button onClick={confirmarRemocao} className="editar-cliente-button">
                     Confirmar
-                  </button>
-                  <button onClick={() => setIsConfirmModalOpen(false)} className="editar-cliente-button">
-                    Cancelar
                   </button>
                 </div>
               </div>
@@ -433,11 +433,11 @@ const confirmarRemocao = async () => {
                 <h2>Confirmar Remoção</h2>
                 <p>Tem certeza que deseja remover o cliente "{clienteRemovendo?.name}"?</p>
                 <div className="div-editar-cliente-button">
+                  <button onClick={() => setIsConfirmModalOpen(false)} className="button-secondary">
+                    Cancelar
+                  </button>
                   <button onClick={handleRemoveCliente} className="editar-cliente-button">
                     Confirmar
-                  </button>
-                  <button onClick={() => setIsConfirmModalOpen(false)} className="editar-cliente-button">
-                    Cancelar
                   </button>
                 </div>
               </div>
