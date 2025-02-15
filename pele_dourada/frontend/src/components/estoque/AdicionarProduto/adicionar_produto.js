@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import axios from 'axios';
 import './adicionar_produto.css';
 import { FaBoxOpen } from "react-icons/fa";
 import Alert from '../../alert/alert';
+
+const handleInputChange = (e) => {
+  let value = e.target.value;
+
+  value = value.replace(/\D/g, ""); // Remove não-dígitos
+  value = value.replace(/(\d)(\d{2})$/, "$1,$2"); // Centavos
+  value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, ".$1"); // Milhares
+
+  e.target.value = `R$ ${value}`;
+};
 
 function AdicionarProduto() {
   const [nome, setNome] = useState('');
@@ -22,7 +32,7 @@ function AdicionarProduto() {
 
     const productData = {
       name: nome,
-      price: Number(preco),
+      price: Number(preco.replace(/\D/g, '')) / 100, // Converte para número
       qtd: parseInt(quantidade),
     };
 
@@ -53,10 +63,8 @@ function AdicionarProduto() {
   };
 
   const handlePrecoChange = (e) => {
-    const value = e.target.value;
-    if (value >= 0) {
-      setPreco(value);
-    }
+    handleInputChange(e);
+    setPreco(e.target.value);
   };
 
   const handleQuantidadeChange = (e) => {
@@ -92,15 +100,13 @@ function AdicionarProduto() {
         <div className="adicionar-produto-field">
           <label htmlFor="preco" className="adicionar-produto-label">Preço do Produto</label>
           <input
-            type="number"
+            type="text"
             id="preco"
             value={preco}
             onChange={handlePrecoChange}
-            placeholder="Preço do produto"
+            placeholder="R$00,00"
             required
             className="adicionar-produto-input"
-            min="0"
-            step="0.01"
           />
         </div>
 

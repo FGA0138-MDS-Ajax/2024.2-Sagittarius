@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ChangeEvent } from 'react';
 import axios from 'axios';
 import './controle_estoque.css';
 import AdicionarProduto from '../AdicionarProduto/adicionar_produto';
@@ -8,6 +8,15 @@ import { BsFillBoxSeamFill } from "react-icons/bs";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
+const handleInputChange = (e) => {
+  let value = e.target.value;
+
+  value = value.replace(/\D/g, ""); 
+  value = value.replace(/(\d)(\d{2})$/, "$1.$2"); 
+  value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, ","); 
+
+  e.target.value = value;
+};
 
 function ControleEstoque() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -139,18 +148,10 @@ function ControleEstoque() {
     currentPage * produtosPorPagina        // Índice final
   );
   
-
-  const formatCurrency = (value) => {
-    if (!value) return "R$ 0,00";
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(value);
-  };
-  
-  const handlePriceChange = (e, setProdutoEditando) => {
-    let rawValue = e.target.value.replace(/[^\d,]/g, "").replace(",", ".");
-    let numericValue = parseFloat(rawValue) || 0;
+  const handlePriceChange = (e) => {
+    handleInputChange(e);
+    const rawValue = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
+    const numericValue = parseFloat(rawValue) / 100; // Converte centavos para reais
   
     setProdutoEditando((prev) => ({
       ...prev,
@@ -158,30 +159,18 @@ function ControleEstoque() {
     }));
   };
 
-  function EditarProduto({ produtoEditando, setProdutoEditando }) {
-    return (
-      <div className="editar-produto-field">
-  <label className="editar-produto-label" htmlFor="edit-qtd">
-    Quantidade
-  </label>
-  <input
-    id="edit-qtd"
-    type="number"
-    className="editar-produto-input"
-    value={produtoEditando.qtd}
-    onChange={(e) => handleQtdChange(e, setProdutoEditando)}
-  />
-</div>
-    );
-  }
-
   const handleAddProduct = (novoProduto) => {
     setProdutos([...produtos, novoProduto]);
     setIsModalOpen(false);
   };
-  
-  <AdicionarProduto onAddProduct={handleAddProduct} />
-  
+
+  const formatCurrency = (value) => {
+    return value.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+      minimumFractionDigits: 2,
+    });
+  };
 
   return (
     <div className={`app-container ${isCollapsed ? "collapsed" : ""}`}>
@@ -354,15 +343,10 @@ function ControleEstoque() {
           </label>
           <input
             id="edit-price"
-            type="number"
+            type="text"
             className="editar-produto-input"
-            value={produtoEditando.price}
-            onChange={(e) =>
-              setProdutoEditando({
-                ...produtoEditando,
-                price: parseFloat(e.target.value),
-              })
-            }
+            value={formatCurrency(produtoEditando.price)}
+            onChange={(e) => handlePriceChange(e, setProdutoEditando)}
           />
         </div>
         <div className="editar-produto-field">
@@ -375,6 +359,8 @@ function ControleEstoque() {
             className="editar-produto-input"
             value={produtoEditando.qtd}
             onChange={(e) => handleQtdChange(e, setProdutoEditando)}
+            min="0"
+            step="1"
           />
         </div>
 
