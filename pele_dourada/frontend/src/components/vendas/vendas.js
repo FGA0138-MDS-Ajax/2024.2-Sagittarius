@@ -677,10 +677,10 @@ const VendasPage = () => {
 
           {isModalOpen && (
             <div className="vendas-modal-overlay">
+              {errorMessage && (
+                <div className="error-message">{errorMessage}</div>
+              )}
               <div className="vendas-modal-content">
-                {errorMessage && (
-                  <div className="error-message">{errorMessage}</div>
-                )}
                 <button className="vendas-close-modal" onClick={closeModal}>
                   &times;
                 </button>

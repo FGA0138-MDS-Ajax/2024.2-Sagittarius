@@ -181,6 +181,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
   height: 90%;
+  margin-top: 10px;
 }
 
 .vendas-modal-confirmacao-content {
@@ -451,12 +452,16 @@
   color: #fff;
   background-color: #ff4d4d;
   padding: 10px;
-  transform: translateX(30px);
   border-radius: 5px;
   text-align: center;
   margin-bottom: 15px;
   font-weight: bold;
-  width: 90%;
+  width: 70%;
+  position: fixed; /* Fixa no topo da tela */
+  top: 10px; /* Distância do topo da tela */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Garante que fique acima de tudo */
 }
 
 .tooltip-trigger {
