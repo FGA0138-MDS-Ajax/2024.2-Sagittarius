@@ -376,3 +376,34 @@
 .react-datepicker.react-datepicker__month-container span.react-datepicker__aria-live{
   display: none;
 }
+
+.chart-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+}
+
+.legend-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Divide a legenda em duas colunas */
+  gap: 10px;
+  width: 45%;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+}
+
+.legend-color {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.legend-text {
+  font-size: 14px;
+}

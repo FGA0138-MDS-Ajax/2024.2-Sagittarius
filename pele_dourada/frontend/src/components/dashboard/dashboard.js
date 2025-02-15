@@ -339,21 +339,31 @@ function ViewDashboard() {
 
           </div>
           <div className="dashboard-section">
-            <div className="dashboard-card">
-              <h2>Produtos em Estoque</h2>
-              <ResponsiveContainer width="100%" height={400}>
-                <PieChart>
-                  <Pie data={productsData} dataKey="quantidade" nameKey="name" cx="50%" cy="50%" outerRadius={150} label>
-                    {productsData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
+  <div className="dashboard-card">
+    <h2>Produtos em Estoque</h2>
+    <div className="chart-container">
+      <ResponsiveContainer width="50%" height={500}>
+        <PieChart>
+          <Pie data={productsData} dataKey="quantidade" nameKey="name" cx="50%" cy="50%" outerRadius={180} label>
+            {productsData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={entry.color} />
+            ))}
+          </Pie>
+          <Tooltip />
+        </PieChart>
+      </ResponsiveContainer>
+      <div className="legend-container">
+        {productsData.map((entry, index) => (
+          <div key={index} className="legend-item">
+            <span className="legend-color" style={{ backgroundColor: entry.color }}></span>
+            <span className="legend-text">{entry.name} ({entry.quantidade})</span>
           </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
         </div>
       </main>
     </div>  
