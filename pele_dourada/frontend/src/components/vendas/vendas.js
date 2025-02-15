@@ -245,14 +245,19 @@ const VendasPage = () => {
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
+  
+    const produtosOriginais = selectedVenda.products;
+    const produtosEditados = formData.produtos;
+  
     try {
+      // Atualizar a venda
       await axios.put("http://localhost:8000/api/order/update/", {
         number: vendaEditando.number,
         index: vendaEditando.id, // Enviar o id do pedido como index
         new_name: formData.nomeCliente,
         new_payment: formData.metodoPagamento,
         new_tipe: formData.tipoVenda,
-        new_product: formData.produtos.map((produto) => ({
+        new_product: produtosEditados.map((produto) => ({
           id: produto.id,
           name: produto.name,
           price: produto.price,
@@ -261,7 +266,65 @@ const VendasPage = () => {
         new_price: parseFloat(calcularTotalVenda()), // Enviar o valor total da venda como número
         new_confirm: vendaEditando.confirm,
       });
+  
+      // Atualizar o estoque
+      await Promise.all(
+        produtosOriginais.map(async (produtoOriginal) => {
+          const produtoEditado = produtosEditados.find(
+            (produto) => produto.id === produtoOriginal.id
+          );
+  
+          if (!produtoEditado) {
+            // Produto removido da venda, adicionar de volta ao estoque
+            const produtoEstoque = produtosEstoque.find(
+              (produto) => produto.id === produtoOriginal.id
+            );
+            await axios.put("http://localhost:8000/api/product/update/", {
+              id: produtoOriginal.id,
+              name: produtoOriginal.name,
+              price: produtoOriginal.price,
+              qtd: produtoEstoque.qtd + produtoOriginal.quantidade,
+            });
+          } else if (produtoEditado.quantidade !== produtoOriginal.quantidade) {
+            // Produto com quantidade alterada
+            const quantidadeDiferenca =
+              produtoOriginal.quantidade - produtoEditado.quantidade;
+            const produtoEstoque = produtosEstoque.find(
+              (produto) => produto.id === produtoOriginal.id
+            );
+            await axios.put("http://localhost:8000/api/product/update/", {
+              id: produtoOriginal.id,
+              name: produtoOriginal.name,
+              price: produtoOriginal.price,
+              qtd: produtoEstoque.qtd + quantidadeDiferenca,
+            });
+          }
+        })
+      );
+  
+      await Promise.all(
+        produtosEditados.map(async (produtoEditado) => {
+          const produtoOriginal = produtosOriginais.find(
+            (produto) => produto.id === produtoEditado.id
+          );
+  
+          if (!produtoOriginal) {
+            // Produto adicionado à venda, subtrair do estoque
+            const produtoEstoque = produtosEstoque.find(
+              (produto) => produto.id === produtoEditado.id
+            );
+            await axios.put("http://localhost:8000/api/product/update/", {
+              id: produtoEditado.id,
+              name: produtoEditado.name,
+              price: produtoEditado.price,
+              qtd: produtoEstoque.qtd - produtoEditado.quantidade,
+            });
+          }
+        })
+      );
+  
       fetchVendas();
+      fetchProdutosEstoque();
       closeEditModal();
     } catch (error) {
       console.error("Erro ao atualizar a venda", error);
