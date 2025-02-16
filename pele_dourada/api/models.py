@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
-import pytz
 
+import pytz
 from bson import ObjectId
 from dotenv import find_dotenv, load_dotenv
 from pymongo import MongoClient
@@ -196,7 +196,7 @@ def get_billing_date_interval(data_inicial, data_final):
     return faturamento
 
 # atualizar documentos
-def update_user(user_id, new_username=None, new_pwd=None):
+def update_user(username, new_username=None, new_pwd=None):
     update = {
         '$set': {}
     }
@@ -204,7 +204,7 @@ def update_user(user_id, new_username=None, new_pwd=None):
         update['$set']['username'] = new_username
     if new_pwd is not None:
         update['$set']['password'] = new_pwd
-    user_collection.update_one({'_id': user_id}, update)
+    user_collection.update_one({'username': username}, update)
     return
 
 def update_user_username(username, new_username=None, new_pwd=None):

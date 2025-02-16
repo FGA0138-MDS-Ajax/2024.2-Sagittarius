@@ -144,7 +144,6 @@ class UpdatePasswordView(APIView):
     )
 
     def put(self, request):
-        user_id = request.user.id
         username = request.data.get("username")
         old_password = request.data.get("password")
         new_password = request.data.get("confirmPassword")
@@ -155,15 +154,9 @@ class UpdatePasswordView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
-        # if not bcrypt.checkpw(old_password.encode('utf-8'), user.password.encode('utf-8')):
-        #     return Response({
-        #         'error': 'Senha antiga inválida',
-        #     }, status=status.HTTP_400_BAD_REQUEST
-        #     )
-
         hash_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
         try:
-            update_user(user_id=user_id, new_pwd=hash_password)
+            update_user(username=username, new_pwd=hash_password)
         except Exception as e:
             print(e)
             return Response({
