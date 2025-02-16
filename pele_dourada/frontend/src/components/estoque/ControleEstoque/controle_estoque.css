@@ -29,6 +29,7 @@
 .controle-estoque-search {
   margin-bottom: 15px;
   position: relative;
+  padding-left: 15px;
 }
 
 .controle-estoque-search::before {
@@ -36,9 +37,9 @@
   font-family: 'Font Awesome 6 Free'; /* Certifique-se de que o Font Awesome está carregado */
   font-weight: 900;
   position: absolute;
-  left: 10px; /* Distância do lado esquerdo do input */
+  left: 25px; /* Distância do lado esquerdo do input */
   top: 50%; /* Centraliza verticalmente */
-  transform: translateY(-50%); /* Ajusta o posicionamento para o centro */
+  transform: translateY(-65%); /* Ajusta o posicionamento para o centro */
   font-size: 14px;
   color: #ccc;
   pointer-events: none; /* Evita que o ícone interfira no clique */
@@ -59,29 +60,15 @@
 
 .controle-estoque-add-button {
   margin-bottom: 20px;
-}
-
-.controle-estoque-button {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: #F3821B;
-  color: white;
-  border: none;
-  padding: 10px 25px;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 15px;
-  position: relative;
-  margin-right: 30px;
-}
-
-.controle-estoque-add-button a {
-  text-decoration: none;
+  margin-right: 0px;
 }
 
 .controle-estoque-button:hover {
   background-color: #f15b1b;
+}
+
+.controle-estoque-button{
+  font-size: 16px;
 }
 
 .controle-estoque-list {
@@ -96,33 +83,6 @@
   font-size: 20px;
 }
 
-/* Estilos para a Tabela */
-.controle-estoque-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.controle-estoque-table th {
-  border: 1px solid #CED4DA;
-  background-color: #F3821B;
-  padding: 15px;
-  color: white;
-}
-
-.controle-estoque-table td {
-  border: 1px solid #ddd;
-  text-align: center;
-  padding: 10px;
-}
-
-.controle-estoque-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.controle-estoque-table tr:hover {
-  background-color: #f1f1f1;
-}
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -134,6 +94,7 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  text-align: center;
 }
 
 .modal-content {
@@ -145,7 +106,9 @@
   position: relative;
   box-shadow: 0 4px 8px rgba(59, 59, 59, 0.925);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center; /* Centraliza o texto */
 }
 
 .close-modal {
@@ -161,8 +124,43 @@
   transition: color 0.3s;
 }
 
+.success-message-estoque-edit{
+  color: green;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 10px;
+}
+
 .close-modal:hover {
   color: #ff0000; /* Altere a cor ao passar o mouse */
+}
+
+.div-editar-produto-button {
+  display: flex;
+  justify-content: space-around; /* Garante que os botões fiquem empilhados */
+  gap: 30px; /* Espaçamento entre os botões */
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.editar-produto-button {
+  padding: 12px;
+  background-color: #F3821B;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 80%; /* Para manter alinhamento com os campos */
+  text-align: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.editar-produto-button:hover {
+  background-color: #f15b1b;
 }
 
 .quantidade-container {
@@ -173,6 +171,15 @@
   color: white; /* Texto em branco para contrastar com o fundo colorido */
 }
 
+
+.controle-estoque-acoes {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  text-align: center;
+}
+
+
 .controle-estoque-action-buttons {
   display: flex;
   gap: 10px;
@@ -181,6 +188,10 @@
 
 .controle-estoque-edit-button,
 .controle-estoque-remove-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
@@ -236,6 +247,7 @@
 .app-container .main-content {
   margin-left: 270px; /* Largura da sidebar expandida */
 }
+
 
 /* Mantém o estilo do contêiner da quantidade */
 .quantidade-container {
@@ -293,14 +305,16 @@
 }
 
 .editar-produto-field {
-  margin-left: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 25px;
   width: 100%; /* Garante que os campos ocupem o espaço necessário */
 }
 
 .editar-produto-label {
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   text-transform: capitalize;
 }
 
@@ -311,7 +325,6 @@
   border: 1px solid #ccc;
   display: block;
   width: 80%; /* Reduz a largura para melhor aparência */
-  margin-top: 10px;
 }
 
 .editar-produto-button {
@@ -331,8 +344,8 @@
 
 .div-editar-produto-button {
   display: flex;
-  flex-direction: column; /* Garante que os botões fiquem empilhados */
-  gap: 15px; /* Espaçamento entre os botões */
+  justify-content: space-around; /* Garante que os botões fiquem empilhados */
+  gap: 30px; /* Espaçamento entre os botões */
   align-items: center;
   width: 100%;
   margin-top: 20px;
@@ -352,4 +365,29 @@
 
 th {
   cursor: pointer;
+}
+
+.button-secondary {
+  display: flex;
+  justify-content: center;
+  width: 80%;
+}
+
+/***** TABELA *****/
+.controle-estoque-table th:nth-child(4),
+.controle-estoque-table td:nth-child(4) {
+  width: 20%;
+  min-width: 150px; /* Evita que fique muito pequeno */
+}
+
+.controle-estoque-table {
+  width: 100%;
+  table-layout: fixed; /* Mantém as colunas com tamanho fixo */
+}
+
+.controle-estoque-table th, .controle-estoque-table td {
+  width: 25%; /* Como há 4 colunas, cada uma recebe 25% */
+  white-space: nowrap; /* Evita quebra de texto */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adiciona "..." quando o conteúdo for grande */
 }

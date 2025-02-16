@@ -23,17 +23,19 @@ class RegisterOrderView(APIView):
 
     def post(self, request):
         name = request.data.get("name")
-        tipe = request.data.get("tipe")
+        type = request.data.get("type")
         payment = request.data.get("payment")
         products = request.data.get("products")
 
-        if not name or not products or not tipe or not payment:
+        if not name or not products or not type or not payment:
             return Response({
                 'error': 'Por favor, insira todos os campos',
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
-        new_order = Order(products, name, tipe, payment)
+        new_order = Order(products, name, type, payment)
+
+        print(new_order.to_dict())
 
         try:
             insert_order(new_order)
@@ -59,12 +61,12 @@ class DeleteOrderView(APIView):
         ]
     )
 
-    def post(self, request):
+    def delete(self, request):
         number = request.data.get("number")
 
         if not number:
             return Response({
-                'error': 'Por favor, insira o ID do pedido',
+                'error': 'Por favor, insira o número do pedido',
             }, status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -99,26 +101,45 @@ class UpdateOrderView(APIView):
         ],
     )
 
-    def post(self, request):
+    def put(self, request):
         number = request.data.get("number")
         index = request.data.get("index")
         new_product = request.data.get("new_product")
-        new_price = request.data.get("new_price")
-        new_qtd = request.data.get("new_qtd")
         new_name = request.data.get("new_name")
         new_tipe = request.data.get("new_tipe")
         new_payment = request.data.get("new_payment")
         new_confirm = request.data.get("new_confirm")
+
+        new_total = 0
+        for product in new_product:
+            new_total += product['price'] * product['quantidade']
 
         if not number:
             return Response({
                 'error': 'Por favor, insira o ID do pedido',
             }, status=status.HTTP_400_BAD_REQUEST
             )
+        
+        if not new_payment:
+            return Response({
+                'error': 'Por favor, insira o método de pagamento',
+            }, status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if not new_tipe:
+            return Response({
+                'error': 'Por favor, insira o tipo do pedido',
+            }, status=status.HTTP_400_BAD_REQUEST
+            )
+        if not new_name:
+            new_name = 'Cliente sem nome'
 
         try:
-            update_order(number, index=index, new_product=new_product, new_price=new_price, new_qtd=new_qtd, new_name=new_name, new_tipe=new_tipe, new_payment=new_payment, new_confirm=new_confirm)
+            update_order(number, index=index, new_product=new_product, 
+                         new_name=new_name, new_tipe=new_tipe, new_payment=new_payment, 
+                         new_confirm=new_confirm, new_total=new_total)
         except Exception as e:
+            print(e)
             return Response({
                 'error': 'Erro ao atualizar pedido',
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -155,7 +176,8 @@ class ListOrdersView(APIView):
                 'name': order['name'],
                 'tipe': order['tipe'],
                 'payment': order['payment'],
-                'confirm': order['confirm']
+                'confirm': order['confirm'],
+                'total': order['total']
             })
 
         return Response({
