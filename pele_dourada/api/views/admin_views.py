@@ -89,7 +89,11 @@ class RegisterView(APIView):
                 'error': 'Nome de usuário já existe',
             }, status=status.HTTP_400_BAD_REQUEST
             )
-
+        if password != password2:
+            return Response({
+                'error': 'As senhas não coincidem',
+            }, status=status.HTTP_400_BAD_REQUEST
+            )
         new_user = User(username, hash_password)
 
         try:

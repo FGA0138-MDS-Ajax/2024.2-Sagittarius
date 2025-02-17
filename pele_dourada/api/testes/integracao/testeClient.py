@@ -16,7 +16,7 @@ def api_client():
 @pytest.fixture()
 def auth_client(api_client, mock_db):
     password = "testpassword"
-    hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+    hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
     user_data = {"username": "testuser", "password": hashed_password}
 
     patcher = patch("api.models.user_collection", mock_db.users)
@@ -55,7 +55,7 @@ def client_db_document(mock_cliente):
     }
 
 def test_register_cliente(auth_client, mock_client_collection):
-    new_client = {"name": "Cliente Novo", "number": "61977777777", "endereco": "Rua Nova, 456"}
+    new_client = {"name": "Cliente Novo", "phone": "61977777777", "address": "Rua Nova, 456"}
     response = auth_client.post("/api/client/register/", new_client, format="json")
     assert response.status_code == 201, f"Erro ao criar cliente: {response.json()}"
     assert response.json().get("message") == "Cliente registrado com sucesso"
@@ -80,17 +80,17 @@ def test_update_cliente(auth_client, mock_client_collection, client_db_document)
     """
     Testa a atualização do cliente
     """
-    mock_client_collection.insert_one(client_db_document)
-    
+    client_id = mock_client_collection.insert_one(client_db_document).inserted_id
     updated_data = {
-        "name": client_db_document["name"],  
-        "number": "61988888888",
-        "endereco": "Rua Atualizada, 456"
+        "name": "Novo nome",  
+        "phone": "61988888888",
+        "address": "Rua Atualizada, 456",
+        "id": str(client_id)
     }
     response = auth_client.put("/api/client/update/", updated_data, format="json")
     assert response.status_code == 200, f"Erro ao atualizar cliente: {response.json()}"
 
-    client_data = mock_client_collection.find_one({"name": client_db_document["name"]})
+    client_data = mock_client_collection.find_one({"name": "Novo nome"})
     assert client_data is not None, "Cliente não encontrado após atualização"
     assert client_data.get("phone") == "61988888888", "Número do cliente não foi atualizado"
 
@@ -98,9 +98,10 @@ def test_delete_cliente(auth_client, mock_client_collection, client_db_document)
     """
     Testa a deleção do cliente 
     """
-    mock_client_collection.insert_one(client_db_document)
     
-    response = auth_client.delete("/api/client/delete/", data={"name": client_db_document["name"]}, format="json")
+    client_id = mock_client_collection.insert_one(client_db_document).inserted_id
+    
+    response = auth_client.delete("/api/client/delete/", data={"id": str(client_id)}, format="json")
     assert response.status_code == 200, f"Erro ao deletar cliente: {response.json()}"
 
     client_data = mock_client_collection.find_one({"name": client_db_document["name"]})
