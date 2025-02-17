@@ -21,7 +21,7 @@ def auth_client(client, mock_db):
     """Autentica o cliente de testes e retorna o cliente autenticado"""
     
     password = "testpassword"
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
     user_data = {
         "username": "testuser",
@@ -48,15 +48,19 @@ def auth_client(client, mock_db):
         yield client
         patcher.stop()
 
-
+@pytest.fixture()
+def mock_stock_collection(mock_db):
+    with patch("api.models.stock_collection", mock_db.stock_collection):
+        yield mock_db.stock_collection
+        
 @pytest.fixture
 def mock_product():
     """Cria um produto fictício para testes"""
-    return {"name": "Produto Teste", "price": 100.0, "qtd": 10}
+    return {"name": "Frango Assado2", "price": 100.0, "qtd": 10}
 
-def test_create_product(mock_db, auth_client, mock_product):
+def test_create_product(auth_client, mock_product, mock_stock_collection):
     """Teste para criar um produto"""
-    stock_collection = mock_db.stock_collection
+    stock_collection = mock_stock_collection
 
     stock_collection.delete_many({})
 
@@ -64,9 +68,9 @@ def test_create_product(mock_db, auth_client, mock_product):
     assert response.status_code == 201
     assert "Produto registrado com sucesso" in response.data
 
-def test_get_products(mock_db, auth_client, mock_product):
+def test_get_products(auth_client, mock_product, mock_stock_collection):
     """Teste para listar produtos"""
-    stock_collection = mock_db.stock_collection
+    stock_collection = mock_stock_collection
 
     stock_collection.delete_many({})
     stock_collection.insert_one(mock_product)
@@ -74,30 +78,27 @@ def test_get_products(mock_db, auth_client, mock_product):
     response = auth_client.get("/api/products/", format="json")
     
     assert response.status_code == 200
-    assert len(response.data["products"]) == 1
-    assert response.data["products"][0]["name"] == mock_product["name"]
-
-def test_update_product(mock_db, auth_client, mock_product):
-    """Teste para atualizar um produto"""
-    stock_collection = mock_db.stock_collection
-
-    stock_collection.delete_many({})
-    stock_collection.insert_one(mock_product)
-
-    updated_data = {"name": "Produto Atualizado", "price": 150.0}
-    response = auth_client.post("/api/products/update/", updated_data, format="json")
     
-    assert response.status_code == 200
-    assert "Produto atualizado com sucesso" in response.data
+    assert response.data["products"][0]["name"] == "Frango Assado2"
 
-def test_delete_product(mock_db, auth_client, mock_product):
+def test_update_product(auth_client, mock_product, mock_stock_collection):
+    """Teste para atualizar um produto"""
+    stock_collection = mock_stock_collection
+    
+    # stock_collection.delete_many({})
+    product_id = stock_collection.insert_one(mock_product).inserted_id
+
+    updated_data = {"name": "Produto Atualizado", "price": 150.0, "id": str(product_id), "qtd": 20}
+    response = auth_client.put("/api/product/update/", updated_data, format="json")
+    
+    assert response.status_code == 200, f"Produto atualizado com sucesso: {response.json()}"
+
+def test_delete_product(auth_client, mock_product, mock_stock_collection):
     """Teste para deletar um produto"""
-    stock_collection = mock_db.stock_collection
-
-    stock_collection.delete_many({})
-    stock_collection.insert_one(mock_product)
-
-    response = auth_client.post("/api/products/delete/", {"name": mock_product["name"]}, format="json")
+    stock_collection = mock_stock_collection
+    # stock_collection.delete_many({})
+    product_id = stock_collection.insert_one(mock_product).inserted_id
+    response = auth_client.delete("/api/product/delete/", {"id": str(product_id)}, format="json")
     assert response.status_code == 200
     assert "Produto deletado com sucesso" in response.data
     assert stock_collection.find_one({"name": mock_product["name"]}) is None

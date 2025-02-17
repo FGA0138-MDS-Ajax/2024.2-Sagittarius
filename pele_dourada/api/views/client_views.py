@@ -42,7 +42,7 @@ class RegisterClientView(APIView):
             )
         
         return Response({
-            "Cliente registrado com sucesso"
+            'message': "Cliente registrado com sucesso"
         }, status=status.HTTP_201_CREATED
         )
 

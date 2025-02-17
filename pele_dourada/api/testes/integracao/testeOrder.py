@@ -21,7 +21,7 @@ def auth_client(client, mock_db):
     """Autentica o cliente de testes e retorna o cliente autenticado"""
     
     password = "testpassword"
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
     user_data = {
         "username": "testuser",
@@ -54,12 +54,12 @@ def mock_order():
     """Cria um pedido fictício para testes"""
     return {
         "number": "1",
-        "name": "Matheus",
-        "tipe": "Delivery",
+        "name": "Matheus de Alcântara",
+        "type": "Delivery",
         "payment": "Cartão",
         "products": [
-            {"name": "Produto 1", "price": 100.0},
-            {"name": "Produto 2", "price": 100.0}
+            {"name": "Produto 1", "price": 100.0, "quantidade": 1},
+            {"name": "Produto 2", "price": 100.0, "quantidade": 1}
         ],
         "total": 200.0,
         "confirm": True
@@ -68,6 +68,7 @@ def mock_order():
 
 def test_create_order(mock_db, auth_client, mock_order):
     """Teste para criar um pedido"""
+    from api import models
     order_collection = mock_db.order_collection
 
     order_collection.delete_many({})
@@ -87,6 +88,7 @@ def test_get_orders(mock_db, auth_client, mock_order):
     
 
     assert response.status_code == 200
+    print(response.json())
     #assert len(response.data["orders"]) == 1
     assert response.data["orders"][0]["name"] == mock_order["name"]
 
@@ -95,20 +97,21 @@ def test_update_order(mock_db, auth_client, mock_order):
     order_collection = mock_db.order_collection
 
     order_collection.delete_many({})
-    order_id = order_collection.insert_one(mock_order).inserted_id
+    order_collection.insert_one(mock_order)
 
     updated_data = {
-        "number": str(order_id),
+        "number": str(1),
         "index": 0,
-        "new_product": "Produto Atualizado",
-        "new_price": 150.0,
-        "new_qtd": 5,
+        "new_product": [
+            {"name": "Produto 1 novo", "price": 100.0, "quantidade": 2},
+            {"name": "Produto 2 novo", "price": 100.0, "quantidade": 2}
+        ],
         "new_name": "Cliente Atualizado",
         "new_tipe": "Retirada",
         "new_payment": "Dinheiro",
         "new_confirm": "Confirmado"
     }
-    response = auth_client.post("/api/order/update/", updated_data, format="json")
+    response = auth_client.put("/api/order/update/", updated_data, format="json")
     
     
     assert response.status_code == 200
@@ -121,7 +124,7 @@ def test_delete_order(mock_db, auth_client, mock_order):
     order_collection.delete_many({})
     order_id = order_collection.insert_one(mock_order).inserted_id
 
-    response = auth_client.post("/api/order/delete/", {"number": str(order_id)}, format="json")
+    response = auth_client.delete("/api/order/delete/", {"number": str(order_id)}, format="json")
     print(response.json())
 
     assert response.status_code == 200
