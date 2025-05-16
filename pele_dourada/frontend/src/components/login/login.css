@@ -49,11 +49,12 @@
 
 .login-form-group {
   margin-bottom: 15px;
+  width: 100%;
 }
 
 .login-input {
   padding: 10px;
-  width: 95%;
+  width: 100%;
   margin-top: 5px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -68,47 +69,41 @@
   margin-top: 20px;
   padding: 10px;
   background-color: #F3821B;
-  color: white;
+  color: rgb(255, 255, 255);
   border: none;
   cursor: pointer;
   border-radius: 5px;
   margin: 10px 0;
   font-size: 16px;
   width: 100%;
-}
-
-.remember-me {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.remember-me label {
-  margin-top: 5px;
-  font-size: 14px;
-}
-
-.remember-me-checkbox:checked {
-  accent-color: #F3821B;
-}
-
-.action-buttons {
-  margin-top: 10px;
-  display: flex;
+  text-align: center;
+  display: flex; 
   justify-content: center;
+}
+
+.login-button::placeholder {
+  color: #999;
+}
+
+
+
+.action-buttons-login{
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   width: 100%;
 }
 
 .register-button,
 .forgot-password-button,
 .back-to-login-button {
-  width: 100%;
   font-size: 14px;
   background-color: transparent;
   color: #F3821B;
   border: none;
   cursor: pointer;
+  text-align: center;
 }
 
 .register-button:hover,

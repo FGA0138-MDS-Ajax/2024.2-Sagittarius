@@ -46,16 +46,6 @@
   margin-top: 5px; /* Diminui a margem superior para aproximar mais do campo */
 }
 
-.adicionar-produto-button {
-  padding: 12px;
-  background-color: #F3821B;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%; /* Ajusta o botão para ocupar toda a largura disponível */
-}
-
 .adicionar-produto-button:hover {
   background-color: #f15b1b;
 }
@@ -84,4 +74,11 @@
   .adicionar-produto-button {
     width: 100%; /* Ajusta o botão para 100% em telas pequenas */
   }
+}
+
+.mensagem-sucesso {
+  margin-top: 20px;
+  color: green;
+  font-weight: bold;
+  text-align: center;
 }
