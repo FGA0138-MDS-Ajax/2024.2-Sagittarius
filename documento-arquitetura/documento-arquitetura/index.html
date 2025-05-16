@@ -1,0 +1,1164 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../documento-requisitos/documento-requisitos/">
+      
+      
+        <link rel="next" href="../../documento-plano-testes/documento-plano-testes/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Documento de Arquitetura - 2024.2 Sagittarius</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pele-dourada" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="2024.2 Sagittarius" class="md-header__button md-logo" aria-label="2024.2 Sagittarius" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            2024.2 Sagittarius
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Documento de Arquitetura
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="2024.2 Sagittarius" class="md-nav__button md-logo" aria-label="2024.2 Sagittarius" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    2024.2 Sagittarius
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documento-visao/documento-visao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documento de Visão
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documento-requisitos/documento-requisitos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documento de Requisitos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Documento de Arquitetura
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documento de Arquitetura
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#documento-de-arquitetura" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documento de Arquitetura
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-introducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 Introdução
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 Introdução">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Propósito
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-escopo" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Escopo
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-representacao-arquitetural" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 Representação Arquitetural
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 Representação Arquitetural">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-defnicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Defnições
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-justifque-sua-escolha" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Justifque sua escolha.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-detalhamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 Detalhamento
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-metas-e-restricoes-arquiteturais" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.4 Metas e restrições arquiteturais
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-visao-de-casos-de-uso-escopo-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.5 Visão de Casos de uso (escopo do produto)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-visao-logica" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.6 Visão lógica
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-visao-de-implementacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.7 Visão de Implementação
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-visao-de-implantacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.8 Visão de Implantação
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29-restricoes-adicionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.9 Restrições adicionais
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-bibliografa" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 Bibliografa
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../documento-plano-testes/documento-plano-testes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documento de Plano de Testes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Atas de Reunião
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Atas de Reunião
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../atas-reuniao/ata-reuniao-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ata 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../atas-reuniao/ata-reuniao-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ata 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../atas-reuniao/ata-reuniao-3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ata 3
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../atas-reuniao/ata-reuniao-4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ata 4
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../atas-reuniao/ata-reuniao-5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ata 5
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#documento-de-arquitetura" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documento de Arquitetura
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-introducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 Introdução
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 Introdução">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Propósito
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-escopo" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Escopo
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-representacao-arquitetural" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 Representação Arquitetural
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 Representação Arquitetural">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-defnicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Defnições
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-justifque-sua-escolha" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Justifque sua escolha.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-detalhamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 Detalhamento
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-metas-e-restricoes-arquiteturais" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.4 Metas e restrições arquiteturais
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-visao-de-casos-de-uso-escopo-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.5 Visão de Casos de uso (escopo do produto)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-visao-logica" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.6 Visão lógica
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-visao-de-implementacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.7 Visão de Implementação
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-visao-de-implantacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.8 Visão de Implantação
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29-restricoes-adicionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.9 Restrições adicionais
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-bibliografa" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 Bibliografa
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="pele-dourada">Pele Dourada</h1>
+<h2 id="documento-de-arquitetura">Documento de Arquitetura</h2>
+<p>Equipe Sagittarius</p>
+<p>Tabela 1 – Histórico de Revisão</p>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Versão</th>
+<th>Descrição</th>
+<th>Autor(es)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>16/12/2024</td>
+<td>1.0</td>
+<td>Redação inicial do documento de arquitetura.</td>
+<td>Equipe Sagittarius</td>
+</tr>
+<tr>
+<td>16/12/2024</td>
+<td>1.0</td>
+<td>Tópicos 1.1 e 1.2.</td>
+<td>Vilmar Fagundes</td>
+</tr>
+<tr>
+<td>16/12/2024</td>
+<td>1.0</td>
+<td>Tópicos 2.3 e Diagrama de casos de uso.</td>
+<td>Matheus de Alcântara</td>
+</tr>
+<tr>
+<td>16/12/2024</td>
+<td>1.0</td>
+<td>Tópicos 2.4 e 2.8.</td>
+<td>Fábio Santos Araújo</td>
+</tr>
+<tr>
+<td>16/12/2024</td>
+<td>1.0</td>
+<td>Tópico 2.1, 2.2 e diagrama de classes.</td>
+<td>Caio Lucas e Gabriel Flores</td>
+</tr>
+<tr>
+<td>16/12/2024</td>
+<td>1.0</td>
+<td>Tópico 2.5.</td>
+<td>Gabriel Flores</td>
+</tr>
+<tr>
+<td>17/12/2024</td>
+<td>1.0</td>
+<td>Tópico 2.6.</td>
+<td>Lucas Borges e André Gustavo</td>
+</tr>
+<tr>
+<td>17/12/2024</td>
+<td>1.0</td>
+<td>Tópico 2.7.</td>
+<td>Matheus de Alcântara e JoãoVictor Pires</td>
+</tr>
+<tr>
+<td>17/12/2024</td>
+<td>1.0</td>
+<td>Tópico 2.9.</td>
+<td>João Victor Pires</td>
+</tr>
+</tbody>
+</table>
+<p>Tabela 2 – Autores</p>
+<table>
+<thead>
+<tr>
+<th>Matrícula</th>
+<th>Nome</th>
+<th>Descrição do papel assumido</th>
+<th>% de contribuição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>231026509</td>
+<td>Matheus de Alcântara</td>
+<td>Desenvolvedor Backend</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>231026358</td>
+<td>Gabriel Flores</td>
+<td>Desenvolvedor Banco de Dados</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>231026302</td>
+<td>Caio Lucas</td>
+<td>Desenvolvedor Backend</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>222022082</td>
+<td>Fábio Santos</td>
+<td>Desenvolvedor Banco de Dados</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>231026590</td>
+<td>Vilmar Fagundes</td>
+<td>Desenvolvedor Banco de Dados</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>231026400</td>
+<td>João V. Pires</td>
+<td>Desenvolvevor Backend</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>221007635</td>
+<td>André Gustavo</td>
+<td>Desenvolvedor Frontend</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>222015159</td>
+<td>Lucas Borges</td>
+<td>Desenvolvedor Backend</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>222006150</td>
+<td>Mikael Kauan</td>
+<td>Desenvolvedor Frontend</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>221008196</td>
+<td>João V. Silva</td>
+<td>Desenvolvedor Frontend</td>
+<td>10%</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-introducao">1 Introdução</h2>
+<h3 id="11-proposito">1.1 Propósito</h3>
+<p>Este documento tem como propósito, descrever a arquitetura do sistema sendo desenvol vido pelo grupo Sagittarius, na disciplina de MDS – Métodos de Desenvolvimento de Software (2024.2), chamado Pele Dourada, com o intuito de fornecer uma visão do sistema para desen volvedores, testadores e demais interessados.</p>
+<h3 id="12-escopo">1.2 Escopo</h3>
+<p>O projeto Pele Dourada visa criar um sistema para a loja Frango Assado Pele Dourada ge renciar as vendas semanais e mensais, o controle de seus estoques e o gerenciamento de enco mendas. Após entrevistas com o cliente, foram identificadas as prioridades de funcionalidades fundamentais. A principal tarefa é criar um website que cumpre os requisitos.</p>
+<p>Demais detalhes em relação ao escopo do projeto, se encontram no documento “Documento de visão - Sagittarius”.</p>
+<h2 id="2-representacao-arquitetural">2 Representação Arquitetural</h2>
+<h3 id="21-defnicoes">2.1 Defnições</h3>
+<p>O sistema seguirá uma arquitetura monolítica.</p>
+<h3 id="22-justifque-sua-escolha">2.2 Justifque sua escolha.</h3>
+<p>A escolha da arquitetura monolítica se dá por alguns fatores, que foram preponderantes na decisão:</p>
+<ul>
+<li>
+<p>Simplicidade de desenvolvimento: A curva de aprendizado desse tipo de arquitetura émaior, facilitando com que a equipe se familiarize mais rápido com o código, que por sua vez, é centralizado, o que possibilita um entendimento mais simplificado.</p>
+</li>
+<li>
+<p>Custo de implementação: O custo de implementação é menor, pois não há necessidade de gerenciar múltiplos serviços, por ser considerado um projeto de baixa escala, além do processo de deploy ser menos propenso a problemas.</p>
+</li>
+<li>
+<p>Testes e debugging: O rastreamento de erros é mais rápido pelo fato da aplicação ser centralizada, e os testes são mais simples, por conta de os módulos estarem no mesmo lugar.</p>
+</li>
+<li>
+<p>Desempenho: Por se tratar de uma apliacação de baixa escala, a arquitetura monolítica fornece uma menor sobrecarga de rede, juntamente com um processamento direto, fa zendo assim com que o desempenho seja otimizado.</p>
+</li>
+</ul>
+<h3 id="23-detalhamento">2.3 Detalhamento</h3>
+<p>A escolha da arquitetura monolítica foi realizada para assegurar as vantagens previamente citadas no item 2.2 deste documento, uma vez que o sistema de baixa escala não exige uma separação completa de cada módulo do software. A centralização das camadas em uma mesma base de código facilita seu desenvolvimento e comunicação.</p>
+<p>A camada de interface do usuário possui todas as funcionalidades a serem realizadas pelo cliente, onde é possível realizar login, cadastrar produtos, vendas, entregas, clientes e gerenciar o seu fluxo de caixa e estoque no prazo determinado. Ela recebe todas as interações do usuário como cliques e preenchimento de formulários para determinar as ações da camada de negócios.</p>
+<p>A camada de negócios possui funções que operam juntamente com a camada de dados para garantir que o sistema funcione da maneira correta. É dentro desta camada que são realizadas</p>
+<p>as atualizações do sistema de acordo com as requisições da interface e realizam a apresentação correta dos dados em tempo real, esta camada comunica-se diretamente com o banco de dados e faz as consultas das suas entidades.</p>
+<p>A camada de banco de dados armazena todos os dados necessários para o funcionamento do sistema. Esta camada gerencia a leitura e escrita de dados, garantindo que a informação seja armazena de forma segura e eficiente.</p>
+<p>Portanto, a figura abaixo demonstra o funcionamento da arquitetura monolítica, definida na seção 2.1 deste documento. É possível visualizar separadamente as camadas e como elas comunicam entre si.</p>
+<div style="text-align: center;">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/img/Arquitetura.png" alt="Representação da Arquitetura do Sistema">
+    <p>Figura 1 – Representação da Arquitetura do Sistema</p>
+</div>
+
+<h3 id="24-metas-e-restricoes-arquiteturais">2.4 Metas e restrições arquiteturais</h3>
+<ul>
+<li>
+<p>Escalabilidade: O sistema deve ser escalável para acomodar o aumento continuo do vo lume de dados gerados pela equipe. Sendo fundamental garantir que a infraestrutura su porte esse crescimento ao longo do tempo sem comprometer o desempenho.</p>
+</li>
+<li>
+<p>Desempenho: O software deve oferecer tempos de resposta rápidos e desempenho efici ente, proporcionando uma experiência satisfatória para os usuários.</p>
+</li>
+<li>
+<p>Sustentação técnica: A arquitetura do software deve facilitar a manutenção e evolução do sistema ao longo do tempo, permitindo a implementação de novas funcionalidades,correções de bugs e melhorias contínuas de maneira eficiente.</p>
+</li>
+<li>
+<p>Segurança: É fundamental proteger o sistema contra acessos não autorizados, garantindo a integridade e confidencialidade dos dados.</p>
+</li>
+</ul>
+<p>Para definir as restrições arquiteturais do software de divulgação e gerenciamento, conside rar os seguintes entendimentos:</p>
+<ul>
+<li>Compatibilidade: O sistema deve ser compatível com todas as máquinas utilizadas pela equipe.</li>
+</ul>
+<p>Essas metas e restrições arquiteturais devem ser cuidadosamente avaliadas e incorporadas ao processo de desenvolvimento, garantindo que o software atenda às necessidades da equipe e opere de forma eficiente e segura.</p>
+<h3 id="25-visao-de-casos-de-uso-escopo-do-produto">2.5 Visão de Casos de uso (escopo do produto)</h3>
+<p>O projeto Pele Dourada tem como objetivo desenvolver um sistema para a empresa Frango Assado Pele Dourada, para atender às suas necessidades de gerenciamento. A partir de entrevis tas com o cliente e um processo de levantamento de requisitos, foram identificadas as principais funcionalidades que compõem o escopo do produto.</p>
+<p>As principais tarefas incluem a criação de um site para o gerenciamento interno da empresa.Para isso, o software deve ter gestão de estoque diário, vendas e encomendas, controle de caixa,cadastro de usuários, dashboard geral e autenticação de usuário.</p>
+<p>Os cenários funcionais ajudam o time a estabelecer marcos de desenvolvimento para a cri ação de sprints, de modo que deixe claro para a equipe quais funcionalidades devem ser imple mentadas e a ordem de prioridade.</p>
+<p>Na figura 2, ilustrada abaixo, são apresentados os casos de uso com os quais o ator principal,o administrador, pode interagir e como a aplicação funciona.</p>
+<div style="text-align: center;">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/img/CasosDeUso.png" alt="Diagrama de casos de uso">
+    <p>Figura 2 - Casos de uso</p>
+</div>
+
+<p>O ator principal, administrador, por meio da aplicação, após fazer o login, poderá fazer o gerenciamento do estoque, das vendas no balcão e encomendas, além de poder cadastrar clientes,com o intuito de facilitar a entrega de encomendas, e obter um resumo geral do faturamento da empresa.</p>
+<p>O sistema será de uso interno e terá apenas um usuário, o qual será o administrador, esse fato colaborou para a escolha da arquitetura monolítica com banco de dados externo para acesso dos dados em máquinas diferentes. A arquitetura escolhida facilitará o desenvolvimento e a entrega dos requisitos elicitados pelo cliente.</p>
+<h3 id="26-visao-logica">2.6 Visão lógica</h3>
+<p>O sistema é composto de um único módulo:</p>
+<ul>
+<li>Módulo de gerenciamento: após o login do usuário no sistema, permite que este tenha acesso às informações gerais do dashboard, aos sistemas de gerenciamento de vendas e encomendas, de clientes e estoque.</li>
+</ul>
+<p>– Dashboard: apresenta uma visão geral do desempenho mensal/semanal/diário de vendas e encomendas.</p>
+<p>– Vendas e encomenda: possibilita o cadastro a modificação e a exclusão das vendas e encomendas realizadas.</p>
+<p>– Clientes: permite o cadastro (incluindo informações como telefone e endereço), mo dificação e exclusão de clientes.</p>
+<p>– Estoque: fornece a função tanto de cadastro de novos produtos no sistema, bem como a adição destes no estoque, determinando a quantidade escolhido pelo usuário para um determinado dia.</p>
+<p>Os componentes do sistema interagem por meio de interfaces bem definidas, garantindo uma troca de informações consistente e eficiente. Detalhes adicionais podem ser encontrados no pro tótipo de alta fidelidade, disponível no Figma e armazenado no repositório ”2024.2-Sagittarius”na pasta e também ilustrado no diagrama de estados.</p>
+<p>A seguir, na Figura 3, temos ilustrado o diagrama de estados da aplicação, que é aplicado para demonstrar o comportamento geral do sistema, mostrando os estados e transições do funci onamento do projeto. Sendo assim, é possível entender o comportamento do sistema conforme ele é utilizado, com suas principais transições.</p>
+<div style="text-align:center;">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/img/DiagramaDeEstados.jpeg" alt="Diagrama de Estados">
+    <p>Figura 3 - Diagrama de estads da aplicação</p>
+</div>
+
+<p>Além disso, para demais detalhes de como a aplicação funciona, inclui o diagrama de ati vidades do projeto, apresentado na Figura 4, que é aplicado para descrever as etapas realizadas conforme o usuário usa o sistema, deixando o funcionamento do mesmo mais claro. Sendo assim, no diagrama abaixo, é possível ver o que acontece em cada possibilidade conforme a utilização do site:</p>
+<div style="text-align:center;">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/img/DiagramaDeAtividades.jpeg" alt="Diagrama de atividades da aplicação">
+    <p>Figura 4 - Diagrama de atividades da aplicação</p>
+</div>
+
+<p>Nele, também temos detalhadas as possíveis telas que participam da navegação do site, como proposto protótipo de alta fidelidade, disponível no Github e também no link a seguir: Figma.</p>
+<div style="text-align:center;">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/img/DiagramaDeClasses.png" alt="Diagrama de classes">
+    <p>Figura 5 - Diagrama de classes</p>
+</div>
+
+<p>O diagrama de classes para o gerenciamento da empresa Frango Assado Pele Dourada foi projetado para organizar e otimizar o controle de diversos aspectos envolvidos na administração da empresa. Este sistema compreende seis classes principais, cada uma com responsabilidades específicas que, em conjunto, contribuem para uma gestão eficiente e integrada.</p>
+<h3 id="27-visao-de-implementacao">2.7 Visão de Implementação</h3>
+<p>Os pacotes representam áreas funcionais distintas do sistema, promovendo organização, co esão interna e baixo acoplamento entre componentes. Essa estrutura modular facilita a adição de novos recursos e reduz os impactos causados por alterações específicas no código-fonte.</p>
+<ul>
+<li>
+<p>Camada de Apresentação: desenvolvida com React, HTML, CSS e JavaScript, a camada de apresentação será responsável por fornecer uma interface interativa e responsiva. Ela permitirá aos usuários acessar funcionalidades como vendas, estoque, clientes e relatórios financeiros. A comunicação com o back-end será feita via requisições HTTP.</p>
+</li>
+<li>
+<p>Lógica de Negócios e Regras de Negócios: a lógica será implementada em Python usando o framework Django, que gerenciará as regras do sistema, como atualizações automáticas de estoque, geração de relatórios e controle de permissões. O Django seguirá o padrão MTV (Model-Template-View), garantindo modularidade e facilidade na manutenção.</p>
+</li>
+<li>
+<p>Comunicação com o Banco de Dados: o banco não relacional MongoDB será utilizado para armazenar dados em formato JSON-like. A integração com Django será feita pela biblioteca Djongo, permitindo consultas eficientes, validações e persistência dos dados relacionados a vendas, estoque, clientes e finanças.</p>
+</li>
+</ul>
+<div style="text-align:center;">
+    <img src="https://fga0138-mds-ajax.github.io/2024.2-Sagittarius/img/DiagramaDePacotes.jpeg" alt="Diagrama de pacotes">
+    <p>Figura 6 - Diagrama de pacotes</p>
+</div>
+
+<h3 id="28-visao-de-implantacao">2.8 Visão de Implantação</h3>
+<p>O software será implantado em um desktop configurado para atuar como servidor web, se guindo os padrões das aplicações modernas. Para o front-end, serão utilizadas as tecnologias React e JavaScript (BootStrap), que oferecem rapidez no desenvolvimento e alta qualidade na experiência do usuário. A estruturação das páginas será feita com HTML e a estilização com CSS.</p>
+<p>No back-end, a linguagem Python foi escolhida devido à sua integração eficiente com a ar quitetura Monolito e à robustez do framework Django. O banco de dados será o MongoDB, que se destaca pela compatibilidade com JSON e atende bem ao projeto devido ao volume reduzido de dados esperado. Essa escolha garante integração eficiente com Python e flexibilidade no armazenamento.</p>
+<p>Para o servidor, utilizaremos o Gunicorn, que promove agilidade e eficiência no processa mento de requisições, além de minimizar problemas de incompatibilidade entre as ferramentas utilizadas.</p>
+<h3 id="29-restricoes-adicionais">2.9 Restrições adicionais</h3>
+<p>Para garantir o funcionamento e a segurança dos dados algumas restrições relacionadas prin cipalmente as regras de negócio.</p>
+<ul>
+<li>
+<p>O software deve ser acessível apenas para o administrador.</p>
+</li>
+<li>
+<p>O software exige login para o usuário.</p>
+</li>
+<li>
+<p>O software exige o cadastro de clientes para encomendas.</p>
+</li>
+</ul>
+<p>As seguintes características de qualidade serão mantidas durante todo projeto para garantir um bom desempenho e atender às expectativas do cliente.</p>
+<ul>
+<li>
+<p>Usabilidade: O software deve possuir interface fácil de usar e funcionalidades fáceis de serem utilizadas.</p>
+</li>
+<li>
+<p>Confiabilidade: O sistema deve apresentar alta disponibilidade, garantindo que o usuário consiga acessá-lo quando desejar.</p>
+</li>
+<li>
+<p>Segurança: É fundamental garantir a proteção contra acessos não autorizados, preser vando a integridade dos dados e a privacidade das informações dos usuários.</p>
+</li>
+</ul>
+<h2 id="3-bibliografa">3 Bibliografa</h2>
+<p>AJAX, Ricardo. Slides do professor Ricardo Ajax. 2024. Acesso em: 17 dez. 2024.</p>
+<p>SERRANO, Milene. Material da Profa. Milene Serrano disponibilizado no Aprender 3. 2024.Acesso em: 17 dez. 2024.</p>
+<p>Draw.io. Disponível em: https://app.diagrams.net/. Acesso em: 17 dez. 2024.</p>
+<p>Lucidchart. Disponível em: https://lucid.app/. Acesso em: 16 dez. 2024.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
